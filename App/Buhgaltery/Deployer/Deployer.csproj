@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>Buhgaltery.Deployer</AssemblyName>
+    <RootNamespace>Buhgaltery.Deployer</RootNamespace>
+    <Version>0.0.1</Version>
+    <Authors>Dmitriy Rokoth</Authors>
+    <Product>Home buhgaltery</Product>
+    <Description>Home buhgaltery</Description>
+    <Copyright>Dmitriy Rokoth 2021</Copyright>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/Rokoth/Buhgaltery</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Rokoth/Buhgaltery</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Deployer" Version="0.0.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
