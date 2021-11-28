@@ -16,18 +16,6 @@ create table if not exists "user"(
 	, is_deleted    boolean       not null
 );
 
-create table if not exists client(
-	  id            uuid          not null primary key
-	, "name"        varchar(100)  not null
-	, "description" varchar(1000) null
-	, "login"       varchar(100)  not null
-	, "password"    bytea         not null
-	, base_path     varchar(1000) not null
-	, userid        uuid          not null
-	, version_date  timestamptz   not null
-	, is_deleted    boolean       not null default false	
-);
-
 create table if not exists "h_user"(
       h_id          bigserial     not null primary key        
     , id            uuid          null
@@ -41,74 +29,16 @@ create table if not exists "h_user"(
 	, "user_id"     varchar       null
 );
 
-create table if not exists h_client(
-      h_id          bigserial     not null primary key
-	, id            uuid          null
-	, "name"        varchar(100)  null
+create table if not exists product(
+	  id            uuid          not null primary key
+	, "name"        varchar(100)  not null
 	, "description" varchar(1000) null
-	, "login"       varchar(100)  null
-	, "password"    bytea         null
-	, base_path     varchar(1000) null
-	, userid        uuid          null
-	, version_date  timestamptz   null
-	, is_deleted    boolean       null
-	, change_date   timestamptz   not null default now()
-	, "user_id"     varchar       null
-);
-
-create table if not exists release(
-	  id            uuid          not null primary key
-	, client_id     uuid          not null
-	, "version"     varchar       not null
-	, "path"        varchar       null
-	, number        int           not null
-	, version_date  timestamptz   not null
-	, is_deleted    boolean       not null default false	
-);
-
-create table if not exists h_release(
-      h_id          bigserial     not null primary key
-	, id            uuid          null
-	, client_id     uuid          null
-	, "version"     varchar       null
-	, "path"        varchar       null
-	, number        int           null
-	, version_date  timestamptz   null
-	, is_deleted    boolean       null
-	, change_date   timestamptz   not null default now()
-	, "user_id"     varchar       null
-);
-
-create table if not exists release_architect(
-	  id            uuid          not null primary key
-	, release_id    uuid          not null
-	, "name"        varchar       not null
-	, "path"        varchar       not null	
-	, "file_name"   varchar       not null	
-	, version_date  timestamptz   not null
-	, is_deleted    boolean       not null default false	
-);
-
-create table if not exists h_release_architect(
-      h_id          bigserial     not null primary key
-	, id            uuid          null
-	, release_id    uuid          null
-	, "name"        varchar       null
-	, "path"        varchar       null	
-	, "file_name"   varchar       null
-	, version_date  timestamptz   null
-	, is_deleted    boolean       null
-	, change_date   timestamptz   not null default now()
-	, "user_id"     varchar       null
-);
-
-create table if not exists load_history(
-	  id            uuid          not null primary key
-	, client_id     uuid          not null
-	, release_id    uuid          not null
-	, architect_id  uuid          not null
-	, load_date     timestamptz   not null default now()
-	, success       boolean       not null
+	, parent_id     uuid          null
+	, add_period    int           not null
+	, min_value     int           not null
+	, max_value     int           not null
+	, is_leaf       boolean       not null
+	, last_add_date timestamptz   not null
 	, version_date  timestamptz   not null
 	, is_deleted    boolean       not null default false	
 );
