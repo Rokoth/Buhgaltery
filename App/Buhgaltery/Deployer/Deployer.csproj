@@ -1,10 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <AssemblyName>Buhgaltery.Deployer</AssemblyName>
     <RootNamespace>Buhgaltery.Deployer</RootNamespace>
-    <Version>0.0.2</Version>
+    <Version>0.0.3</Version>
     <Authors>Dmitriy Rokoth</Authors>
     <Product>Home buhgaltery</Product>
     <Description>Deployer wrapper</Description>
@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\Common\Buhgaltery.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

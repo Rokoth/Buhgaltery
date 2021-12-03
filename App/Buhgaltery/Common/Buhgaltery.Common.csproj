@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Buhgaltery.Common</AssemblyName>
     <RootNamespace>Buhgaltery.Common</RootNamespace>
-    <Version>0.0.1</Version>
+    <Version>0.0.2</Version>
     <Authors>Dmitriy Rokoth</Authors>
     <Product>HomeBuhgaltery</Product>
     <Description>Home buhgaltery</Description>

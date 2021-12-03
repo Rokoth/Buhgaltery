@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using SoftUpdater.Common;
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -10,10 +11,7 @@ using System.Threading.Tasks;
 namespace Buhgaltery.Common
 {
     public class ErrorNotifyService : IDisposable, IErrorNotifyService
-    {
-        private readonly IServiceProvider _serviceProvider;
-        private readonly ILogger<ErrorNotifyService> _logger;
-
+    {        
         private bool isConnected = false;
         private bool isAuth = false;
         private bool isDisposed = false;
@@ -30,27 +28,24 @@ namespace Buhgaltery.Common
 
         private string _token { get; set; }
 
-        public ErrorNotifyService(IServiceProvider serviceProvider)
-        {
-            _serviceProvider = serviceProvider;
-            _logger = serviceProvider.GetRequiredService<ILogger<ErrorNotifyService>>();
-            var settings = serviceProvider.GetRequiredService<IOptions<CommonOptions>>().Value.ErrorNotifyOptions;
-            if (settings.SendError)
+        public ErrorNotifyService(ErrorNotifyOptions options)
+        {                      
+            if (options.SendError)
             {
-                if (!string.IsNullOrEmpty(settings.Server))
+                if (!string.IsNullOrEmpty(options.Server))
                 {
                     _sendMessage = true;
-                    _server = settings.Server;
-                    _login = settings.Login;
-                    _password = settings.Password;
-                    _feedback = settings.FeedbackContact;
-                    _defaultTitle = settings.DefaultTitle;
+                    _server = options.Server;
+                    _login = options.Login;
+                    _password = options.Password;
+                    _feedback = options.FeedbackContact;
+                    _defaultTitle = options.DefaultTitle;
 
                     Task.Factory.StartNew(CheckConnect, TaskCreationOptions.LongRunning);
                 }
                 else
                 {
-                    _logger.LogError($"ErrorNotifyService error: Options.Server not set");
+                    Console.WriteLine($"ErrorNotifyService error: Options.Server not set");
                 }
             }
         }
@@ -86,7 +81,7 @@ namespace Buhgaltery.Common
                 }
                 else
                 {
-                    _logger.LogError($"ErrorNotifyService: Error in Auth method: cant wait for auth with lock");
+                    Console.WriteLine($"ErrorNotifyService: Error in Auth method: cant wait for auth with lock");
                     return false;
                 }
             }
@@ -101,7 +96,7 @@ namespace Buhgaltery.Common
             {
                 if (isConnected)
                 {
-                    _logger.LogError($"ErrorNotifyService: Error in Auth method: wrong login or password");
+                    Console.WriteLine($"ErrorNotifyService: Error in Auth method: wrong login or password");
                     _sendMessage = false;
                 }
                 return false;
@@ -143,7 +138,7 @@ namespace Buhgaltery.Common
 
                 if (result.ResponseCode == ResponseEnum.Error)
                 {
-                    _logger.LogError($"ErrorNotifyService: Error in Send method: cant send message error");
+                    Console.WriteLine($"ErrorNotifyService: Error in Send method: cant send message error");
                 }
             }
         }
@@ -178,7 +173,7 @@ namespace Buhgaltery.Common
                         }
                         return resp;
                     }
-                    _logger.LogError($"Error in {method}: server not connected");
+                    Console.WriteLine($"Error in {method}: server not connected");
                     return new Response<T>()
                     {
                         ResponseCode = ResponseEnum.Error
@@ -186,7 +181,7 @@ namespace Buhgaltery.Common
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError($"Error in {method}: {ex.Message}; StackTrace: {ex.StackTrace}");
+                    Console.WriteLine($"Error in {method}: {ex.Message}; StackTrace: {ex.StackTrace}");
                     return new Response<T>()
                     {
                         ResponseCode = ResponseEnum.Error
@@ -212,12 +207,12 @@ namespace Buhgaltery.Common
                 {
                     var check = await client.GetAsync($"{server}/api/v1/common/ping");
                     var result = check != null && check.IsSuccessStatusCode;
-                    _logger.LogInformation($"Ping result: server {server} {(result ? "connected" : "disconnected")}");
+                    Console.WriteLine($"Ping result: server {server} {(result ? "connected" : "disconnected")}");
                     return result;
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError($"Error in CheckConnect: {ex.Message}; StackTrace: {ex.StackTrace}");
+                    Console.WriteLine($"Error in CheckConnect: {ex.Message}; StackTrace: {ex.StackTrace}");
                     return false;
                 }
             }
@@ -261,5 +256,104 @@ namespace Buhgaltery.Common
         public string Title { get; set; }
         public string Description { get; set; }
         public string FeedbackContact { get; set; }
-    }    
+    }
+
+    public class ErrorNotifyLogger : ILogger
+    {
+        private readonly string _name;
+        private IErrorNotifyService _errorNotifyService;
+        private readonly Func<ErrorNotifyLoggerConfiguration> _getCurrentConfig;
+
+        public ErrorNotifyLogger(string name, IErrorNotifyService errorNotifyService,
+            Func<ErrorNotifyLoggerConfiguration> getCurrentConfig)
+        {
+            _errorNotifyService = errorNotifyService;
+            _getCurrentConfig = getCurrentConfig;
+            _name = name;
+        }
+
+        public IDisposable BeginScope<TState>(TState state) => default;
+
+        public bool IsEnabled(LogLevel logLevel)
+        {
+            return _getCurrentConfig().LogLevels.Contains(logLevel);
+        }
+
+        public void Log<TState>(
+            LogLevel logLevel,
+            EventId eventId,
+            TState state,
+            Exception exception,
+            Func<TState, Exception, string> formatter)
+        {
+            if (!IsEnabled(logLevel))
+            {
+                return;
+            }
+
+            ErrorNotifyLoggerConfiguration config = _getCurrentConfig();
+            if (config.EventId == 0 || config.EventId == eventId.Id)
+            {
+                try
+                {
+                    _errorNotifyService
+                        .Send($"Message: {exception.Message} StackTrace: {exception.StackTrace}")
+                        .ContinueWith(s=> {
+                            if (s.Exception != null)
+                            {
+                                Console.WriteLine($"ErrorNotify exception: {s.Exception.Message} {s.Exception.StackTrace}");
+                            }
+                        })
+                        .ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"ErrorNotify exception: {ex.Message} {ex.StackTrace}");
+                }
+            }
+        }
+    }
+
+    public class ErrorNotifyLoggerConfiguration
+    {
+        public int EventId { get; set; }
+
+        public ErrorNotifyOptions Options { get; set; }
+
+        public List<LogLevel> LogLevels { get; set; } = new List<LogLevel>()
+        {
+            LogLevel.Error,
+            LogLevel.Critical
+        };
+    }
+
+    public sealed class ErrorNotifyLoggerProvider : ILoggerProvider
+    {
+        private readonly IDisposable _onChangeToken;
+        private ErrorNotifyLoggerConfiguration _currentConfig;
+        private readonly ConcurrentDictionary<string, ErrorNotifyLogger> _loggers = new ConcurrentDictionary<string, ErrorNotifyLogger>();
+
+
+        public ErrorNotifyLoggerProvider(
+            IOptionsMonitor<ErrorNotifyLoggerConfiguration> config)
+        {
+            _currentConfig = config.CurrentValue;
+            _onChangeToken = config.OnChange(updatedConfig => _currentConfig = updatedConfig);
+        }
+
+        public ILogger CreateLogger(string categoryName)
+        {
+            var errorNotifyService = new ErrorNotifyService(_currentConfig.Options);
+            var logger = _loggers.GetOrAdd(categoryName, name => new ErrorNotifyLogger(name, errorNotifyService, GetCurrentConfig));
+            return logger;
+        }
+
+        private ErrorNotifyLoggerConfiguration GetCurrentConfig() => _currentConfig;
+
+        public void Dispose()
+        {
+            _loggers.Clear();
+            _onChangeToken.Dispose();
+        }
+    }
 }

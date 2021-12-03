@@ -18,14 +18,12 @@ namespace Buhgaltery.BuhgalteryDeployer
     /// </summary>
     public class DeployService : IDeployService
     {
-        private readonly ILogger<DeployService> _logger;
-        private readonly IErrorNotifyService _errorNotifyService;
+        private readonly ILogger<DeployService> _logger;       
         private string _connectionString;
 
         public DeployService(IServiceProvider serviceProvider)
         {
-            _logger = serviceProvider.GetRequiredService<ILogger<DeployService>>();
-            _errorNotifyService = serviceProvider.GetRequiredService<IErrorNotifyService>();
+            _logger = serviceProvider.GetRequiredService<ILogger<DeployService>>();         
             var _options = serviceProvider.GetRequiredService<IOptions<CommonOptions>>();
             _connectionString = _options.Value.ConnectionStrings.FirstOrDefault(s=>s.Key == "MainConnection").Value;
         }
@@ -64,7 +62,6 @@ namespace Buhgaltery.BuhgalteryDeployer
                 {
                     deployLog += message + "\r\n";
                     _logger?.LogError(message);
-                    _errorNotifyService.Send(message);
                 };
                 deployer.OnDebug += (sender, message) =>
                 {
@@ -85,18 +82,12 @@ namespace Buhgaltery.BuhgalteryDeployer
                     throw new DeployException($"DB was not deploy, log: {deployLog}");
                 }
             }
-            catch (DeployException ex)
-            {
-                await _errorNotifyService.Send($"DB was not deploy: {ex.Message} {ex.StackTrace}");
+            catch (DeployException)
+            {               
                 throw;
             }
             catch (Exception ex)
-            {
-                await _errorNotifyService.Send($"" +
-                    $"Error while Deploy DB.\r\n" +
-                    $"Message: {ex.Message}\r\n" +
-                    $"StackTrace: {ex.StackTrace}\r\n" +
-                    $"DeployLog: {deployLog}");
+            {                
                 throw new DeployException($"" +
                     $"Error while Deploy DB.\r\n" +
                     $"Message: {ex.Message}\r\n" +

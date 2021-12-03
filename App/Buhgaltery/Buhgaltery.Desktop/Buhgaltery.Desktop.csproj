@@ -33,7 +33,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Buhgaltery.DbClient\Buhgaltery.DbClient.csproj" />
-    <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\Common\Buhgaltery.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>
