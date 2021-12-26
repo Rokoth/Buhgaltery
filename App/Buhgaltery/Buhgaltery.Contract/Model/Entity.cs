@@ -28,12 +28,20 @@ namespace Buhgaltery.Contract.Model
         public string Source { get; set; }
     }
 
-    public enum NotificationTypeEnum
-    { 
-        MessageReceived = 1,
-        TakeInWorkTimeout = 2,
-        WorkTimeout = 3,
-        Expired = 4
+    public class ClientIdentityResponse
+    {
+        public string Token { get; set; }
+        public string UserName { get; set; }
+    }
+
+
+    public class UserIdentity : IIdentity
+    {
+        [Display(Name = "Логин")]
+        public string Login { get; set; }
+        [Display(Name = "Пароль")]
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
     }
 
 }

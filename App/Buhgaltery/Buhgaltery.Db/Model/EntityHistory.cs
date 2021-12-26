@@ -1,12 +1,16 @@
 ﻿using Buhgaltery.Db.Attributes;
 using System;
-using System.Collections.Generic;
 
 namespace Buhgaltery.Db.Model
 {
-    public abstract class Entity: IEntity
+    public abstract class EntityHistory : IEntity
     {
         [PrimaryKey]
+        [ColumnName("h_id")]
+        public long HId { get; set; }
+        [ColumnName("change_date")]
+        public DateTimeOffset ChangeDate { get; set; }
+
         [ColumnName("id")]
         public Guid Id { get; set; }
         [ColumnName("version_date")]

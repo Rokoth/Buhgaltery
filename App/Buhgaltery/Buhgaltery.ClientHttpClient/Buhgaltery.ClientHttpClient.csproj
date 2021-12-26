@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>0.0.2</Version>
-    <Authors>Dmitriy Rokoth</Authors>
-    <Product>HomeBuhgaltery</Product>
-    <Description>HomeBuhgaltery contract lib</Description>
     <Copyright>Dmitriy Rokoth 2021</Copyright>
+    <Authors>Dmitriy Rokoth</Authors>
+    <Version>0.0.1</Version>
+    <Product>HomeBuhgaltery</Product>
+    <Description>Home buhgaltery HttpClient wrapper</Description>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/Rokoth/Buhgaltery</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Rokoth/Buhgaltery</RepositoryUrl>
@@ -14,8 +14,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
-    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Buhgaltery.Contract\Buhgaltery.Contract.csproj" />
+    <ProjectReference Include="..\Common\Buhgaltery.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>
