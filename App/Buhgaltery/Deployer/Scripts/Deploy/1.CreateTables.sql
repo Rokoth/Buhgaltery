@@ -59,3 +59,24 @@ create table if not exists h_product(
 	, change_date   timestamptz   not null default now()
 	, "user_id"     varchar       null
 );
+
+create table if not exists formula(
+	  id            uuid          not null default uuid_generate_v4() primary key
+	, "name"        varchar(100)  not null
+	, "text"        varchar(1000) not null	
+	, is_default    boolean       not null
+	, version_date  timestamptz   not null default now()
+	, is_deleted    boolean       not null
+);
+
+create table if not exists h_formula(
+      h_id          bigserial     not null primary key
+	, id            uuid          null
+	, "name"        varchar(100)  null
+	, "text"        varchar(1000) null	
+	, is_default    boolean       null
+	, version_date  timestamptz   null
+	, is_deleted    boolean       null
+	, "user_id"     varchar       null
+	, change_date   timestamptz   not null
+);
