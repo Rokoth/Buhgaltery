@@ -18,3 +18,10 @@
 /App/Buhgaltery/Buhgaltery.Db/obj
 /App/Buhgaltery/Buhgaltery.Contract/obj
 /App/Buhgaltery/Buhgaltery.ClientHttpClient/obj
+/App/Buhgaltery/Buhgaltery.ClientHttpClient/bin/
+/App/Buhgaltery/Buhgaltery.Contract/bin/
+/App/Buhgaltery/Buhgaltery.Db/bin/
+/App/Buhgaltery/Buhgaltery.DbClient/bin/
+/App/Buhgaltery/Buhgaltery.Desktop/bin/
+/App/Buhgaltery/Common/bin/
+/App/Buhgaltery/Deployer/bin/

@@ -17,6 +17,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
@@ -52,8 +53,9 @@ namespace Buhgaltery
 
             services.AddCors();
             services.AddAuthentication()
-            .AddJwtBearer("Token", options =>
+            .AddJwtBearer("Token", (options) =>
             {
+                AuthOptions settings = Configuration.GetSection("AuthOptions").Get<AuthOptions>();
                 options.RequireHttpsMetadata = false;
                 options.SaveToken = true;
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -61,17 +63,17 @@ namespace Buhgaltery
                     //// укзывает, будет ли валидироваться издатель при валидации токена
                     ValidateIssuer = true,
                     //// строка, представляющая издателя
-                    ValidIssuer = AuthOptions.ISSUER,
+                    ValidIssuer = settings.Issuer,
 
                     //// будет ли валидироваться потребитель токена
                     ValidateAudience = true,
                     //// установка потребителя токена
-                    ValidAudience = AuthOptions.AUDIENCE,
+                    ValidAudience = settings.Audience,
                     //// будет ли валидироваться время существования
                     ValidateLifetime = true,
-
+                    
                     // установка ключа безопасности
-                    IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+                    IssuerSigningKey = settings.GetSymmetricSecurityKey(),
                     // валидация ключа безопасности
                     ValidateIssuerSigningKey = true,
 
@@ -126,7 +128,7 @@ namespace Buhgaltery
                                     Id = "Bearer"
                                 }
                             },
-                            new string[] {}
+                            Array.Empty<string>()
                     }
                 });
             });

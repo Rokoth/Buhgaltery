@@ -13,6 +13,7 @@ namespace Buhgaltery.Common
         public Dictionary<string, string> ConnectionStrings { get; set; }
         public ErrorNotifyOptions ErrorNotifyOptions { get; set; }
         public string UploadBasePath { get; set; }
+        public AuthOptions AuthOptions { get; set; }
     }
 
     public class ClientOptions: CommonOptions
