@@ -44,21 +44,34 @@ $BODY$
   FOR EACH ROW
   EXECUTE PROCEDURE history_trigger();
 
-  CREATE TRIGGER tr_hist_client
+  CREATE TRIGGER tr_hist_product
   AFTER INSERT OR UPDATE OR DELETE
-  ON client
+  ON product
   FOR EACH ROW
   EXECUTE PROCEDURE history_trigger();
 
-  CREATE TRIGGER tr_hist_release
+  CREATE TRIGGER tr_hist_formula
   AFTER INSERT OR UPDATE OR DELETE
-  ON release
+  ON formula
   FOR EACH ROW
   EXECUTE PROCEDURE history_trigger();
 
-  CREATE TRIGGER tr_hist_release_architect
+  CREATE TRIGGER tr_hist_incoming
   AFTER INSERT OR UPDATE OR DELETE
-  ON release_architect
+  ON incoming
+  FOR EACH ROW
+  EXECUTE PROCEDURE history_trigger();
+
+    CREATE TRIGGER tr_hist_outgoing
+  AFTER INSERT OR UPDATE OR DELETE
+  ON outgoing
+  FOR EACH ROW
+  EXECUTE PROCEDURE history_trigger();
+
+  
+    CREATE TRIGGER tr_hist_reserve
+  AFTER INSERT OR UPDATE OR DELETE
+  ON reserve
   FOR EACH ROW
   EXECUTE PROCEDURE history_trigger();
 
@@ -92,27 +105,33 @@ CREATE TRIGGER tr_onmodify_user
   FOR EACH ROW
   EXECUTE PROCEDURE before_modify_table();
 
-  CREATE TRIGGER tr_onmodify_client
+  CREATE TRIGGER tr_onmodify_product
   AFTER INSERT OR UPDATE OR DELETE
-  ON client
+  ON product
   FOR EACH ROW
   EXECUTE PROCEDURE before_modify_table();
 
-  CREATE TRIGGER tr_onmodify_release
+  CREATE TRIGGER tr_onmodify_formula
   AFTER INSERT OR UPDATE OR DELETE
-  ON release
+  ON formula
   FOR EACH ROW
   EXECUTE PROCEDURE before_modify_table();
 
-  CREATE TRIGGER tr_onmodify_release_architect
+  CREATE TRIGGER tr_onmodify_incoming
   AFTER INSERT OR UPDATE OR DELETE
-  ON release_architect
+  ON incoming
   FOR EACH ROW
   EXECUTE PROCEDURE before_modify_table();
 
-  CREATE TRIGGER tr_onmodify_load_history
+  CREATE TRIGGER tr_onmodify_outgoing
   AFTER INSERT OR UPDATE OR DELETE
-  ON load_history
+  ON outgoing
+  FOR EACH ROW
+  EXECUTE PROCEDURE before_modify_table();
+
+    CREATE TRIGGER tr_onmodify_reserve
+  AFTER INSERT OR UPDATE OR DELETE
+  ON reserve
   FOR EACH ROW
   EXECUTE PROCEDURE before_modify_table();
     

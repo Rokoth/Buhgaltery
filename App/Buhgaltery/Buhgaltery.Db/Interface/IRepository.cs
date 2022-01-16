@@ -17,7 +17,7 @@ namespace Buhgaltery.Db.Interface
         /// <param name="filter">filter</param>
         /// <param name="token">token</param>
         /// <returns>PagedResult<T></returns>
-       // Task<Contract.Model.PagedResult<T>> GetAsync(Filter<T> filter, CancellationToken token);
+        Task<Contract.Model.PagedResult<T>> GetAsync(Filter<T> filter, CancellationToken token);
 
         /// <summary>
         /// Get model list with paging with deleted
@@ -25,7 +25,7 @@ namespace Buhgaltery.Db.Interface
         /// <param name="filter">filter</param>
         /// <param name="token">token</param>
         /// <returns>PagedResult<T></returns>
-      //  Task<Contract.Model.PagedResult<T>> GetAsyncDeleted(Filter<T> filter, CancellationToken token);
+        Task<Contract.Model.PagedResult<T>> GetAsyncDeleted(Filter<T> filter, CancellationToken token);
 
         /// <summary>
         /// Get item of model by id
@@ -69,5 +69,7 @@ namespace Buhgaltery.Db.Interface
         /// <param name="token">token</param>
         /// <returns></returns>
         Task<T> UpdateAsync(T entity, bool withSave, CancellationToken token);
+
+        Task SaveChangesAsync();
     }
 }

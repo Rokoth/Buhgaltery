@@ -25,29 +25,44 @@ namespace Buhgaltery.Common
 
         private object _lockObject = new object();
         private bool isLock = false;
+        private bool _init = false;
 
         private string _token { get; set; }
 
-        public ErrorNotifyService(ErrorNotifyOptions options)
-        {                      
-            if (options.SendError)
-            {
-                if (!string.IsNullOrEmpty(options.Server))
-                {
-                    _sendMessage = true;
-                    _server = options.Server;
-                    _login = options.Login;
-                    _password = options.Password;
-                    _feedback = options.FeedbackContact;
-                    _defaultTitle = options.DefaultTitle;
+        private ErrorNotifyLoggerConfiguration _config;
 
-                    Task.Factory.StartNew(CheckConnect, TaskCreationOptions.LongRunning);
-                }
-                else
+        public ErrorNotifyService(ErrorNotifyLoggerConfiguration config)
+        {
+            _config = config;
+            _init = Init();
+        }
+
+        private bool Init()
+        {
+            var options = _config.Options;
+            if(options != null)
+            {
+                if (options.SendError)
                 {
-                    Console.WriteLine($"ErrorNotifyService error: Options.Server not set");
+                    if (!string.IsNullOrEmpty(options.Server))
+                    {
+                        _sendMessage = true;
+                        _server = options.Server;
+                        _login = options.Login;
+                        _password = options.Password;
+                        _feedback = options.FeedbackContact;
+                        _defaultTitle = options.DefaultTitle;
+
+                        Task.Factory.StartNew(CheckConnect, TaskCreationOptions.LongRunning);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"ErrorNotifyService error: Options.Server not set");
+                    }
                 }
+                return true;
             }
+            return false;
         }
 
         private async Task<bool> Auth()
@@ -112,6 +127,7 @@ namespace Buhgaltery.Common
 
         public async Task Send(string message, MessageLevelEnum level = MessageLevelEnum.Error, string title = null)
         {
+            if (!_init) _init = Init();
             if (_sendMessage)
             {
                 var result = await Execute(client =>
@@ -343,7 +359,7 @@ namespace Buhgaltery.Common
 
         public ILogger CreateLogger(string categoryName)
         {
-            var errorNotifyService = new ErrorNotifyService(_currentConfig.Options);
+            var errorNotifyService = new ErrorNotifyService(_currentConfig);
             var logger = _loggers.GetOrAdd(categoryName, name => new ErrorNotifyLogger(name, errorNotifyService, GetCurrentConfig));
             return logger;
         }

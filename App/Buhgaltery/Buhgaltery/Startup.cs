@@ -21,7 +21,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
-using SoftUpdater.Db.Repository;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.Collections.Generic;
@@ -292,8 +291,8 @@ namespace Buhgaltery
             this ILoggingBuilder builder,
             Action<ErrorNotifyLoggerConfiguration> configure)
         {
-            builder.AddErrorNotifyLogger();
             builder.Services.Configure(configure);
+            builder.AddErrorNotifyLogger();            
 
             return builder;
         }

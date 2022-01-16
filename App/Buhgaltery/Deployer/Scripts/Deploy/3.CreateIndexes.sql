@@ -5,69 +5,55 @@ create unique index uidx_user_login
 create index idx_user_name
     on "user"("name");
 
---client
-create unique index uidx_client_login 
-	on client("login") where not is_deleted;
+--product
+create unique index uidx_product_name_userid_parentid 
+	on product("name", userid, parent_id) where not is_deleted;
 
-create index idx_client_name
-    on client("name");
+create index idx_product_name
+    on product("name");
 
-create index idx_client_login_password
-    on client("login", "password");
+create index idx_product_add_period
+    on product(add_period);
 
-create index idx_client_user_id
-    on client(userid);
+create index idx_product_is_leaf
+    on product(is_leaf);
 
-create index idx_client_is_deleted
-    on client(is_deleted);
+create index idx_product_last_add_date
+    on product(last_add_date);
 
+create index idx_product_userid
+    on product(userid);
 
---release_architect
-create unique index uidx_release_architect_name 
-	on release_architect(release_id, "name") where not is_deleted;
+--formula
+create unique index uidx_formula_userid_name
+	on formula("name", userid) where not is_deleted;
 
-create unique index uidx_release_architect_path 
-	on release_architect(release_id, "path") where not is_deleted and "path" is not null;
+create index idx_formula_name
+    on formula("name");
 
-create index idx_release_architect_release_id
-    on release_architect(release_id);
+create index idx_formula_userid
+    on formula(userid);
 
-create index idx_release_architect_is_deleted
-    on release_architect(is_deleted);
+--incoming
+create index idx_incoming_income_date
+    on incoming(income_date, userid);
 
-    
---release
-create unique index uidx_release_client_id_version 
-	on release(client_id, "version") where not is_deleted;
+create index idx_incoming_userid
+    on incoming(userid);
 
-create unique index uidx_release_client_id_number 
-	on release(client_id, number) where not is_deleted;
+--outgoing
+create index idx_outgoing_income_date
+    on outgoing(out_date, userid);
 
-create unique index uidx_release_client_id_path 
-	on release(client_id, "path") where not is_deleted and "path" is not null;
+create index idx_outgoing_product_id
+    on outgoing(product_id, userid);
 
-create index idx_release_client_id
-    on release(client_id);
+create index idx_outgoing_userid
+    on outgoing(userid);
 
-create index idx_release_is_deleted
-    on release(is_deleted);
+--reserve
+create unique index uidx_reserve_userid_product_id
+	on reserve(product_id, userid) where not is_deleted;
 
-
---load_history
-create index idx_load_history_client_id
-    on load_history(client_id);
-
-create index idx_load_history_release_id
-    on load_history(release_id);
-
-create index idx_load_history_architect_id
-    on load_history(architect_id);
-
-create index idx_load_history_load_date
-    on load_history(load_date);
-
-create index idx_load_history_success
-    on load_history(success);
-
-create index idx_load_history_is_deleted
-    on load_history(is_deleted);
+create index idx_reserve_product_id
+    on reserve(product_id, userid);

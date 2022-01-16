@@ -9,11 +9,11 @@
         /// <summary>
         /// Страница
         /// </summary>
-        int Page { get; }
+        int? Page { get; }
         /// <summary>
         /// Размер
         /// </summary>
-        int Size { get; }
+        int? Size { get; }
         /// <summary>
         /// Поле сортировки
         /// </summary>

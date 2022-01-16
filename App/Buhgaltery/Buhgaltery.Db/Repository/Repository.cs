@@ -71,10 +71,10 @@ namespace Buhgaltery.Db.Repository
         /// <param name="filter">фильтр</param>
         /// <param name="token">токен</param>
         /// <returns>список моделей</returns>
-        //public async Task<Contract.Model.PagedResult<T>> GetAsync(Filter<T> filter, CancellationToken token)
-        //{
-        //    return await GetAsyncInternal(filter, false, "GetAsync");
-        //}
+        public async Task<Contract.Model.PagedResult<T>> GetAsync(Filter<T> filter, CancellationToken token)
+        {
+            return await GetAsyncInternal(filter, false, "GetAsync");
+        }
 
         /// <summary>
         /// Метод получения отфильтрованного списка моделей с постраничной отдачей (с удаленными записями)
@@ -82,39 +82,39 @@ namespace Buhgaltery.Db.Repository
         /// <param name="filter">фильтр</param>
         /// <param name="token">токен</param>
         /// <returns>список моделей</returns>
-        //public async Task<Contract.Model.PagedResult<T>> GetAsyncDeleted(Filter<T> filter, CancellationToken token)
-        //{
-        //    return await GetAsyncInternal(filter, true, "GetAsyncDeleted");
-        //}
+        public async Task<Contract.Model.PagedResult<T>> GetAsyncDeleted(Filter<T> filter, CancellationToken token)
+        {
+            return await GetAsyncInternal(filter, true, "GetAsyncDeleted");
+        }
 
-        //private async Task<Contract.Model.PagedResult<T>> GetAsyncInternal(Filter<T> filter, bool withDeleted, string methodName)
-        //{
-        //    return await ExecuteAsync(async (context) =>
-        //    {
-        //        var pageCount = 1;
-        //        var all = context.Set<T>().Where(filter.Selector);
-        //        if(!withDeleted) all = all.Where(s => !s.IsDeleted);
-        //        if (!string.IsNullOrEmpty(filter.Sort))
-        //        {
-        //            all = all.OrderBy(filter.Sort);
-        //        }
-        //        var count = await all.CountAsync();
-        //        List<T> result;
-        //        if (filter.Size.HasValue)
-        //        {
-        //            result = await all
-        //                .Skip(filter.Size.Value * filter.Page ?? 0)
-        //                .Take(filter.Size.Value)
-        //                .ToListAsync();
-        //            pageCount = Math.Max(((count % filter.Size.Value) == 0) ? (count / filter.Size.Value) : ((count / filter.Size.Value) + 1), 1);
-        //        }
-        //        else
-        //        {
-        //            result = await all.ToListAsync();
-        //        }                                
-        //        return new Contract.Model.PagedResult<T>(result, pageCount);
-        //    }, methodName, false);
-        //}        
+        private async Task<Contract.Model.PagedResult<T>> GetAsyncInternal(Filter<T> filter, bool withDeleted, string methodName)
+        {
+            return await ExecuteAsync(async (context) =>
+            {
+                var pageCount = 1;
+                var all = context.Set<T>().Where(filter.Selector);
+                if (!withDeleted) all = all.Where(s => !s.IsDeleted);
+                if (!string.IsNullOrEmpty(filter.Sort))
+                {
+                    all = all.OrderBy(filter.Sort);
+                }
+                var count = await all.CountAsync();
+                List<T> result;
+                if (filter.Size.HasValue)
+                {
+                    result = await all
+                        .Skip(filter.Size.Value * filter.Page ?? 0)
+                        .Take(filter.Size.Value)
+                        .ToListAsync();
+                    pageCount = Math.Max(((count % filter.Size.Value) == 0) ? (count / filter.Size.Value) : ((count / filter.Size.Value) + 1), 1);
+                }
+                else
+                {
+                    result = await all.ToListAsync();
+                }
+                return new Contract.Model.PagedResult<T>(result, pageCount);
+            }, methodName, false);
+        }
 
         /// <summary>
         /// Метод получения модели по id
@@ -183,6 +183,12 @@ namespace Buhgaltery.Db.Repository
                 _logger.LogError($"Ошибка в методе {method} Repository: {ex.Message} {ex.StackTrace}");               
                 throw new RepositoryException($"Ошибка в методе {method} Repository: {ex.Message}");
             }
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            var context = _serviceProvider.GetRequiredService<DbPgContext>();
+            await context.SaveChangesAsync();
         }
     }
 }

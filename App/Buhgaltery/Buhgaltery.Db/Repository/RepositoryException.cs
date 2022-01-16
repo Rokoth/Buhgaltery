@@ -1,11 +1,7 @@
-﻿//Copyright 2021 Dmitriy Rokoth
-//Licensed under the Apache License, Version 2.0
-//
-//ref 1
-using System;
+﻿using System;
 using System.Runtime.Serialization;
 
-namespace SoftUpdater.Db.Repository
+namespace Buhgaltery.Db.Repository
 {
     [Serializable]
     public class RepositoryException : Exception

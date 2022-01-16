@@ -1,43 +1,55 @@
-﻿--client
-alter table client 
-add constraint fk_client_user_id 
+﻿--product
+alter table product 
+add constraint fk_product_user_id 
+	foreign key(userid) 
+		references "user"(id) 
+		on delete no action on update no action;
+
+alter table product 
+add constraint fk_product_parent_id 
+	foreign key(parent_id) 
+		references product(id) 
+		on delete no action on update no action;
+
+
+--formula
+alter table formula 
+add constraint fk_formula_user_id 
+	foreign key(userid) 
+		references "user"(id) 
+		on delete no action on update no action;
+
+--incoming
+alter table incoming 
+add constraint fk_incoming_user_id 
 	foreign key(userid) 
 		references "user"(id) 
 		on delete no action on update no action;
 
 
---release
-alter table release 
-add constraint fk_release_client_id 
-	foreign key(client_id) 
-		references client(id) 
+--outgoing
+alter table outgoing 
+add constraint fk_outgoing_user_id 
+	foreign key(userid) 
+		references "user"(id) 
 		on delete no action on update no action;
 
---release_architect
-alter table release_architect 
-add constraint fk_release_architect_release_id 
-	foreign key(release_id) 
-		references release(id) 
-		on delete no action on update no action;
-
---load_history
-alter table load_history 
-add constraint fk_load_history_client_id 
-	foreign key(client_id) 
-		references client(id) 
-		on delete no action on update no action;
-
-alter table load_history 
-add constraint fk_load_history_release_id 
-	foreign key(release_id) 
-		references release(id) 
-		on delete no action on update no action;
-
-alter table load_history 
-add constraint fk_load_history_release_architect_id 
-	foreign key(architect_id) 
-		references release_architect(id) 
+alter table outgoing 
+add constraint fk_outgoing_product_id 
+	foreign key(userid) 
+		references product(id) 
 		on delete no action on update no action;
 
 
+--reserve
+alter table reserve 
+add constraint fk_reserve_user_id 
+	foreign key(userid) 
+		references "user"(id) 
+		on delete no action on update no action;
 
+alter table reserve 
+add constraint fk_reserve_product_id 
+	foreign key(userid) 
+		references product(id) 
+		on delete no action on update no action;

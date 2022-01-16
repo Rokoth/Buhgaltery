@@ -125,7 +125,8 @@ namespace Buhgaltery
                         .CreateLogger();
                     logging.AddSerilog(Log.Logger);
                     logging.AddErrorNotifyLogger(config=> {                        
-                        config.Options = hostingContext.Configuration.GetValue<ErrorNotifyOptions>("ErrorNotifyOptions");
+                        var opt =  hostingContext.Configuration.GetSection("ErrorNotifyOptions").Get<ErrorNotifyOptions>();
+                        config.Options = opt;
                     });
                 })
                 .UseKestrel();

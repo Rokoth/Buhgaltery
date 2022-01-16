@@ -4,7 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <AssemblyName>Buhgaltery.Deployer</AssemblyName>
     <RootNamespace>Buhgaltery.Deployer</RootNamespace>
-    <Version>0.0.5</Version>
+    <Version>0.0.6</Version>
     <Authors>Dmitriy Rokoth</Authors>
     <Product>Home buhgaltery</Product>
     <Description>Deployer wrapper</Description>
@@ -26,6 +26,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Scripts\Check\**">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Scripts\Deploy\**">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Scripts\Update\**">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="..\..\..\LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>

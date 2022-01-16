@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <Authors>Dmitriy Rokoth</Authors>
+    <Product>HomeBuhgaltery</Product>
+    <Copyright>Dmitriy Rokoth 2021</Copyright>
+    <Description>Home buhgaltery services lib</Description>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/Rokoth/Buhgaltery</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Rokoth/Buhgaltery</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Version>0.0.1</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
+    <PackageReference Include="NCalc2" Version="2.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Buhgaltery.Contract\Buhgaltery.Contract.csproj" />
+    <ProjectReference Include="..\Buhgaltery.Db\Buhgaltery.Db.csproj" />
+    <ProjectReference Include="..\Common\Buhgaltery.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
