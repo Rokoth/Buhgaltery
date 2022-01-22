@@ -27,3 +27,5 @@
 /App/Buhgaltery/Deployer/bin/
 /App/Buhgaltery/Buhgaltery.Services/bin/Debug/net5.0
 /App/Buhgaltery/Buhgaltery.Services/obj
+/App/Buhgaltery/Buhgaltery.Desktop.UnitTests/bin/Debug
+/App/Buhgaltery/Buhgaltery.Desktop.UnitTests/obj

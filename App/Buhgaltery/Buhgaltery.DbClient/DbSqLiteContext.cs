@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Buhgaltery.DbClient.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace Buhgaltery.DbClient
 {
@@ -6,7 +7,9 @@ namespace Buhgaltery.DbClient
     {       
         public DbSet<Settings> Settings { get; set; }
 
-        public DbSqLiteContext(DbContextOptions<DbSqLiteContext> options) : base(options) { }
+        public DbSqLiteContext(DbContextOptions<DbSqLiteContext> options) : base(options) {
+           
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {            

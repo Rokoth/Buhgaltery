@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Buhgaltery.DbClient.Model;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 
@@ -10,6 +11,7 @@ namespace Buhgaltery.DbClient
         {            
             builder.ToTable("settings");
             builder.HasKey(s => s.Id);
+            builder.Property(s => s.Id).HasColumnName("id");
             builder.Property(s => s.ParamName).HasColumnName("param_name");
             builder.Property(s => s.ParamValue).HasColumnName("param_value");
         }
