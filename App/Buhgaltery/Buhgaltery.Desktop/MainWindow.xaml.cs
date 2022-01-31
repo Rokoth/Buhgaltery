@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Buhgaltery.Desktop.Services.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +22,16 @@ namespace Buhgaltery.Desktop
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+
+        private IServiceProvider _serviceProvider;
+        private IAuthService _authService;
+        public MainWindow(IServiceProvider serviceProvider)
         {
+            _serviceProvider = serviceProvider;
+            _authService = _serviceProvider.GetRequiredService<IAuthService>();
+
             InitializeComponent();
+
         }
     }
 }

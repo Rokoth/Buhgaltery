@@ -5,7 +5,7 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <Authors>Dmitriy Rokoth</Authors>
-    <Version>0.0.2</Version>
+    <Version>0.0.3</Version>
     <Product>Buhgaltery</Product>
     <Description>Buhgaltery client</Description>
     <Copyright>Dmitriy Rokoth 2021</Copyright>
@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Buhgaltery.DbClient\Buhgaltery.DbClient.csproj" />
+    <ProjectReference Include="..\Buhgaltery.Desktop.Services\Buhgaltery.Desktop.Services.csproj" />
     <ProjectReference Include="..\Common\Buhgaltery.Common.csproj" />
   </ItemGroup>
 
