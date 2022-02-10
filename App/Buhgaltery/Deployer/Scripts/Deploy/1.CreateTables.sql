@@ -16,6 +16,19 @@ create table if not exists "user"(
 	, is_deleted    boolean       not null
 );
 
+create table if not exists user_settings(
+      id                       uuid         not null default uuid_generate_v4() primary key
+	, userid                   uuid         not null
+	, schedule_mode            int          not null
+	, schedule_count           int          null
+	, schedule_timespan        int          null
+	, default_project_timespan int          not null
+	, leaf_only                boolean      not null
+	, schedule_shift           int          not null
+	, version_date             timestamptz  not null default now()
+	, is_deleted               boolean      not null
+);
+
 create table if not exists "h_user"(
       h_id          bigserial     not null primary key        
     , id            uuid          null

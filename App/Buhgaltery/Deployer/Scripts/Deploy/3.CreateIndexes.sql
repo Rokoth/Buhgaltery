@@ -5,6 +5,13 @@ create unique index uidx_user_login
 create index idx_user_name
     on "user"("name");
 
+--user
+create unique index uidx_user_settings_userid 
+	on "user_settings"("userid");
+
+create index idx_user_settings_userid
+    on "user_settings"("userid");
+
 --product
 create unique index uidx_product_name_userid_parentid 
 	on product("name", userid, parent_id) where not is_deleted;
