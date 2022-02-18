@@ -1,4 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿//Copyright 2021 Dmitriy Rokoth
+//Licensed under the Apache License, Version 2.0
+//
+//ref2
+
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -7,21 +12,18 @@ using System.Threading.Tasks;
 
 namespace Buhgaltery.Common
 {
-    public enum ResponseEnum
-    {
-        OK = 0,
-        Error = 1,
-        NeedAuth = 2
-    }
 
-    public class Response<TResp> where TResp : class
-    { 
-        public ResponseEnum ResponseCode { get; set; }
-        public TResp ResponseBody { get; set; }
-    }
-
+    /// <summary>
+    /// Методы сериализации-десериализации для http запросов
+    /// </summary>
     public static class HttpApiHelper
     {
+        /// <summary>
+        /// Сериализация запроса
+        /// </summary>
+        /// <typeparam name="TReq"></typeparam>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public static StringContent SerializeRequest<TReq>(this TReq entity)
         {
             var json = JsonConvert.SerializeObject(entity);
@@ -29,6 +31,12 @@ namespace Buhgaltery.Common
             return data;
         }
 
+        /// <summary>
+        /// Десериализация ответа
+        /// </summary>
+        /// <typeparam name="TResp"></typeparam>
+        /// <param name="result"></param>
+        /// <returns></returns>
         public static async Task<Response<TResp>> ParseResponse<TResp>(this HttpResponseMessage result) where TResp : class
         {
             if (result != null && result.IsSuccessStatusCode)
@@ -40,7 +48,7 @@ namespace Buhgaltery.Common
                     ResponseBody = JObject.Parse(response).ToObject<TResp>()
                 };
             }
-            if (result.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            if (result != null && result.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
                 return new Response<TResp>()
                 {
@@ -53,6 +61,12 @@ namespace Buhgaltery.Common
             };
         }
 
+        /// <summary>
+        /// Десериализация ответа (массив)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="result"></param>
+        /// <returns></returns>
         public static async Task<Response<IEnumerable<T>>> ParseResponseArray<T>(this HttpResponseMessage result) where T : class
         {
             if (result != null && result.IsSuccessStatusCode)
@@ -69,7 +83,7 @@ namespace Buhgaltery.Common
                     ResponseBody = ret
                 };
             }
-            if (result.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            if (result != null && result.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
                 return new Response<IEnumerable<T>>()
                 {
