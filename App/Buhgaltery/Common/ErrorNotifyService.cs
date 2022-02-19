@@ -302,7 +302,7 @@ namespace Buhgaltery.Common
             Exception exception,
             Func<TState, Exception, string> formatter)
         {
-            if (!IsEnabled(logLevel))
+            if (!IsEnabled(logLevel) || exception == null)
             {
                 return;
             }

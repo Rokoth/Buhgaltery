@@ -70,14 +70,15 @@ namespace Buhgaltery
                     ValidAudience = settings.Audience,
                     //// будет ли валидироваться время существования
                     ValidateLifetime = true,
-                    
+
                     // установка ключа безопасности
                     IssuerSigningKey = settings.GetSymmetricSecurityKey(),
                     // валидация ключа безопасности
                     ValidateIssuerSigningKey = true,
 
                 };
-            }).AddCookie("Cookies", options => {
+            }).AddCookie("Cookies", options =>
+            {
                 options.LoginPath = new PathString("/Account/Login");
                 options.LogoutPath = new PathString("/Account/Logout");
             });
@@ -99,9 +100,8 @@ namespace Buhgaltery
 
             services.AddScoped<IRepository<Db.Model.User>, Repository<Db.Model.User>>();         
             services.AddScoped<IRepository<Db.Model.UserHistory>, Repository<Db.Model.UserHistory>>();        
-            //services.AddDataServices();
-            services.AddScoped<IDeployService, DeployService>();
-            //services.AddScoped<INotifyService, NotifyService>();
+            
+            services.AddScoped<IDeployService, DeployService>();           
             services.ConfigureAutoMapper();
             services.AddSwaggerGen(swagger =>
             {
@@ -168,11 +168,7 @@ namespace Buhgaltery
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
             });
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            });
+            
             app.UseSpa(spa =>
             {
                 // To learn more about options for serving an Angular SPA from ASP.NET Core,
@@ -184,6 +180,12 @@ namespace Buhgaltery
                 {
                     spa.UseAngularCliServer(npmScript: "start");
                 }
+            });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
         }
     }

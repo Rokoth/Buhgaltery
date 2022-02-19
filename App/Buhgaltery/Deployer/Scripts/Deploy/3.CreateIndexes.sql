@@ -5,6 +5,9 @@ create unique index uidx_user_login
 create index idx_user_name
     on "user"("name");
 
+create index idx_user_formula_id
+    on "user"(formula_id);
+
 --user
 create unique index uidx_user_settings_userid 
 	on "user_settings"("userid");
@@ -32,14 +35,11 @@ create index idx_product_userid
     on product(userid);
 
 --formula
-create unique index uidx_formula_userid_name
-	on formula("name", userid) where not is_deleted;
+create unique index uidx_formula_name
+	on formula("name") where not is_deleted;
 
 create index idx_formula_name
     on formula("name");
-
-create index idx_formula_userid
-    on formula(userid);
 
 --incoming
 create index idx_incoming_income_date

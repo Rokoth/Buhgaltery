@@ -13,10 +13,10 @@ add constraint fk_product_parent_id
 
 
 --formula
-alter table formula 
-add constraint fk_formula_user_id 
-	foreign key(userid) 
-		references "user"(id) 
+alter table "user" 
+add constraint fk_user_formula_id 
+	foreign key(formula_id) 
+		references formula(id) 
 		on delete no action on update no action;
 
 --incoming

@@ -1,0 +1,8 @@
+2022-02-19 19:12:36.823 +05:00 [INF] Service starts with arguments: 
+2022-02-19 19:12:41.464 +05:00 [INF] Start service...
+2022-02-19 19:38:22.915 +05:00 [INF] Service starts with arguments: 
+2022-02-19 19:39:21.204 +05:00 [INF] Service starts with arguments: 
+2022-02-19 19:41:48.092 +05:00 [INF] Service starts with arguments: 
+2022-02-19 19:41:51.837 +05:00 [INF] Start service...
+2022-02-19 19:50:54.187 +05:00 [INF] Service starts with arguments: 
+2022-02-19 19:52:49.004 +05:00 [INF] Service starts with arguments: 

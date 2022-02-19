@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Buhgaltery.Services", "Buhg
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Buhgaltery.Desktop.UnitTests", "Buhgaltery.Desktop.UnitTests\Buhgaltery.Desktop.UnitTests.csproj", "{A8409CBF-9ECA-455B-AB08-FF4C8FEF49B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Buhgaltery.Desktop.Services", "Buhgaltery.Desktop.Services\Buhgaltery.Desktop.Services.csproj", "{69D40BBC-FE98-4828-AA64-95A7BDF57E34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Buhgaltery.Desktop.Services", "Buhgaltery.Desktop.Services\Buhgaltery.Desktop.Services.csproj", "{69D40BBC-FE98-4828-AA64-95A7BDF57E34}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,160 @@
+2022-02-19 19:50:57.846 +05:00 [Debug] Hosting starting
+2022-02-19 19:50:58.192 +05:00 [Information] Starting @angular/cli on port 49998...
+2022-02-19 19:50:58.366 +05:00 [Information] User profile is available. Using '"C:\Users\Dmitrii\AppData\Local\ASP.NET\DataProtection-Keys"' as key repository and Windows DPAPI to encrypt keys at rest.
+2022-02-19 19:50:58.378 +05:00 [Debug] Reading data from file '"C:\Users\Dmitrii\AppData\Local\ASP.NET\DataProtection-Keys\key-5191ef5d-fa75-4c59-a709-81bb42367510.xml"'.
+2022-02-19 19:50:58.387 +05:00 [Debug] Reading data from file '"C:\Users\Dmitrii\AppData\Local\ASP.NET\DataProtection-Keys\key-6dfb8b99-7a12-4e25-a278-573ece144dfd.xml"'.
+2022-02-19 19:50:58.388 +05:00 [Debug] Reading data from file '"C:\Users\Dmitrii\AppData\Local\ASP.NET\DataProtection-Keys\key-813cf19e-0693-4348-80f4-2433812d57ff.xml"'.
+2022-02-19 19:50:58.388 +05:00 [Debug] Reading data from file '"C:\Users\Dmitrii\AppData\Local\ASP.NET\DataProtection-Keys\key-a824ffbe-6cb3-4ede-bdc1-70d9a69ff108.xml"'.
+2022-02-19 19:50:58.388 +05:00 [Debug] Reading data from file '"C:\Users\Dmitrii\AppData\Local\ASP.NET\DataProtection-Keys\key-b4d3e206-d23a-4d76-89c1-7b81b3ca82b9.xml"'.
+2022-02-19 19:50:58.410 +05:00 [Debug] Found key {5191ef5d-fa75-4c59-a709-81bb42367510}.
+2022-02-19 19:50:58.421 +05:00 [Debug] Found key {6dfb8b99-7a12-4e25-a278-573ece144dfd}.
+2022-02-19 19:50:58.422 +05:00 [Debug] Found key {813cf19e-0693-4348-80f4-2433812d57ff}.
+2022-02-19 19:50:58.422 +05:00 [Debug] Found key {a824ffbe-6cb3-4ede-bdc1-70d9a69ff108}.
+2022-02-19 19:50:58.423 +05:00 [Debug] Found key {b4d3e206-d23a-4d76-89c1-7b81b3ca82b9}.
+2022-02-19 19:50:58.443 +05:00 [Debug] Considering key {813cf19e-0693-4348-80f4-2433812d57ff} with expiration date 2022-04-28 03:08:11Z as default key.
+2022-02-19 19:50:58.458 +05:00 [Debug] Forwarded activator type request from "Microsoft.AspNetCore.DataProtection.XmlEncryption.DpapiXmlDecryptor, Microsoft.AspNetCore.DataProtection, Version=3.1.22.0, Culture=neutral, PublicKeyToken=adb9793829ddae60" to "Microsoft.AspNetCore.DataProtection.XmlEncryption.DpapiXmlDecryptor, Microsoft.AspNetCore.DataProtection, Culture=neutral, PublicKeyToken=adb9793829ddae60"
+2022-02-19 19:50:58.464 +05:00 [Debug] Decrypting secret element using Windows DPAPI.
+2022-02-19 19:50:58.465 +05:00 [Debug] Forwarded activator type request from "Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Version=3.1.22.0, Culture=neutral, PublicKeyToken=adb9793829ddae60" to "Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Culture=neutral, PublicKeyToken=adb9793829ddae60"
+2022-02-19 19:50:58.473 +05:00 [Debug] Opening CNG algorithm '"AES"' from provider 'null' with chaining mode CBC.
+2022-02-19 19:50:58.475 +05:00 [Debug] Opening CNG algorithm '"SHA256"' from provider 'null' with HMAC.
+2022-02-19 19:50:58.480 +05:00 [Debug] Using key {813cf19e-0693-4348-80f4-2433812d57ff} as the default key.
+2022-02-19 19:50:58.481 +05:00 [Debug] Key ring with default key {813cf19e-0693-4348-80f4-2433812d57ff} was loaded during application startup.
+2022-02-19 19:50:58.619 +05:00 [Debug] Using development certificate: "CN=localhost" (Thumbprint: "E4EB1F399B1E12DF97AC982E526C604DC4FD74BA")
+2022-02-19 19:50:58.648 +05:00 [Debug] Hosting started
+2022-02-19 19:50:58.648 +05:00 [Debug] Loaded hosting startup assembly "BuhgalteryTestApp1"
+2022-02-19 19:50:59.842 +05:00 [Information] > buhgalterytestapp1@0.0.0 start
+
+2022-02-19 19:50:59.842 +05:00 [Information] > ng serve "--port" "49998"
+
+2022-02-19 19:52:52.424 +05:00 [Debug] Hosting starting
+2022-02-19 19:52:52.615 +05:00 [Information] Starting @angular/cli on port 50069...
+2022-02-19 19:52:52.738 +05:00 [Information] User profile is available. Using '"C:\Users\Dmitrii\AppData\Local\ASP.NET\DataProtection-Keys"' as key repository and Windows DPAPI to encrypt keys at rest.
+2022-02-19 19:52:52.741 +05:00 [Debug] Reading data from file '"C:\Users\Dmitrii\AppData\Local\ASP.NET\DataProtection-Keys\key-5191ef5d-fa75-4c59-a709-81bb42367510.xml"'.
+2022-02-19 19:52:52.750 +05:00 [Debug] Reading data from file '"C:\Users\Dmitrii\AppData\Local\ASP.NET\DataProtection-Keys\key-6dfb8b99-7a12-4e25-a278-573ece144dfd.xml"'.
+2022-02-19 19:52:52.750 +05:00 [Debug] Reading data from file '"C:\Users\Dmitrii\AppData\Local\ASP.NET\DataProtection-Keys\key-813cf19e-0693-4348-80f4-2433812d57ff.xml"'.
+2022-02-19 19:52:52.750 +05:00 [Debug] Reading data from file '"C:\Users\Dmitrii\AppData\Local\ASP.NET\DataProtection-Keys\key-a824ffbe-6cb3-4ede-bdc1-70d9a69ff108.xml"'.
+2022-02-19 19:52:52.750 +05:00 [Debug] Reading data from file '"C:\Users\Dmitrii\AppData\Local\ASP.NET\DataProtection-Keys\key-b4d3e206-d23a-4d76-89c1-7b81b3ca82b9.xml"'.
+2022-02-19 19:52:52.758 +05:00 [Debug] Found key {5191ef5d-fa75-4c59-a709-81bb42367510}.
+2022-02-19 19:52:52.766 +05:00 [Debug] Found key {6dfb8b99-7a12-4e25-a278-573ece144dfd}.
+2022-02-19 19:52:52.766 +05:00 [Debug] Found key {813cf19e-0693-4348-80f4-2433812d57ff}.
+2022-02-19 19:52:52.766 +05:00 [Debug] Found key {a824ffbe-6cb3-4ede-bdc1-70d9a69ff108}.
+2022-02-19 19:52:52.767 +05:00 [Debug] Found key {b4d3e206-d23a-4d76-89c1-7b81b3ca82b9}.
+2022-02-19 19:52:52.779 +05:00 [Debug] Considering key {813cf19e-0693-4348-80f4-2433812d57ff} with expiration date 2022-04-28 03:08:11Z as default key.
+2022-02-19 19:52:52.794 +05:00 [Debug] Forwarded activator type request from "Microsoft.AspNetCore.DataProtection.XmlEncryption.DpapiXmlDecryptor, Microsoft.AspNetCore.DataProtection, Version=3.1.22.0, Culture=neutral, PublicKeyToken=adb9793829ddae60" to "Microsoft.AspNetCore.DataProtection.XmlEncryption.DpapiXmlDecryptor, Microsoft.AspNetCore.DataProtection, Culture=neutral, PublicKeyToken=adb9793829ddae60"
+2022-02-19 19:52:52.804 +05:00 [Debug] Decrypting secret element using Windows DPAPI.
+2022-02-19 19:52:52.806 +05:00 [Debug] Forwarded activator type request from "Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Version=3.1.22.0, Culture=neutral, PublicKeyToken=adb9793829ddae60" to "Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Culture=neutral, PublicKeyToken=adb9793829ddae60"
+2022-02-19 19:52:52.816 +05:00 [Debug] Opening CNG algorithm '"AES"' from provider 'null' with chaining mode CBC.
+2022-02-19 19:52:52.818 +05:00 [Debug] Opening CNG algorithm '"SHA256"' from provider 'null' with HMAC.
+2022-02-19 19:52:52.822 +05:00 [Debug] Using key {813cf19e-0693-4348-80f4-2433812d57ff} as the default key.
+2022-02-19 19:52:52.823 +05:00 [Debug] Key ring with default key {813cf19e-0693-4348-80f4-2433812d57ff} was loaded during application startup.
+2022-02-19 19:52:52.908 +05:00 [Debug] Using development certificate: "CN=localhost" (Thumbprint: "E4EB1F399B1E12DF97AC982E526C604DC4FD74BA")
+2022-02-19 19:52:52.930 +05:00 [Debug] Hosting started
+2022-02-19 19:52:52.931 +05:00 [Debug] Loaded hosting startup assembly "BuhgalteryTestApp1"
+2022-02-19 19:52:54.145 +05:00 [Information] > buhgalterytestapp1@0.0.0 start
+
+2022-02-19 19:52:54.146 +05:00 [Information] > ng serve "--port" "50069"
+
+2022-02-19 19:53:05.331 +05:00 [Error] (node:14596) [DEP0111] DeprecationWarning: Access to process.binding('http_parser') is deprecated.
+
+2022-02-19 19:53:05.335 +05:00 [Error] (Use `node --trace-deprecation ...` to show where the warning was created)
+
+2022-02-19 19:53:05.336 +05:00 [Information] i я╜вwdsя╜г: Project is running at http://localhost:50069/webpack-dev-server/
+
+2022-02-19 19:53:05.336 +05:00 [Information] i я╜вwdsя╜г: webpack output is served from /
+
+2022-02-19 19:53:05.336 +05:00 [Information] i я╜вwdsя╜г: 404s will fallback to //index.html
+
+2022-02-19 19:53:11.873 +05:00 [Information] chunk {main} main.js, main.js.map (main) 29.1 kB [initial] [rendered]
+
+2022-02-19 19:53:11.873 +05:00 [Information] chunk {polyfills} polyfills.js, polyfills.js.map (polyfills) 283 kB [initial] [rendered]
+
+2022-02-19 19:53:11.873 +05:00 [Information] chunk {runtime} runtime.js, runtime.js.map (runtime) 6.15 kB [entry] [rendered]
+
+2022-02-19 19:53:11.873 +05:00 [Information] chunk {styles} styles.css, styles.css.map (styles) 144 kB [initial] [rendered]
+
+2022-02-19 19:53:11.873 +05:00 [Information] chunk {vendor} vendor.js, vendor.js.map (vendor) 4.45 MB [initial] [rendered]
+
+2022-02-19 19:53:11.874 +05:00 [Information] Date: 2022-02-19T14:53:11.872Z - Hash: 0b2605acb073f09496ae - Time: 11397ms
+
+2022-02-19 19:53:11.875 +05:00 [Information] ** Angular Live Development Server is listening on localhost:50069, open your browser on http://localhost:50069/ **
+
+2022-02-19 19:53:11.977 +05:00 [Information] i я╜вwdmя╜г: Compiled successfully.
+
+2022-02-19 19:53:30.583 +05:00 [Debug] Connection id ""0HMFJMUC1C5VA"" accepted.
+2022-02-19 19:53:30.587 +05:00 [Debug] Connection id ""0HMFJMUC1C5VA"" started.
+2022-02-19 19:53:30.588 +05:00 [Debug] Connection id ""0HMFJMUC1C5VB"" accepted.
+2022-02-19 19:53:30.588 +05:00 [Debug] Connection id ""0HMFJMUC1C5VB"" started.
+2022-02-19 19:53:30.681 +05:00 [Debug] Connection ""0HMFJMUC1C5VB"" established using the following protocol: Tls12
+2022-02-19 19:53:30.683 +05:00 [Debug] Connection ""0HMFJMUC1C5VA"" established using the following protocol: Tls12
+2022-02-19 19:53:30.721 +05:00 [Information] Request starting HTTP/1.1 GET https://localhost:5771/ - -
+2022-02-19 19:53:30.723 +05:00 [Debug] Wildcard detected, all requests with hosts will be allowed.
+2022-02-19 19:53:30.725 +05:00 [Debug] The request path "/" does not match a supported file type
+2022-02-19 19:53:30.758 +05:00 [Debug] No candidates found for the request path '"/"'
+2022-02-19 19:53:30.759 +05:00 [Debug] Request did not match any endpoints
+2022-02-19 19:53:30.815 +05:00 [Debug] Connection id ""0HMFJMUC1C5VC"" accepted.
+2022-02-19 19:53:30.816 +05:00 [Debug] Connection id ""0HMFJMUC1C5VC"" started.
+2022-02-19 19:53:30.820 +05:00 [Debug] Connection ""0HMFJMUC1C5VC"" established using the following protocol: Tls12
+2022-02-19 19:53:31.847 +05:00 [Debug] Connection id ""0HMFJMUC1C5VB"" completed keep alive response.
+2022-02-19 19:53:31.849 +05:00 [Information] Request finished HTTP/1.1 GET https://localhost:5771/ - - - 200 588 text/html;+charset=utf-8 1130.1369ms
+2022-02-19 19:53:31.866 +05:00 [Information] Request starting HTTP/1.1 GET https://localhost:5771/runtime.js - -
+2022-02-19 19:53:31.866 +05:00 [Information] Request starting HTTP/1.1 GET https://localhost:5771/polyfills.js - -
+2022-02-19 19:53:31.867 +05:00 [Debug] The request path "/runtime.js" does not match an existing file
+2022-02-19 19:53:31.867 +05:00 [Debug] The request path "/polyfills.js" does not match an existing file
+2022-02-19 19:53:31.867 +05:00 [Debug] No candidates found for the request path '"/runtime.js"'
+2022-02-19 19:53:31.867 +05:00 [Debug] No candidates found for the request path '"/polyfills.js"'
+2022-02-19 19:53:31.867 +05:00 [Debug] Request did not match any endpoints
+2022-02-19 19:53:31.867 +05:00 [Debug] Request did not match any endpoints
+2022-02-19 19:53:31.869 +05:00 [Information] Request starting HTTP/1.1 GET https://localhost:5771/styles.css - -
+2022-02-19 19:53:31.870 +05:00 [Debug] The request path "/styles.css" does not match an existing file
+2022-02-19 19:53:31.870 +05:00 [Debug] No candidates found for the request path '"/styles.css"'
+2022-02-19 19:53:31.870 +05:00 [Debug] Request did not match any endpoints
+2022-02-19 19:53:31.874 +05:00 [Debug] Connection id ""0HMFJMUC1C5VA"" completed keep alive response.
+2022-02-19 19:53:31.874 +05:00 [Information] Request finished HTTP/1.1 GET https://localhost:5771/runtime.js - - - 304 - - 8.0855ms
+2022-02-19 19:53:31.876 +05:00 [Information] Request starting HTTP/1.1 GET https://localhost:5771/vendor.js - -
+2022-02-19 19:53:31.876 +05:00 [Debug] The request path "/vendor.js" does not match an existing file
+2022-02-19 19:53:31.876 +05:00 [Debug] No candidates found for the request path '"/vendor.js"'
+2022-02-19 19:53:31.876 +05:00 [Debug] Request did not match any endpoints
+2022-02-19 19:53:31.888 +05:00 [Debug] Connection id ""0HMFJMUC1C5VA"" completed keep alive response.
+2022-02-19 19:53:31.888 +05:00 [Information] Request finished HTTP/1.1 GET https://localhost:5771/vendor.js - - - 304 - - 12.4501ms
+2022-02-19 19:53:31.892 +05:00 [Information] Request starting HTTP/1.1 GET https://localhost:5771/main.js - -
+2022-02-19 19:53:31.892 +05:00 [Debug] The request path "/main.js" does not match an existing file
+2022-02-19 19:53:31.892 +05:00 [Debug] No candidates found for the request path '"/main.js"'
+2022-02-19 19:53:31.892 +05:00 [Debug] Request did not match any endpoints
+2022-02-19 19:53:31.896 +05:00 [Debug] Connection id ""0HMFJMUC1C5VA"" completed keep alive response.
+2022-02-19 19:53:31.896 +05:00 [Information] Request finished HTTP/1.1 GET https://localhost:5771/main.js - - - 304 - - 4.0115ms
+2022-02-19 19:53:32.166 +05:00 [Debug] Connection id ""0HMFJMUC1C5VD"" accepted.
+2022-02-19 19:53:32.166 +05:00 [Debug] Connection id ""0HMFJMUC1C5VD"" started.
+2022-02-19 19:53:32.167 +05:00 [Debug] Connection id ""0HMFJMUC1C5VE"" accepted.
+2022-02-19 19:53:32.167 +05:00 [Debug] Connection id ""0HMFJMUC1C5VE"" started.
+2022-02-19 19:53:32.168 +05:00 [Debug] Connection ""0HMFJMUC1C5VD"" established using the following protocol: Tls12
+2022-02-19 19:53:32.168 +05:00 [Debug] Connection ""0HMFJMUC1C5VE"" established using the following protocol: Tls12
+2022-02-19 19:53:32.869 +05:00 [Debug] Connection id ""0HMFJMUC1C5VC"" completed keep alive response.
+2022-02-19 19:53:32.869 +05:00 [Information] Request finished HTTP/1.1 GET https://localhost:5771/polyfills.js - - - 304 - - 1002.7382ms
+2022-02-19 19:53:32.879 +05:00 [Debug] Connection id ""0HMFJMUC1C5VB"" completed keep alive response.
+2022-02-19 19:53:32.879 +05:00 [Information] Request finished HTTP/1.1 GET https://localhost:5771/styles.css - - - 304 - - 1009.2587ms
+2022-02-19 19:53:33.189 +05:00 [Information] Request starting HTTP/1.1 GET https://localhost:5771/sockjs-node/info?t=1645282413183 - -
+2022-02-19 19:53:33.189 +05:00 [Information] Request starting HTTP/1.1 GET https://localhost:5771/favicon.ico - -
+2022-02-19 19:53:33.189 +05:00 [Debug] The request path "/sockjs-node/info" does not match a supported file type
+2022-02-19 19:53:33.189 +05:00 [Debug] No candidates found for the request path '"/sockjs-node/info"'
+2022-02-19 19:53:33.189 +05:00 [Debug] Request did not match any endpoints
+2022-02-19 19:53:33.209 +05:00 [Debug] Connection id ""0HMFJMUC1C5VB"" completed keep alive response.
+2022-02-19 19:53:33.210 +05:00 [Information] Request finished HTTP/1.1 GET https://localhost:5771/sockjs-node/info?t=1645282413183 - - - 200 - application/json;+charset=utf-8 21.0182ms
+2022-02-19 19:53:33.218 +05:00 [Information] Sending file. Request path: '"/favicon.ico"'. Physical path: '"F:\Projects\Buhgaltery\App\Buhgaltery\BuhgalteryTestApp1\wwwroot\favicon.ico"'
+2022-02-19 19:53:33.218 +05:00 [Debug] Connection id ""0HMFJMUC1C5VC"" completed keep alive response.
+2022-02-19 19:53:33.218 +05:00 [Information] Request finished HTTP/1.1 GET https://localhost:5771/favicon.ico - - - 200 5430 image/x-icon 29.8162ms
+2022-02-19 19:53:33.517 +05:00 [Debug] Connection id ""0HMFJMUC1C5VF"" accepted.
+2022-02-19 19:53:33.517 +05:00 [Debug] Connection id ""0HMFJMUC1C5VF"" started.
+2022-02-19 19:53:33.518 +05:00 [Debug] Connection ""0HMFJMUC1C5VF"" established using the following protocol: Tls12
+2022-02-19 19:53:33.519 +05:00 [Information] Request starting HTTP/1.1 GET https://localhost:5771/sockjs-node/753/xnwgafyc/websocket - -
+2022-02-19 19:53:33.519 +05:00 [Debug] The request path "/sockjs-node/753/xnwgafyc/websocket" does not match a supported file type
+2022-02-19 19:53:33.519 +05:00 [Debug] No candidates found for the request path '"/sockjs-node/753/xnwgafyc/websocket"'
+2022-02-19 19:53:33.519 +05:00 [Debug] Request did not match any endpoints
+2022-02-19 19:53:33.879 +05:00 [Debug] Connection id ""0HMFJMUC1C5VF"" received FIN.
+2022-02-19 19:53:33.883 +05:00 [Debug] Connection id ""0HMFJMUC1C5VF"" sending FIN because: ""The client closed the connection.""
+2022-02-19 19:53:33.883 +05:00 [Debug] Connection id ""0HMFJMUC1C5VF"" disconnecting.
+2022-02-19 19:53:33.883 +05:00 [Information] Request starting HTTP/1.1 POST https://localhost:5771/sockjs-node/753/03unv4a2/xhr_streaming?t=1645282413879 - 0
+2022-02-19 19:53:33.883 +05:00 [Debug] "POST" requests are not supported
+2022-02-19 19:53:33.883 +05:00 [Debug] No candidates found for the request path '"/sockjs-node/753/03unv4a2/xhr_streaming"'
+2022-02-19 19:53:33.883 +05:00 [Debug] Request did not match any endpoints
+2022-02-19 19:53:33.893 +05:00 [Information] Request finished HTTP/1.1 GET https://localhost:5771/sockjs-node/753/xnwgafyc/websocket - - - 0 - - 374.4840ms
+2022-02-19 19:53:33.899 +05:00 [Debug] Connection id ""0HMFJMUC1C5VF"" stopped.
