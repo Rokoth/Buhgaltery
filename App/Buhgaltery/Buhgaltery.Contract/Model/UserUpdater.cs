@@ -56,6 +56,22 @@ namespace Buhgaltery.Contract.Model
         public Guid UserId { get; set; }
     }
 
+    public class ReserveFilter : Filter<Reserve>
+    {
+        public ReserveFilter(int? size, int? page, string sort, Guid userId, Guid? productId) : base(size, page, sort)
+        {
+            ProductId = productId;
+            UserId = userId;
+        }
+        /// <summary>
+        /// User Name
+        /// </summary>
+        public Guid? ProductId { get; }
+        public Guid UserId { get; }
+    }
+
+    
+
     public class ReserveCreator
     {
         public Guid? ProductId { get; set; }
@@ -76,5 +92,76 @@ namespace Buhgaltery.Contract.Model
         public Guid ProductId { get; set; }
         public decimal Value { get; set; }
         public Guid UserId { get; set; }
+    }
+
+    public class Product : Entity
+    {        
+        public Guid UserId { get; set; }
+        public Guid? ParentId { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public decimal MinValue { get; set; }
+        public decimal MaxValue { get; set; }
+        public decimal AddPeriod { get; set; }
+        public bool IsLeaf { get; set; }
+        public DateTimeOffset? LastAddDate { get; set; }
+    }
+
+    public class ProductFilter : Filter<Product>
+    {
+        public ProductFilter(int? size, int? page, string sort, Guid userId, Guid? parentId, string name, bool leafOnly, DateTimeOffset? lastAddDate) : base(size, page, sort)
+        {
+            ParentId = parentId;
+            UserId = userId;
+            Name = name;
+            LeafOnly = leafOnly;
+            LastAddDate = lastAddDate;
+        }
+        /// <summary>
+        /// User Name
+        /// </summary>
+        public Guid? ParentId { get; }
+        public Guid UserId { get; }
+        public string Name { get; }
+        public bool LeafOnly { get; }
+        public DateTimeOffset? LastAddDate { get; }
+    }
+
+
+
+    public class ProductCreator
+    {
+        public Guid UserId { get; set; }
+        public Guid? ParentId { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public decimal MinValue { get; set; }
+        public decimal MaxValue { get; set; }
+        public decimal AddPeriod { get; set; }       
+    }
+
+    public class ProductUpdater : IEntity
+    {
+        public Guid UserId { get; set; }
+        public Guid? ParentId { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public decimal MinValue { get; set; }
+        public decimal MaxValue { get; set; }
+        public decimal AddPeriod { get; set; }
+        public Guid Id { get; set; }
+    }
+
+    public class ProductHistory : EntityHistory
+    {
+        public Guid UserId { get; set; }
+        public Guid? ParentId { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public decimal MinValue { get; set; }
+        public decimal MaxValue { get; set; }
+        public decimal AddPeriod { get; set; }
+        public bool IsLeaf { get; set; }
+        public DateTimeOffset? LastAddDate { get; set; }
     }
 }

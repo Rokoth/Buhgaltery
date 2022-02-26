@@ -4,20 +4,18 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Buhgaltery.Services
 {
-    public class AllocateReservesHostedService : IHostedService
+    public class ReservesRevisorHostedService : IHostedService
     {
         private readonly IServiceProvider _serviceProvider;
         private bool _isRunning = false;
 
-        public AllocateReservesHostedService(IServiceProvider serviceProvider)
+        public ReservesRevisorHostedService(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
         }
@@ -41,7 +39,9 @@ namespace Buhgaltery.Services
             var _logger = serviceProvider.GetRequiredService<ILogger<AllocateReservesHostedService>>();
             var _userDataService = serviceProvider.GetRequiredService<IGetDataService<User, UserFilter>>();
             var _userUpdateService = serviceProvider.GetRequiredService<IUpdateDataService<User, UserUpdater>>();
-            var _reserveDataService = serviceProvider.GetRequiredService<IAddDataService<Reserve, ReserveCreator>>();
+            var _reserveUpdateDataService = serviceProvider.GetRequiredService<IUpdateDataService<Reserve, ReserveUpdater>>();
+            var _reserveDataService = serviceProvider.GetRequiredService<IGetDataService<Reserve, ReserveFilter>>();
+            var _productDataService = serviceProvider.GetRequiredService<IGetDataService<Product, ProductFilter>>();
             var _mapper = serviceProvider.GetRequiredService<IMapper>();
             CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             while (_isRunning)
@@ -51,18 +51,23 @@ namespace Buhgaltery.Services
                     var allUsers = await _userDataService.GetAsync(new UserFilter(null, null, null, null), cancellationTokenSource.Token);
                     foreach (var user in allUsers.Data)
                     {
-                        if (!user.LastAddedDate.HasValue || (user.LastAddedDate.Value.AddMinutes(user.AddPeriod) < DateTimeOffset.Now))
+                        var reserves = await _reserveDataService.GetAsync(new ReserveFilter(null, null, null, user.Id, null), cancellationTokenSource.Token);
+                        var products = await _productDataService.GetAsync(new ProductFilter(null, null, null, user.Id, null, null, true, null), cancellationTokenSource.Token);
+                        foreach (var reserve in reserves.Data)
                         {
-                            await _reserveDataService.AddAsync(new ReserveCreator()
+                            var product = products.Data.Single(s=>s.Id == reserve.ProductId);
+                            if (reserve.Value > product.MaxValue)
                             {
-                                UserId = user.Id
-                            }, cancellationTokenSource.Token);                           
+                                var reserveUpdater = _mapper.Map<ReserveUpdater>(reserve);
+                                reserveUpdater.Value = product.MaxValue;
+                                await _reserveUpdateDataService.UpdateAsync(reserveUpdater, cancellationTokenSource.Token);
+                            }
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError($"Ошибка при резервировании : {ex.Message} {ex.StackTrace}");
+                    _logger.LogError($"Ошибка при ревизии резервов: {ex.Message} {ex.StackTrace}");
                 }
             }
             cancellationTokenSource.Cancel();
