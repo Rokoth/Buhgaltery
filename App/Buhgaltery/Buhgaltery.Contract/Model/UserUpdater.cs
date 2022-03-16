@@ -26,11 +26,7 @@ namespace Buhgaltery.Contract.Model
         [Display(Name = "Формула")]
         [Required(ErrorMessage = "Поле должно быть установлено")]
         public string Formula { get; set; }
-
-        [Display(Name = "Тип построения расписания")]
-        [Required(ErrorMessage = "Поле должно быть установлено")]
-        [EnumDataType(typeof(ScheduleMode))]
-        public ScheduleMode ScheduleMode { get; set; }
+       
         [Display(Name = "Количество элементов (для типа по кол-ву)")]
         public int? ScheduleCount { get; set; }
         [Display(Name = "Промежуток расписания (для типа по времени)")]
@@ -163,5 +159,15 @@ namespace Buhgaltery.Contract.Model
         public decimal AddPeriod { get; set; }
         public bool IsLeaf { get; set; }
         public DateTimeOffset? LastAddDate { get; set; }
+    }
+
+    public class AllData
+    {
+        public decimal Incomings { get; set; }
+        public decimal Outgoings { get; set; }
+        public decimal Reserves { get; set; }
+        public decimal Free { get; set; }
+        public bool IsError { get; set; }
+        public string ErrorMessage { get; set; }
     }
 }

@@ -44,6 +44,22 @@ create table if not exists "h_user"(
 	, "user_id"     varchar       null
 );
 
+create table if not exists h_user_settings(
+      h_id                     bigserial    not null primary key        
+    , id                       uuid         not null default uuid_generate_v4() primary key
+	, userid                   uuid         not null
+	, schedule_mode            int          not null
+	, schedule_count           int          null
+	, schedule_timespan        int          null
+	, default_project_timespan int          not null
+	, leaf_only                boolean      not null
+	, schedule_shift           int          not null
+	, version_date             timestamptz  not null default now()
+	, is_deleted               boolean      not null
+	, change_date              timestamptz  not null default now()
+	, "user_id"                varchar      null
+);
+
 create table if not exists product(
 	  id            uuid          not null primary key
 	, "name"        varchar(100)  not null

@@ -33,5 +33,10 @@ namespace Buhgaltery.Desktop
             InitializeComponent();
 
         }
+
+        private void ProductsButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

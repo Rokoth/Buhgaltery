@@ -40,29 +40,10 @@ namespace Buhgaltery.Contract.Model
         [Display(Name = "Формула")]
         [Required(ErrorMessage = "Поле должно быть установлено")]
         public string Formula { get; set; }
-
-        [Display(Name = "Тип построения расписания")]
-        [Required(ErrorMessage = "Поле должно быть установлено")]
-        [EnumDataType(typeof(ScheduleMode))]
-        public ScheduleMode ScheduleMode { get; set; }
-        [Display(Name = "Количество элементов (для типа по кол-ву)")]
-        public int? ScheduleCount { get; set; }
-        [Display(Name = "Промежуток расписания (для типа по времени)")]
-        public int? ScheduleTimeSpan { get; set; } // hours       
-        [Display(Name = "Время задачи по умолчанию")]
-        [Required(ErrorMessage = "Поле должно быть установлено")]
-        public int DefaultProjectTimespan { get; set; }
+                
+       
         [Display(Name = "Только листовые элементы")]
         [Required(ErrorMessage = "Поле должно быть установлено")]
-        public bool LeafOnly { get; set; }
-        [Display(Name = "Сдвиг расписания (в мин)")]
-        [Required(ErrorMessage = "Поле должно быть установлено")]
-        public int ScheduleShift { get; set; }
-    }
-    public enum ScheduleMode
-    {
-        [Display(Name = "Вручную")] Manual = 0,
-        [Display(Name = "По количеству")] ByCount = 1,
-        [Display(Name = "По времени")] ByTimeSpan = 2
-    }
+        public bool LeafOnly { get; set; }       
+    }    
 }

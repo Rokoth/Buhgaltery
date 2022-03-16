@@ -6,7 +6,7 @@ namespace Buhgaltery.Contract.Model
     {
         public Guid UserId { get; set; }
         public string Description { get; set; }
-        public decimal Sum { get; set; }
+        public decimal Value { get; set; }
         public DateTime IncomingDate { get; set; }
     }
 }

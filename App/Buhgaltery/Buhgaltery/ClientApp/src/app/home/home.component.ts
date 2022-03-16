@@ -1,8 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
 })
 export class HomeComponent {
+  public data: CurrentData;
+
+  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+    http.get<CurrentData>(baseUrl + 'home/current-data').subscribe(result => {
+      this.data = result;
+    }, error => console.error(error));
+  }
 }
+
+interface CurrentData {
+  incomings: number;
+  outgoings: number;
+  reserves: number;
+  free: number;
+}
+

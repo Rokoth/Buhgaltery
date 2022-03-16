@@ -78,15 +78,10 @@ namespace Buhgaltery.Services
             Contract.Model.UserCreator creator, Db.Model.User entity, CancellationToken token)
         {
             var userSettingsRepo = _serviceProvider.GetRequiredService<Db.Interface.IRepository<Db.Model.UserSettings>>();
-            await userSettingsRepo.AddAsync(new Db.Model.UserSettings() { 
-               DefaultProjectTimespan = creator.DefaultProjectTimespan,
+            await userSettingsRepo.AddAsync(new Db.Model.UserSettings() {               
                Id = Guid.NewGuid(),
                IsDeleted = false,
-               LeafOnly = creator.LeafOnly,
-               ScheduleCount = creator.ScheduleCount,
-               ScheduleMode = creator.ScheduleMode,
-               ScheduleShift = creator.ScheduleShift,
-               ScheduleTimeSpan = creator.ScheduleTimeSpan,
+               LeafOnly = creator.LeafOnly,              
                UserId = entity.Id,
                VersionDate = DateTimeOffset.Now
             }, false, token);
@@ -104,7 +99,6 @@ namespace Buhgaltery.Services
             userSettings.DefaultProjectTimespan = updater.DefaultProjectTimespan;
             userSettings.LeafOnly = updater.LeafOnly;
             userSettings.ScheduleCount = updater.ScheduleCount;
-            userSettings.ScheduleMode = updater.ScheduleMode;
             userSettings.ScheduleShift = updater.ScheduleShift;
             userSettings.ScheduleTimeSpan = updater.ScheduleTimeSpan;
 

@@ -4,7 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <AssemblyName>Buhgaltery.Deployer</AssemblyName>
     <RootNamespace>Buhgaltery.Deployer</RootNamespace>
-    <Version>0.0.9</Version>
+    <Version>0.0.10</Version>
     <Authors>Dmitriy Rokoth</Authors>
     <Product>Home buhgaltery</Product>
     <Description>Deployer wrapper</Description>

@@ -5,8 +5,55 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Buhgaltery.Desktop"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
+         Title="HomeBuh Client 0.0.1" Height="500" Width="800">
+    <Grid Margin="0,0,0,0">
+        <Grid Name="MenuGrid" HorizontalAlignment="Stretch" Height="35" Margin="0,0,0,0" VerticalAlignment="Top">
+            <Menu HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Width="792">
+                <MenuItem Header="Файл" Height="25" Margin="0" Width="52">
+                    <MenuItem Header="Выход" Height="100" Width="100" Click="CloseButtonClick"/>
+                </MenuItem>
+            </Menu>
+        </Grid>
+        <Grid Name="HeaderGrid" HorizontalAlignment="Stretch" Height="35" Margin="0,25,0,0" VerticalAlignment="Top">
+            <Button x:Name="RefreshButton" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0" Width="35" Height="35" Click="RefreshButton_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="./icons/refresh.png" Margin="0,0,0,0" Stretch="Fill" IsEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                </StackPanel>
+            </Button>
+            <Button x:Name="ProductsButton" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,0,0,0" Width="35" Height="35" Click="ProductsButton_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="./icons/product.png" Margin="0,0,0,0" Stretch="Fill" IsEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                </StackPanel>
+            </Button>
+            <Button x:Name="FormulasButton" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,0,0,0" Width="35" Height="35" Click="FormulasButton_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="./icons/formula.png" Margin="0,0,0,0" Stretch="Fill" IsEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                </StackPanel>
+            </Button>
+            <Button x:Name="IncomingsButton" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="105,0,0,0" Width="35" Height="35" Click="IncomingsButton_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="./icons/incomings.png" Margin="0,0,0,0" Stretch="Fill" IsEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                </StackPanel>
+            </Button>
+            <Button x:Name="OutgoingsButton" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="140,0,0,0" Width="35" Height="35" Click="OutgoingsButton_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="./icons/outgoings.png" Margin="0,0,0,0" Stretch="Fill" IsEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                </StackPanel>
+            </Button>
+            <Button x:Name="ReservesButton" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="175,0,0,0" Width="35" Height="35" Click="ReservesButton_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="./icons/reserves.png" Margin="0,0,0,0" Stretch="Fill" IsEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                </StackPanel>
+            </Button>
+            <Button x:Name="SettingsButton" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="210,0,0,0" Width="35" Height="35" Click="SettingsButton_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="./icons/settings.png" Margin="0,0,0,0" Stretch="Fill" IsEnabled="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                </StackPanel>
+            </Button>
+        </Grid>
+        <Grid Name="BodyGrid" HorizontalAlignment="Stretch" Height="400" Margin="0,65,0,0" VerticalAlignment="Top">
+            <Label Content="Резервы: " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0"></Label>
+            <Label Name="ReservesAll" Content="загрузка..." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="85,5,0,0"></Label>
+        </Grid>
     </Grid>
 </Window>

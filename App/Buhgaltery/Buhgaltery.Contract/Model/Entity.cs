@@ -59,10 +59,7 @@ namespace Buhgaltery.Contract.Model
     {
         [Display(Name = "ИД пользователя")]
         public Guid UserId { get; set; }
-        [Display(Name = "Тип построения расписания")]
-        [Required(ErrorMessage = "Поле должно быть установлено")]
-        [EnumDataType(typeof(ScheduleMode))]
-        public ScheduleMode ScheduleMode { get; set; }
+       
         [Display(Name = "Количество элементов (для типа по кол-ву)")]
         public int? ScheduleCount { get; set; }
         [Display(Name = "Промежуток расписания (для типа по времени)")]

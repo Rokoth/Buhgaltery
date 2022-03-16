@@ -14,7 +14,8 @@ using System.Windows;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-
+using Buhgaltery.ClientHttpClient;
+using Microsoft.Extensions.Http;
 
 namespace Buhgaltery.Desktop
 {
@@ -70,6 +71,10 @@ namespace Buhgaltery.Desktop
             //        config.GetValue<string>("ReportServerPassword")), s)
             //);
 
+            //https://docs.microsoft.com/ru-ru/dotnet/architecture/microservices/implement-resilient-applications/use-httpclientfactory-to-implement-resilient-http-requests
+            services.AddHttpClient<IClientHttpClient, ClientHttpClient.ClientHttpClient>((serviceProvider, client)=> { 
+                
+            });
 
             services.AddSingleton<MainWindow>();
             //services.AddScoped<FormulaWindow>();
