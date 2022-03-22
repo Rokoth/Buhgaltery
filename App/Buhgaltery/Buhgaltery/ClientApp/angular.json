@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Buhgaltery": {
+    "Buhgaltery.App": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -13,7 +13,8 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "progress": false,           
+            "progress": false,
+            "extractCss": true,
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -36,7 +37,8 @@
               ],
               "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false,             
+              "sourceMap": false,
+              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
@@ -48,18 +50,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "Buhgaltery:build"
+            "browserTarget": "Buhgaltery.App:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "Buhgaltery:build:production"
+              "browserTarget": "Buhgaltery.App:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Buhgaltery:build"
+            "browserTarget": "Buhgaltery.App:build"
           }
         },
         "test": {
@@ -109,7 +111,7 @@
         }
       }
     },
-    "Buhgaltery-e2e": {
+    "Buhgaltery.App-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "architect": {
@@ -117,7 +119,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "Buhgaltery:serve"
+            "devServerTarget": "Buhgaltery.App:serve"
           }
         },
         "lint": {
@@ -130,5 +132,5 @@
       }
     }
   },
-  "defaultProject": "Buhgaltery"
+  "defaultProject": "Buhgaltery.App"
 }

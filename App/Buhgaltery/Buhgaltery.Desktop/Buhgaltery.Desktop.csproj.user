@@ -7,7 +7,81 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="AboutWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="AddIncomingWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="AddOutgoingWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="AddReserveWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="FormulasWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="IncomingsWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="IssueWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="OutgoingsWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="ProductsWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="ReservesWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="ServerConnectWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="SettingsWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="AboutWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="AddIncomingWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="AddOutgoingWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="AddReserveWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="FormulasWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="IncomingsWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="IssueWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="OutgoingsWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="ProductsWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="ReservesWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="ServerConnectWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="SettingsWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

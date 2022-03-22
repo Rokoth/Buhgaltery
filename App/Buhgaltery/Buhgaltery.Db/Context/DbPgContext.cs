@@ -1,4 +1,8 @@
-﻿using Buhgaltery.Db.Model;
+﻿//Copyright 2021 Dmitriy Rokoth
+//Licensed under the Apache License, Version 2.0
+//
+//ref1
+using Buhgaltery.Db.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Reflection;
@@ -15,6 +19,9 @@ namespace Buhgaltery.Db.Context
         /// </summary>
         public DbSet<Settings> Settings { get; set; }
 
+        /// <summary>
+        /// users set
+        /// </summary>
         public DbSet<User> Users { get; set; }
 
         /// <summary>
@@ -50,6 +57,12 @@ namespace Buhgaltery.Db.Context
             }
         }
 
+        /// <summary>
+        /// ApplyConfiguration generic wrapper
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="modelBuilder"></param>
+        /// <param name="config"></param>
         private void ApplyConf<T>(ModelBuilder modelBuilder, EntityConfiguration<T> config) where T : class, IEntity
         {
             modelBuilder.ApplyConfiguration(config);

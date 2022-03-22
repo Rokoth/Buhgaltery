@@ -5,12 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Buhgaltery.Desktop"
         mc:Ignorable="d"
-         Title="HomeBuh Client 0.0.1" Height="500" Width="800">
+         Title="HomeBuh Client 0.0.1" Height="250" Width="350" ResizeMode="NoResize" Loaded="Window_Loaded">
     <Grid Margin="0,0,0,0">
         <Grid Name="MenuGrid" HorizontalAlignment="Stretch" Height="35" Margin="0,0,0,0" VerticalAlignment="Top">
-            <Menu HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Width="792">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="223*"/>
+                <ColumnDefinition Width="127*"/>
+            </Grid.ColumnDefinitions>
+            <Menu HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Width="792" Grid.ColumnSpan="2">
                 <MenuItem Header="Файл" Height="25" Margin="0" Width="52">
-                    <MenuItem Header="Выход" Height="100" Width="100" Click="CloseButtonClick"/>
+                    <MenuItem x:Name="Close" Header="Выход" Height="100" Width="100" Click="Close_Click"/>
+                </MenuItem>
+                <MenuItem Header="Помощь" Height="25" Margin="0" Width="62">
+                    <MenuItem x:Name="About" Header="О программе" Height="100" Width="100" Click="About_Click"/>
+                    <MenuItem x:Name="Issue" Header="Сообщить об ошибке" Height="100" Width="100" Click="Issue_Click"/>
                 </MenuItem>
             </Menu>
         </Grid>
@@ -53,7 +61,19 @@
         </Grid>
         <Grid Name="BodyGrid" HorizontalAlignment="Stretch" Height="400" Margin="0,65,0,0" VerticalAlignment="Top">
             <Label Content="Резервы: " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0"></Label>
-            <Label Name="ReservesAll" Content="загрузка..." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="85,5,0,0"></Label>
+            <Label x:Name="ReservesAll" Content="загрузка..." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="85,5,0,0"></Label>
+            <Button x:Name ="AddReserve" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="210,5,0,0" Width="120" Height="25" Content="Добавить резерв" Click="AddReserve_Click"></Button>
+
+            <Label Content="Приходы: " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,40,0,0"></Label>
+            <Label x:Name="IncomingsAll" Content="загрузка..." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="85,40,0,0"></Label>
+            <Button x:Name ="AddIncoming" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="210,40,0,0" Width="120" Height="25" Content="Добавить приход" Click="AddIncoming_Click"></Button>
+
+            <Label Content="Расходы: " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,75,0,0"></Label>
+            <Label x:Name="OutgoingsAll" Content="загрузка..." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="85,75,0,0"></Label>
+            <Button x:Name ="AddOutgoing" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="210,75,0,0" Width="120" Height="25" Content="Добавить расход" Click="AddOutgoing_Click"></Button>
+
+            <Label Content="Итого: " HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,110,0,0"></Label>
+            <Label x:Name="ResultsAll" Content="загрузка..." HorizontalAlignment="Left" VerticalAlignment="Top" Margin="85,110,0,0"></Label>
         </Grid>
     </Grid>
 </Window>

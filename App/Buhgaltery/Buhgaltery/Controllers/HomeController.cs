@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace Buhgaltery.Controllers
 {
     [ApiController]
-    [Route("home")]
+    [Route("[controller]")]
     public class HomeController : ControllerBase
     {      
         private readonly ILogger<HomeController> _logger;
@@ -26,11 +26,12 @@ namespace Buhgaltery.Controllers
         }
                 
         [HttpGet("current-data")]
-        public async Task<AllData> GetCurrentData()
+        [Authorize]
+        public async Task<IActionResult> GetCurrentData()
         {
             AllData result = new AllData();
             try
-            {
+            {               
                 var userId = Guid.Parse(User.Identity.Name);
                 CancellationTokenSource source = new CancellationTokenSource(30000);
                 var _incomingDataService = _serviceProvider.GetRequiredService<IGetDataService<Incoming, IncomingFilter>>();
@@ -51,7 +52,7 @@ namespace Buhgaltery.Controllers
                 result.IsError = true;
                 result.ErrorMessage = ex.Message;
             }
-            return result;
+            return Ok(result);
         }
 
         

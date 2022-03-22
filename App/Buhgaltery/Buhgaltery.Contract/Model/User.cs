@@ -32,5 +32,5 @@ namespace Buhgaltery.Contract.Model
         public DateTimeOffset? LastAddedDate { get; set; }
         [Display(Name = "Период добавления элементов в резервы")]
         public int AddPeriod { get; set; }
-    }
+    }    
 }

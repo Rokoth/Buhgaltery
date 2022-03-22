@@ -6,5 +6,6 @@ namespace Buhgaltery.Desktop.Services.Interfaces
 {
     public interface IAuthService
     {
+        bool IsAuth { get; }
     }
 }
