@@ -25,21 +25,11 @@ namespace Buhgaltery.Contract.Model
 
         [Display(Name = "Формула")]
         [Required(ErrorMessage = "Поле должно быть установлено")]
-        public string Formula { get; set; }
-       
-        [Display(Name = "Количество элементов (для типа по кол-ву)")]
-        public int? ScheduleCount { get; set; }
-        [Display(Name = "Промежуток расписания (для типа по времени)")]
-        public int? ScheduleTimeSpan { get; set; } // hours       
-        [Display(Name = "Время задачи по умолчанию")]
-        [Required(ErrorMessage = "Поле должно быть установлено")]
-        public int DefaultProjectTimespan { get; set; }
+        public string Formula { get; set; }       
+        
         [Display(Name = "Только листовые элементы")]
         [Required(ErrorMessage = "Поле должно быть установлено")]
-        public bool LeafOnly { get; set; }
-        [Display(Name = "Сдвиг расписания (в мин)")]
-        [Required(ErrorMessage = "Поле должно быть установлено")]
-        public int ScheduleShift { get; set; }
+        public bool LeafOnly { get; set; }        
         public DateTimeOffset LastAddedDate { get; set; }
     }
 
