@@ -17,57 +17,33 @@ using System.Threading.Tasks;
 
 namespace Buhgaltery.Controllers
 {
-    public class AccountsController : Controller
+    public class UserController : Controller
     {
-        private readonly IAuthService _authService;
+        
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<AccountsController> _logger;
-        private readonly AuthOptions _authOptions;
+        private readonly IGetDataService<User, UserFilter> _getDataService;
 
-        public AccountsController(IServiceProvider serviceProvider)
+        public UserController(IServiceProvider serviceProvider)
         {
-            _serviceProvider = serviceProvider;
-            _authService = _serviceProvider.GetRequiredService<IAuthService>();
+            _serviceProvider = serviceProvider;           
             _logger = _serviceProvider.GetRequiredService<ILogger<AccountsController>>();
-            _authOptions = _serviceProvider.GetRequiredService<IOptions<CommonOptions>>().Value.AuthOptions;
+            _getDataService = _serviceProvider.GetRequiredService<IGetDataService<User, UserFilter>>();
         }
 
-        [HttpPost("Login")]
+        [HttpPost("GetList")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login([FromBody] UserIdentity userIdentity)
+        public async Task<IActionResult> GetListAsync([FromBody] UserFilter userFilter)
         {           
             try
             {
                 var source = new CancellationTokenSource(30000);
-                
-                var identity = await _authService.AuthApi(userIdentity, source.Token);
-                if (identity == null)
-                {
-                    return BadRequest(new { errorText = "Invalid username or password." });
-                }
-
-                var now = DateTime.UtcNow;
-                // создаем JWT-токен
-                var jwt = new JwtSecurityToken(
-                        issuer: _authOptions.Issuer,
-                        audience: _authOptions.Audience,
-                        notBefore: now,
-                        claims: identity.Claims,
-                        expires: now.Add(TimeSpan.FromMinutes(_authOptions.LifeTime)),
-                        signingCredentials: new SigningCredentials(_authOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
-                var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-
-                var response = new ClientIdentityResponse
-                {
-                    Token = encodedJwt,
-                    UserName = identity.Name
-                };
-
+                var response = await _getDataService.GetAsync(userFilter, source.Token);
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Ошибка при обработке запроса: {ex.Message} {ex.StackTrace}");
+                _logger.LogError($"Ошибка при обработке запроса UserController::GetListAsync: {ex.Message} {ex.StackTrace}");
                 return BadRequest($"Ошибка при обработке запроса: {ex.Message}");
             }
         }
