@@ -146,7 +146,9 @@ namespace Buhgaltery.Services
             services.AddDataService<UserDataService, Db.Model.User, Contract.Model.User,
                 Contract.Model.UserFilter, Contract.Model.UserCreator, Contract.Model.UserUpdater>();
             services.AddDataService<FormulaDataService, Db.Model.Formula, Contract.Model.Formula,
-                Contract.Model.FormulaFilter, Contract.Model.FormulaCreator, Contract.Model.FormulaUpdater>();           
+                Contract.Model.FormulaFilter, Contract.Model.FormulaCreator, Contract.Model.FormulaUpdater>();
+            services.AddDataService<ProductDataService, Db.Model.Product, Contract.Model.Product,
+                Contract.Model.ProductFilter, Contract.Model.ProductCreator, Contract.Model.ProductUpdater>();
 
             services.AddScoped<IGetDataService<Contract.Model.UserHistory, Contract.Model.UserHistoryFilter>, UserHistoryDataService>();
             services.AddScoped<IGetDataService<Contract.Model.FormulaHistory, Contract.Model.FormulaHistoryFilter>, FormulaHistoryDataService>();

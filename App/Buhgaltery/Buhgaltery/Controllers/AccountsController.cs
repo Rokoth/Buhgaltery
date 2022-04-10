@@ -17,33 +17,57 @@ using System.Threading.Tasks;
 
 namespace Buhgaltery.Controllers
 {
-    public class UserController : Controller
+    public class AccountsController : Controller
     {
-        
+        private readonly IAuthService _authService;
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<AccountsController> _logger;
-        private readonly IGetDataService<User, UserFilter> _getDataService;
+        private readonly AuthOptions _authOptions;
 
-        public UserController(IServiceProvider serviceProvider)
+        public AccountsController(IServiceProvider serviceProvider)
         {
-            _serviceProvider = serviceProvider;           
+            _serviceProvider = serviceProvider;
+            _authService = _serviceProvider.GetRequiredService<IAuthService>();
             _logger = _serviceProvider.GetRequiredService<ILogger<AccountsController>>();
-            _getDataService = _serviceProvider.GetRequiredService<IGetDataService<User, UserFilter>>();
+            _authOptions = _serviceProvider.GetRequiredService<IOptions<CommonOptions>>().Value.AuthOptions;
         }
 
-        [HttpPost("GetList")]
+        [HttpPost("Login")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> GetListAsync([FromBody] UserFilter userFilter)
+        public async Task<IActionResult> Login([FromBody] UserIdentity userIdentity)
         {           
             try
             {
                 var source = new CancellationTokenSource(30000);
-                var response = await _getDataService.GetAsync(userFilter, source.Token);
+                
+                var identity = await _authService.AuthApi(userIdentity, source.Token);
+                if (identity == null)
+                {
+                    return BadRequest(new { errorText = "Invalid username or password." });
+                }
+
+                var now = DateTime.UtcNow;
+                // создаем JWT-токен
+                var jwt = new JwtSecurityToken(
+                        issuer: _authOptions.Issuer,
+                        audience: _authOptions.Audience,
+                        notBefore: now,
+                        claims: identity.Claims,
+                        expires: now.Add(TimeSpan.FromMinutes(_authOptions.LifeTime)),
+                        signingCredentials: new SigningCredentials(_authOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+                var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+
+                var response = new ClientIdentityResponse
+                {
+                    Token = encodedJwt,
+                    UserName = identity.Name
+                };
+
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Ошибка при обработке запроса UserController::GetListAsync: {ex.Message} {ex.StackTrace}");
+                _logger.LogError($"Ошибка при обработке запроса: {ex.Message} {ex.StackTrace}");
                 return BadRequest($"Ошибка при обработке запроса: {ex.Message}");
             }
         }

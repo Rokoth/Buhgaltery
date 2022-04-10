@@ -10,42 +10,41 @@ using System.Threading.Tasks;
 
 namespace Buhgaltery.Controllers
 {
-    public class UserController : Controller
-    {
-        
+    public class IncomingController : Controller
+    {        
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<AccountsController> _logger;
-        private readonly IGetDataService<User, UserFilter> _getDataService;
-        private readonly IAddDataService<User, UserCreator> _addDataService;
-        private readonly IUpdateDataService<User, UserUpdater> _updateDataService;
-        private readonly IDeleteDataService<User> _deleteDataService;
-        private readonly IGetDataService<UserHistory, UserHistoryFilter> _getHistoryDataService;
+        private readonly IGetDataService<Incoming, IncomingFilter> _getDataService;
+        private readonly IAddDataService<Incoming, IncomingCreator> _addDataService;
+        private readonly IUpdateDataService<Incoming, IncomingUpdater> _updateDataService;
+        private readonly IDeleteDataService<Incoming> _deleteDataService;
+        private readonly IGetDataService<IncomingHistory, IncomingHistoryFilter> _getHistoryDataService;
 
-        public UserController(IServiceProvider serviceProvider)
+        public IncomingController(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;           
             _logger = _serviceProvider.GetRequiredService<ILogger<AccountsController>>();
-            _getDataService = _serviceProvider.GetRequiredService<IGetDataService<User, UserFilter>>();
-            _addDataService = _serviceProvider.GetRequiredService<IAddDataService<User, UserCreator>>();
-            _updateDataService = _serviceProvider.GetRequiredService<IUpdateDataService<User, UserUpdater>>();
-            _deleteDataService = _serviceProvider.GetRequiredService<IDeleteDataService<User>>();
-            _getHistoryDataService = _serviceProvider.GetRequiredService<IGetDataService<UserHistory, UserHistoryFilter>>();
+            _getDataService = _serviceProvider.GetRequiredService<IGetDataService<Incoming, IncomingFilter>>();
+            _addDataService = _serviceProvider.GetRequiredService<IAddDataService<Incoming, IncomingCreator>>();
+            _updateDataService = _serviceProvider.GetRequiredService<IUpdateDataService<Incoming, IncomingUpdater>>();
+            _deleteDataService = _serviceProvider.GetRequiredService<IDeleteDataService<Incoming>>();
+            _getHistoryDataService = _serviceProvider.GetRequiredService<IGetDataService<IncomingHistory, IncomingHistoryFilter>>();
         }
 
         [Authorize]
         [HttpPost("GetList")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> GetListAsync([FromBody] UserFilter userFilter)
+        public async Task<IActionResult> GetListAsync([FromBody] IncomingFilter IncomingFilter)
         {           
             try
             {
                 var source = new CancellationTokenSource(30000);
-                var response = await _getDataService.GetAsync(userFilter, source.Token);
+                var response = await _getDataService.GetAsync(IncomingFilter, source.Token);
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Ошибка при обработке запроса UserController::GetListAsync: {ex.Message} {ex.StackTrace}");
+                _logger.LogError($"Ошибка при обработке запроса IncomingController::GetListAsync: {ex.Message} {ex.StackTrace}");
                 return BadRequest($"Ошибка при обработке запроса: {ex.Message}");
             }
         }
@@ -53,7 +52,7 @@ namespace Buhgaltery.Controllers
         [Authorize]
         [HttpPost("GetHistory")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> GetHistoryAsync([FromBody] UserHistoryFilter filter)
+        public async Task<IActionResult> GetHistoryAsync([FromBody] IncomingHistoryFilter filter)
         {
             try
             {
@@ -63,7 +62,7 @@ namespace Buhgaltery.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Ошибка при обработке запроса UserController::GetHistoryAsync: {ex.Message} {ex.StackTrace}");
+                _logger.LogError($"Ошибка при обработке запроса IncomingController::GetHistoryAsync: {ex.Message} {ex.StackTrace}");
                 return BadRequest($"Ошибка при обработке запроса: {ex.Message}");
             }
         }
@@ -81,7 +80,7 @@ namespace Buhgaltery.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Ошибка при обработке запроса UserController::GetItemAsync: {ex.Message} {ex.StackTrace}");
+                _logger.LogError($"Ошибка при обработке запроса IncomingController::GetItemAsync: {ex.Message} {ex.StackTrace}");
                 return BadRequest($"Ошибка при обработке запроса: {ex.Message}");
             }
         }
@@ -89,7 +88,7 @@ namespace Buhgaltery.Controllers
         [Authorize]
         [HttpPost("Add")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddAsync([FromBody] UserCreator creator)
+        public async Task<IActionResult> AddAsync([FromBody] IncomingCreator creator)
         {
             try
             {
@@ -99,7 +98,7 @@ namespace Buhgaltery.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Ошибка при обработке запроса UserController::AddAsync: {ex.Message} {ex.StackTrace}");
+                _logger.LogError($"Ошибка при обработке запроса IncomingController::AddAsync: {ex.Message} {ex.StackTrace}");
                 return BadRequest($"Ошибка при обработке запроса: {ex.Message}");
             }
         }
@@ -107,7 +106,7 @@ namespace Buhgaltery.Controllers
         [Authorize]
         [HttpPost("Update")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateAsync([FromBody] UserUpdater updater)
+        public async Task<IActionResult> UpdateAsync([FromBody] IncomingUpdater updater)
         {
             try
             {
@@ -117,7 +116,7 @@ namespace Buhgaltery.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Ошибка при обработке запроса UserController::UpdateAsync: {ex.Message} {ex.StackTrace}");
+                _logger.LogError($"Ошибка при обработке запроса IncomingController::UpdateAsync: {ex.Message} {ex.StackTrace}");
                 return BadRequest($"Ошибка при обработке запроса: {ex.Message}");
             }
         }
@@ -135,7 +134,7 @@ namespace Buhgaltery.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Ошибка при обработке запроса UserController::DeleteAsync: {ex.Message} {ex.StackTrace}");
+                _logger.LogError($"Ошибка при обработке запроса IncomingController::DeleteAsync: {ex.Message} {ex.StackTrace}");
                 return BadRequest($"Ошибка при обработке запроса: {ex.Message}");
             }
         }
