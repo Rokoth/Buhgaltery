@@ -10,7 +10,7 @@
     <PackageProjectUrl>https://github.com/Rokoth/Buhgaltery</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Rokoth/Buhgaltery</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>0.0.4</Version>
+    <Version>0.0.5</Version>
   </PropertyGroup>
 
   <ItemGroup>

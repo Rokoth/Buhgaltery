@@ -1,17 +1,23 @@
-﻿using Buhgaltery.Contract.Model;
+﻿//Copyright 2021 Dmitriy Rokoth
+//Licensed under the Apache License, Version 2.0
+//
+//ref1
+using Buhgaltery.Contract.Model;
 using Buhgaltery.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Buhgaltery.Controllers
 {
+    /// <summary>
+    /// Контроллер с методами для главной страницы
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public class HomeController : ControllerBase
@@ -19,12 +25,21 @@ namespace Buhgaltery.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IServiceProvider _serviceProvider;
 
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="serviceProvider"></param>
+        /// <param name="logger"></param>
         public HomeController(IServiceProvider serviceProvider, ILogger<HomeController> logger)
         {
             _logger = logger;
             _serviceProvider = serviceProvider;
         }
                 
+        /// <summary>
+        /// Вывод общих сумм на главной странице
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("current-data")]
         [Authorize]
         public async Task<IActionResult> GetCurrentData()
@@ -53,8 +68,6 @@ namespace Buhgaltery.Controllers
                 result.ErrorMessage = ex.Message;
             }
             return Ok(result);
-        }
-
-        
+        }        
     }
 }

@@ -5,7 +5,8 @@ using System.Text;
 
 namespace Buhgaltery.Desktop.Services
 {
-    public class AuthService: IAuthService
+    public class AuthService : IAuthService
     {
+        public bool IsAuth { get; }
     }
 }

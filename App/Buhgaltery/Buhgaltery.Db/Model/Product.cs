@@ -11,7 +11,7 @@ namespace Buhgaltery.Db.Model
         [ColumnName("description")]
         public string Description { get; set; }
         [ColumnName("parent_id")]
-        public Guid ParentId { get; set; }       
+        public Guid? ParentId { get; set; }       
         [ColumnName("add_period")]
         public int AddPeriod { get; set; }
         [ColumnName("min_value")]

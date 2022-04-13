@@ -1,141 +1,107 @@
-using Buhgaltery.BuhgalteryDeployer;
+//Copyright 2021 Dmitriy Rokoth
+//Licensed under the Apache License, Version 2.0
+//
+//ref1
 using Buhgaltery.Common;
-using Buhgaltery.Db.Context;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Serilog;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Buhgaltery
 {
+    /// <summary>
+    /// Main class
+    /// </summary>
     public class Program
     {
-        public static void Main(string[] args)
-        {           
+        private const string _logDirectory = "Logs";
+        private const string _logFileName = "log-startup.txt";
+        private const string _appSettingsFileName = "appsettings.json";
+        private const string _startUpInfoMessage = "App starts with arguments: {0}";
+        private const string _errorNotifyOptionsSection = "ErrorNotifyOptions";
 
+        /// <summary>
+        /// Main method
+        /// </summary>
+        /// <param name="args"></param>
+        public static void Main(string[] args)
+        {
+            string _startUpLogPath = Path.Combine(_logDirectory, _logFileName);
             var loggerConfig = new LoggerConfiguration()
                .WriteTo.Console()
-               .WriteTo.File("Logs\\log-startup.txt")
+               .WriteTo.File(_startUpLogPath)
                .MinimumLevel.Verbose();
 
             using var logger = loggerConfig.CreateLogger();
-            logger.Information($"App starts with arguments: {string.Join(", ", args)}");
+            logger.Information(string.Format(_startUpInfoMessage, string.Join(", ", args)));
 
             GetWebHostBuilder(args).Build().Run();
         }
 
+        /// <summary>
+        /// Create IWebHostBuilder
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         protected static IWebHostBuilder GetWebHostBuilder(string[] args)
         {
             var builder = WebHost.CreateDefaultBuilder(args)
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseConfiguration(
-                    new ConfigurationBuilder()
-                    .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                    .AddEnvironmentVariables()
-                    .AddDbConfiguration()
-                    .Build())
-                .ConfigureAppConfiguration((hostingContext, config) =>
-                {
-                    if (args != null)
-                    {
-                        config.AddCommandLine(args);
-                    }
-                })
-                .ConfigureLogging((hostingContext, logging) =>
-                {
-                    Log.Logger = new LoggerConfiguration()
-                        .ReadFrom.Configuration(hostingContext.Configuration)
-                        .CreateLogger();
-                    logging.AddSerilog(Log.Logger);
-                    logging.AddErrorNotifyLogger(config => {
-                        var opt = hostingContext.Configuration.GetSection("ErrorNotifyOptions").Get<ErrorNotifyOptions>();
-                        config.Options = opt;
-                    });
-                })
+                .UseConfiguration(GetConfiguration())
+                .ConfigureAppConfiguration((hostingContext, config) => ConfigureApp(args, config))
+                .ConfigureLogging((hostingContext, logging) => CreateLogger(hostingContext, logging))
                 .UseKestrel()
                 .UseStartup<Startup>();
 
             return builder;
         }
-    }
 
-    public class ConfigDbSource : IConfigurationSource
-    {
-        private readonly Action<DbContextOptionsBuilder> _optionsAction;
-        private string _connectionString;
-
-        public ConfigDbSource(Action<DbContextOptionsBuilder> optionsAction, string connectionString)
+        /// <summary>
+        /// Create Logger method
+        /// </summary>
+        /// <param name="hostingContext"></param>
+        /// <param name="logging"></param>
+        private static void CreateLogger(WebHostBuilderContext hostingContext, ILoggingBuilder logging)
         {
-            _optionsAction = optionsAction;
-            _connectionString = connectionString;
-        }
-
-        public Microsoft.Extensions.Configuration.IConfigurationProvider Build(IConfigurationBuilder builder)
-        {
-            IDeployService deployService = new DeployService(_connectionString);
-            return new ConfigDbProvider(_optionsAction, deployService);
-        }
-    }
-
-    public class ConfigDbProvider : ConfigurationProvider
-    {
-        private readonly Action<DbContextOptionsBuilder> _options;
-        private readonly IDeployService _deployService;
-
-        public ConfigDbProvider(Action<DbContextOptionsBuilder> options,
-            IDeployService deployService)
-        {
-            _options = options;
-            _deployService = deployService;
-        }
-
-        public override void Load()
-        {
-            try
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(hostingContext.Configuration)
+                .CreateLogger();
+            logging.AddSerilog(Log.Logger);
+            logging.AddErrorNotifyLogger(config =>
             {
-                LoadInternal();
-            }
-            catch
-            {
-                try
-                {
-                    _deployService.Deploy().Wait();
-                    LoadInternal();
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
-            }
+                config.Options = hostingContext.Configuration
+                    .GetSection(_errorNotifyOptionsSection)
+                    .Get<ErrorNotifyOptions>();                
+            });
         }
 
-        private void LoadInternal()
+        /// <summary>
+        /// Configure App method
+        /// </summary>
+        /// <param name="args"></param>
+        /// <param name="config"></param>
+        private static void ConfigureApp(string[] args, IConfigurationBuilder config)
         {
-            var builder = new DbContextOptionsBuilder<DbPgContext>();
-            _options(builder);
+            if (args != null) config.AddCommandLine(args);
+            
+        }
 
-            using (var context = new DbPgContext(builder.Options))
-            {
-                var items = context.Settings
-                    .AsNoTracking()
-                    .ToList();
-
-                foreach (var item in items)
-                {
-                    Data.Add(item.ParamName, item.ParamValue);
-                }
-            }
+        /// <summary>
+        /// Build app Configuration
+        /// </summary>
+        /// <returns></returns>
+        private static IConfigurationRoot GetConfiguration()
+        {
+            return new ConfigurationBuilder()
+                                .SetBasePath(Directory.GetCurrentDirectory())
+                                .AddJsonFile(_appSettingsFileName, optional: false, reloadOnChange: true)
+                                .AddEnvironmentVariables()
+                                .AddDbConfiguration()
+                                .Build();
         }
     }
 }

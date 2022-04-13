@@ -108,9 +108,9 @@ namespace Buhgaltery.Contract.Model
         public Guid? ParentId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public decimal MinValue { get; set; }
-        public decimal MaxValue { get; set; }
-        public decimal AddPeriod { get; set; }       
+        public int MinValue { get; set; }
+        public int MaxValue { get; set; }
+        public int AddPeriod { get; set; }       
     }
 
     public class ProductUpdater : IEntity
@@ -119,9 +119,9 @@ namespace Buhgaltery.Contract.Model
         public Guid? ParentId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public decimal MinValue { get; set; }
-        public decimal MaxValue { get; set; }
-        public decimal AddPeriod { get; set; }
+        public int MinValue { get; set; }
+        public int MaxValue { get; set; }
+        public int AddPeriod { get; set; }
         public Guid Id { get; set; }
     }
 
@@ -131,9 +131,9 @@ namespace Buhgaltery.Contract.Model
         public Guid? ParentId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public decimal MinValue { get; set; }
-        public decimal MaxValue { get; set; }
-        public decimal AddPeriod { get; set; }
+        public int MinValue { get; set; }
+        public int MaxValue { get; set; }
+        public int AddPeriod { get; set; }
         public bool IsLeaf { get; set; }
         public DateTimeOffset? LastAddDate { get; set; }
     }

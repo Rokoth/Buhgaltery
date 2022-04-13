@@ -21,75 +21,54 @@ namespace Buhgaltery.Services
             return s => (filter.Name == null || s.Name.Contains(filter.Name)) 
                      && (filter.LastAddDateFrom == null || s.LastAddDate >= filter.LastAddDateFrom)
                       && (filter.LastAddDateTo == null || s.LastAddDate < filter.LastAddDateTo)
-                      && (filter.LeafOnly || s.LastAddDate < filter.LastAddDateTo)
-                      && (filter.LastAddDateTo == null || s.LastAddDate < filter.LastAddDateTo)
-                      && (filter.LastAddDateTo == null || s.LastAddDate < filter.LastAddDateTo)
-                      && (filter.LastAddDateTo == null || s.LastAddDate < filter.LastAddDateTo);
+                      && (!filter.LeafOnly || s.IsLeaf )
+                      && (filter.ParentId == null || s.ParentId == filter.ParentId)
+                      && (filter.UserId == s.UserId);
         }
-
-        protected override async Task PrepareBeforeAdd(Db.Interface.IRepository<Db.Model.Product> repository, 
-            Contract.Model.ProductCreator creator, CancellationToken token)
-        {
-            if (creator.IsDefault)
-            {
-                var currentDefaults = await repository.GetAsync(new Db.Model.Filter<Db.Model.Product>()
-                {
-                    Page = 0,
-                    Size = 10,
-                    Selector = s => s.IsDefault
-                }, token);
-                foreach (var item in currentDefaults.Data)
-                {
-                    item.IsDefault = false;
-                    await repository.UpdateAsync(item, false,  token);
-                }
-            }
-        }
-
-        protected override async Task PrepareBeforeUpdate(Db.Interface.IRepository<Db.Model.Product> repository, 
-            Contract.Model.ProductUpdater entity, CancellationToken token)
-        {
-            if (entity.IsDefault)
-            {
-                var currentDefaults = await repository.GetAsync(new Db.Model.Filter<Db.Model.Product>()
-                {
-                    Page = 0,
-                    Size = 10,
-                    Selector = s => s.IsDefault && s.Id != entity.Id
-                }, token);
-                foreach (var item in currentDefaults.Data)
-                {
-                    item.IsDefault = false;
-                    await repository.UpdateAsync(item, false, token);
-                }
-            }
-        }
-
-        protected override async Task PrepareBeforeDelete(Db.Interface.IRepository<Db.Model.Product> repository,
-            Db.Model.Product entity, CancellationToken token)
-        {
-            if (entity.IsDefault)
-            {
-                var currentDefault = (await repository.GetAsync(new Db.Model.Filter<Db.Model.Product>()
-                {
-                    Page = 0,
-                    Size = 10,
-                    Selector = s => true
-                }, token)).Data.FirstOrDefault();
-                currentDefault.IsDefault = true;
-                await repository.UpdateAsync(currentDefault, false, token);
-            }
-        }
-
+                
         protected override Db.Model.Product UpdateFillFields(Contract.Model.ProductUpdater entity, Db.Model.Product entry)
-        {
-            entry.Text = entity.Text;
+        {           
+            entry.AddPeriod = entity.AddPeriod;
             entry.Name = entity.Name;
-            entry.IsDefault = entity.IsDefault;
+            entry.Description = entity.Description;            
+            entry.MaxValue = entity.MaxValue;
+            entry.MinValue = entity.MinValue;
+            entry.ParentId = entity.ParentId;         
+           
             return entry;
         }
 
         protected override string DefaultSort => "Name";
+
+        protected override async Task PrepareBeforeAdd(Db.Interface.IRepository<Db.Model.Product> repository, Contract.Model.ProductCreator creator, CancellationToken token)
+        {
+            await Task.CompletedTask;
+        }
+
+        protected override async Task PrepareBeforeUpdate(Db.Interface.IRepository<Db.Model.Product> repository, Contract.Model.ProductUpdater entity, CancellationToken token)
+        {
+            await Task.CompletedTask;
+        }
+
+        protected override async Task PrepareBeforeDelete(Db.Interface.IRepository<Db.Model.Product> repository, Db.Model.Product entity, CancellationToken token)
+        {
+            await Task.CompletedTask;
+        }
+
+        protected override async Task ActionAfterAdd(Db.Interface.IRepository<Db.Model.Product> repository, Contract.Model.ProductCreator creator, Db.Model.Product entity, CancellationToken token)
+        {
+            await Task.CompletedTask;
+        }
+
+        protected override async Task ActionAfterUpdate(Db.Interface.IRepository<Db.Model.Product> repository, Contract.Model.ProductUpdater updater, Db.Model.Product entity, CancellationToken token)
+        {
+            await Task.CompletedTask;
+        }
+
+        protected override async Task ActionAfterDelete(Db.Interface.IRepository<Db.Model.Product> repository, Db.Model.Product entity, CancellationToken token)
+        {
+            await Task.CompletedTask;
+        }
 
     }
 }
