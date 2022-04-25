@@ -16,25 +16,5 @@ namespace Buhgaltery.Db.Model
         public bool IsDefault { get; set; }
     }
 
-    [TableName("reserve")]
-    public class Reserve : Entity
-    {
-        [ColumnName("product_id")]
-        public Guid ProductId { get; set; }
-        [ColumnName("value")]
-        public decimal Value { get; set; }
-        [ColumnName("userid")]
-        public Guid UserId { get; set; }
-    }
-
-    [TableName("h_reserve")]
-    public class ReserveHistory : EntityHistory
-    {
-        [ColumnName("product_id")]
-        public Guid ProductId { get; set; }
-        [ColumnName("value")]
-        public decimal Value { get; set; }
-        [ColumnName("userid")]
-        public Guid UserId { get; set; }
-    }
+    
 }

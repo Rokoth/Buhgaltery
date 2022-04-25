@@ -33,42 +33,77 @@ namespace Buhgaltery.Services
             entry.Description = entity.Description;            
             entry.MaxValue = entity.MaxValue;
             entry.MinValue = entity.MinValue;
-            entry.ParentId = entity.ParentId;         
-           
+            entry.ParentId = entity.ParentId;        
             return entry;
         }
 
-        protected override string DefaultSort => "Name";
-
-        protected override async Task PrepareBeforeAdd(Db.Interface.IRepository<Db.Model.Product> repository, Contract.Model.ProductCreator creator, CancellationToken token)
-        {
-            await Task.CompletedTask;
-        }
+        protected override string DefaultSort => "Name";       
 
         protected override async Task PrepareBeforeUpdate(Db.Interface.IRepository<Db.Model.Product> repository, Contract.Model.ProductUpdater entity, CancellationToken token)
         {
-            await Task.CompletedTask;
+            var currentEntity = await repository.GetAsync(entity.Id, token);
+            if (currentEntity.ParentId!= entity.ParentId && currentEntity.ParentId.HasValue)
+            {
+                var otherChilds = await repository.GetAsync(new Db.Model.Filter<Db.Model.Product>() {
+                  Selector = s=>s.ParentId == currentEntity.ParentId && s.Id != currentEntity.Id
+                }, token);
+
+                if (!otherChilds.Data.Any())
+                {
+                    var currentParent = await repository.GetAsync(currentEntity.ParentId.Value, token);
+                    currentParent.IsLeaf = true;
+                    currentParent.VersionDate = DateTime.Now;
+                    await repository.UpdateAsync(currentParent, false, token);
+                }
+            }
         }
 
         protected override async Task PrepareBeforeDelete(Db.Interface.IRepository<Db.Model.Product> repository, Db.Model.Product entity, CancellationToken token)
         {
-            await Task.CompletedTask;
+            var currentEntity = await repository.GetAsync(entity.Id, token);
+            if (currentEntity.ParentId.HasValue)
+            {
+                var otherChilds = await repository.GetAsync(new Db.Model.Filter<Db.Model.Product>()
+                {
+                    Selector = s => s.ParentId == currentEntity.ParentId && s.Id != currentEntity.Id
+                }, token);
+
+                if (!otherChilds.Data.Any())
+                {
+                    var currentParent = await repository.GetAsync(currentEntity.ParentId.Value, token);
+                    currentParent.IsLeaf = true;
+                    currentParent.VersionDate = DateTime.Now;
+                    await repository.UpdateAsync(currentParent, false, token);
+                }
+            }
         }
 
         protected override async Task ActionAfterAdd(Db.Interface.IRepository<Db.Model.Product> repository, Contract.Model.ProductCreator creator, Db.Model.Product entity, CancellationToken token)
         {
-            await Task.CompletedTask;
+            if (entity.ParentId.HasValue)
+            {
+                var parent = await repository.GetAsync(entity.ParentId.Value, token);
+                if (parent.IsLeaf)
+                {
+                    parent.IsLeaf = false;
+                    parent.VersionDate = DateTime.Now;
+                    await repository.UpdateAsync(parent, false, token);
+                }
+            }
         }
 
         protected override async Task ActionAfterUpdate(Db.Interface.IRepository<Db.Model.Product> repository, Contract.Model.ProductUpdater updater, Db.Model.Product entity, CancellationToken token)
         {
-            await Task.CompletedTask;
-        }
-
-        protected override async Task ActionAfterDelete(Db.Interface.IRepository<Db.Model.Product> repository, Db.Model.Product entity, CancellationToken token)
-        {
-            await Task.CompletedTask;
-        }
-
+            if (entity.ParentId.HasValue)
+            {
+                var parent = await repository.GetAsync(entity.ParentId.Value, token);
+                if (parent.IsLeaf)
+                {
+                    parent.IsLeaf = false;
+                    parent.VersionDate = DateTime.Now;
+                    await repository.UpdateAsync(parent, false, token);
+                }
+            }
+        }     
     }
 }

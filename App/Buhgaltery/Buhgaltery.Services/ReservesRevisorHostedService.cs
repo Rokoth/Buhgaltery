@@ -39,7 +39,7 @@ namespace Buhgaltery.Services
             var _logger = serviceProvider.GetRequiredService<ILogger<AllocateReservesHostedService>>();
             var _userDataService = serviceProvider.GetRequiredService<IGetDataService<User, UserFilter>>();
             var _userUpdateService = serviceProvider.GetRequiredService<IUpdateDataService<User, UserUpdater>>();
-            var _reserveUpdateDataService = serviceProvider.GetRequiredService<IUpdateDataService<Reserve, ReserveUpdater>>();
+            var _reserveAddDataService = serviceProvider.GetRequiredService<IAddDataService<Reserve, ReserveCreator>>();
             var _reserveDataService = serviceProvider.GetRequiredService<IGetDataService<Reserve, ReserveFilter>>();
             var _productDataService = serviceProvider.GetRequiredService<IGetDataService<Product, ProductFilter>>();
             var _mapper = serviceProvider.GetRequiredService<IMapper>();
@@ -52,15 +52,18 @@ namespace Buhgaltery.Services
                     foreach (var user in allUsers.Data)
                     {
                         var reserves = await _reserveDataService.GetAsync(new ReserveFilter(null, null, null, user.Id, null), cancellationTokenSource.Token);
-                        var products = await _productDataService.GetAsync(new ProductFilter(null, null, null, user.Id, null, null, true, null), cancellationTokenSource.Token);
+                        var products = await _productDataService.GetAsync(new ProductFilter(null, null, null, user.Id, null, null, true, null, null), cancellationTokenSource.Token);
                         foreach (var reserve in reserves.Data)
                         {
                             var product = products.Data.Single(s=>s.Id == reserve.ProductId);
                             if (reserve.Value > product.MaxValue)
-                            {
-                                var reserveUpdater = _mapper.Map<ReserveUpdater>(reserve);
-                                reserveUpdater.Value = product.MaxValue;
-                                await _reserveUpdateDataService.UpdateAsync(reserveUpdater, cancellationTokenSource.Token);
+                            {                                
+                                await _reserveAddDataService.AddAsync(new ReserveCreator()
+                                { 
+                                  ProductId = product.Id,
+                                  UserId = user.Id,
+                                  Value = product.MaxValue - reserve.Value
+                                }, cancellationTokenSource.Token);
                             }
                         }
                     }

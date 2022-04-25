@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>0.0.3</Version>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Version>0.0.4</Version>
     <Authors>Dmitriy Rokoth</Authors>
     <Product>HomeBuhgaltery</Product>
     <Description>Home buhgaltery client services lib</Description>
@@ -18,6 +18,13 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Buhgaltery.ClientHttpClient\Buhgaltery.ClientHttpClient.csproj" />
+    <ProjectReference Include="..\Buhgaltery.Contract\Buhgaltery.Contract.csproj" />
+    <ProjectReference Include="..\Buhgaltery.DbClient\Buhgaltery.DbClient.csproj" />
+    <ProjectReference Include="..\Common\Buhgaltery.Common.csproj" />
   </ItemGroup>
 
 </Project>

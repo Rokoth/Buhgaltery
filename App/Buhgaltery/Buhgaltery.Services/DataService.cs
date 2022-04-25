@@ -67,7 +67,7 @@ namespace Buhgaltery.Services
         /// <param name="entity"></param>
         /// <param name="token"></param>
         /// <returns></returns>
-        public async Task<Tdto> AddAsync(TCreator creator, CancellationToken token)
+        public virtual async Task<Tdto> AddAsync(TCreator creator, CancellationToken token)
         {
             return await ExecuteAsync(async (repo) =>
             {
@@ -84,7 +84,7 @@ namespace Buhgaltery.Services
 
         protected abstract TEntity UpdateFillFields(TUpdater entity, TEntity entry);
 
-        public async Task<Tdto> UpdateAsync(TUpdater entity, CancellationToken token)
+        public virtual async Task<Tdto> UpdateAsync(TUpdater entity, CancellationToken token)
         {
             return await ExecuteAsync(async (repo) =>
             {
@@ -100,7 +100,7 @@ namespace Buhgaltery.Services
             });
         }
 
-        public async Task<Tdto> DeleteAsync(Guid id, CancellationToken token)
+        public virtual async Task<Tdto> DeleteAsync(Guid id, CancellationToken token)
         {
             return await ExecuteAsync(async (repo) =>
             {

@@ -1,7 +1,4 @@
-﻿
-using System;
-
-namespace Buhgaltery.Contract.Model
+﻿namespace Buhgaltery.Contract.Model
 {
     /// <summary>
     /// filter for formula entity
@@ -16,27 +13,4 @@ namespace Buhgaltery.Contract.Model
         public string Name { get; }
         public bool? IsDefault { get; }
     }
-
-    public class IncomingFilter : Filter<Incoming>
-    {
-        public IncomingFilter(int? size, int? page, string sort, Guid userId) : base(size, page, sort)
-        {
-            UserId = userId;
-        }
-        public Guid UserId { get; }
-    }
-
-    public class OutgoingFilter : Filter<Outgoing>
-    {
-        public OutgoingFilter(int? size, int? page, string sort, Guid userId) : base(size, page, sort)
-        {
-            UserId = userId;
-        }
-        public Guid UserId { get; }
-    }
-
-
-    
-
-
 }
