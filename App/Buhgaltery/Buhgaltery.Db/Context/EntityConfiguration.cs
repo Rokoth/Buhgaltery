@@ -1,4 +1,8 @@
-﻿using Buhgaltery.Db.Attributes;
+﻿//Copyright 2021 Dmitriy Rokoth
+//Licensed under the Apache License, Version 2.0
+//
+//ref1
+using Buhgaltery.Db.Attributes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -6,9 +10,17 @@ using System.Reflection;
 
 namespace Buhgaltery.Db.Context
 {
+    /// <summary>
+    /// Построение отношения модели к таблице по атрибутам
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class EntityConfiguration<T> : IEntityTypeConfiguration<T>
         where T : class
     {
+        /// <summary>
+        /// Конфигурирование
+        /// </summary>
+        /// <param name="builder"></param>
         public void Configure(EntityTypeBuilder<T> builder)
         {
             try
@@ -57,7 +69,7 @@ namespace Buhgaltery.Db.Context
             }
             catch (System.Exception ex)
             {
-                Console.WriteLine(ex);
+                Console.WriteLine(ex);//for debug only
                 throw;
             }
         }

@@ -1,4 +1,8 @@
-﻿using Buhgaltery.Db.Model;
+﻿//Copyright 2021 Dmitriy Rokoth
+//Licensed under the Apache License, Version 2.0
+//
+//ref1
+using Buhgaltery.Db.Model;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -70,6 +74,10 @@ namespace Buhgaltery.Db.Interface
         /// <returns></returns>
         Task<T> UpdateAsync(T entity, bool withSave, CancellationToken token);
 
+        /// <summary>
+        /// Сохранение изменений
+        /// </summary>
+        /// <returns></returns>
         Task SaveChangesAsync();
     }
 }
