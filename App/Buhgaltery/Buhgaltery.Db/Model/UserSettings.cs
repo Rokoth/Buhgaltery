@@ -8,21 +8,18 @@ namespace Buhgaltery.Db.Model
     public class UserSettings : Entity
     {
         [ColumnName("userid")]        
-        public Guid UserId { get; set; }
-        
-        [ColumnName("schedule_count")]
-        public int? ScheduleCount { get; set; }
-        [ColumnName("schedule_timespan")]
-        public int? ScheduleTimeSpan { get; set; } // hours
-        [ColumnName("default_project_timespan")]
-        public int DefaultProjectTimespan { get; set; }
+        public Guid UserId { get; set; }        
+       
         [ColumnName("leaf_only")]
         public bool LeafOnly { get; set; }
-        [ColumnName("schedule_shift")]
-        public int ScheduleShift { get; set; }
+
+        [ColumnName("default_reserve_value")]
+        public decimal DefaultReserveValue { get; set; }
 
         [Ignore]
         [ForeignKey("UserId")]
         public User User { get; set; }
+
+        
     }
 }

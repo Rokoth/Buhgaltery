@@ -1,5 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,38 +33,137 @@ namespace Buhgaltery.Services
                 Db.Interface.IRepository<Db.Model.User> _userRepository = _serviceProvider.GetRequiredService<Db.Interface.IRepository<Db.Model.User>>();
                 var user = await _userRepository.GetAsync(creator.UserId, token);
                 Db.Interface.IRepository<Db.Model.UserSettings> _userSettingsRepository = _serviceProvider.GetRequiredService<Db.Interface.IRepository<Db.Model.UserSettings>>();
-                var settings = await _userSettingsRepository.GetAsync(new Db.Model.Filter<Db.Model.UserSettings>()
+                var settings = (await _userSettingsRepository.GetAsync(new Db.Model.Filter<Db.Model.UserSettings>()
                 { 
                   Selector = s=>s.UserId == creator.UserId
-                }, token);
+                }, token)).Data.FirstOrDefault();
+
+                if (settings == null)
+                {
+                    throw new Exception($"Для пользователя {creator.UserId} не заданы настройки");
+                }
 
                 if (!creator.Value.HasValue)
                 {
-                    
+
+                    value = settings.DefaultReserveValue;
                 }
                 else
                 {
                     value = creator.Value.Value;
                 }
 
-                if (!creator.ProductId.HasValue)
+                if(value != 0)
                 {
+                    Db.Interface.IRepository<Db.Model.Product> _productRepository = _serviceProvider.GetRequiredService<Db.Interface.IRepository<Db.Model.Product>>();
+                    var products = (await _productRepository.GetAsync(new Db.Model.Filter<Db.Model.Product>()
+                    {
+                        Selector = s => s.UserId == creator.UserId
+                    }, token)).Data;
 
-                }
-                else
-                {
-                    productId = creator.ProductId.Value;
-                }
+                    Db.Interface.IRepository<Db.Model.Reserve> _reserveRepository = _serviceProvider.GetRequiredService<Db.Interface.IRepository<Db.Model.Reserve>>();
+                    var reserves = (await _reserveRepository.GetAsync(new Db.Model.Filter<Db.Model.Reserve>()
+                    {
+                        Selector = s => s.UserId == creator.UserId
+                    }, token)).Data;
 
-                var entity = MapToEntityAdd(creator);
+                    if (!creator.ProductId.HasValue)
+                    {               
+                        if (settings.LeafOnly)
+                        {
+                            products = products.Where(s=>s.IsLeaf);
+                        }
+                        List<CalcRequestItem> forSelect = new List<CalcRequestItem>();
+                        foreach (var product in products)
+                        {
+                            var currReserve = reserves.FirstOrDefault(s => s.ProductId == product.Id);
+                            if (currReserve != null)
+                            {
+                                if (currReserve.Value < product.MaxValue)
+                                {
+                                    forSelect.Add(new CalcRequestItem() 
+                                    { 
+                                      Id = product.Id,
+                                      Fields = JsonConvert.SerializeObject(product)
+                                    });                                    
+                                }
+                            }
+                            if (product.MaxValue > 0)
+                            {
+                                forSelect.Add(new CalcRequestItem()
+                                {
+                                    Id = product.Id,
+                                    Fields = JsonConvert.SerializeObject(product)
+                                });
+                            }
+                        }
+
+                        Db.Interface.IRepository<Db.Model.Formula> _formulaRepository = _serviceProvider.GetRequiredService<Db.Interface.IRepository<Db.Model.Formula>>();
+                        var formula = await _formulaRepository.GetAsync(user.FormulaId, token);
+
+                        var calculator = _serviceProvider.GetRequiredService<ICalculator>();
+
+                        var calcResult = (calculator.Calculate(new CalcRequest() { 
+                          ChangeOnSelect = null,
+                          Count = 1,
+                          Formula = formula.Text,
+                          Items = forSelect
+                        })).FirstOrDefault();
+
+                        if (calcResult == null)
+                        {
+                            return null;
+                        }
+
+                        productId = calcResult.Id;
+                    }
+                    else
+                    {
+                        productId = creator.ProductId.Value;
+                    }
+
+                    var selected = products.FirstOrDefault(s => s.Id == productId);
+                    var reserve = reserves.FirstOrDefault(s => s.ProductId == productId);
+
+                    selected.LastAddDate = DateTimeOffset.Now;
+                    selected.VersionDate = DateTimeOffset.Now;
+                    await _productRepository.UpdateAsync(selected, false, token);
+
+                    if (reserve != null)
+                    {
+                        if (value > (selected.MaxValue - reserve.Value))
+                        {
+                            value = selected.MaxValue - reserve.Value;
+                        }
+                        reserve.Value += value;
+                        reserve.VersionDate = DateTimeOffset.Now;
+                        await repo.UpdateAsync(reserve, false, token);
+                    }
+                    else
+                    {
+                        if (value > selected.MaxValue)
+                        {
+                            value = selected.MaxValue;
+                        }
+                        reserve = new Db.Model.Reserve()
+                        {
+                             Id = Guid.NewGuid(),
+                             IsDeleted = false,
+                             ProductId = productId,
+                             UserId = creator.UserId,
+                             Value = value,
+                             VersionDate = DateTimeOffset.Now
+                        };
+                        await repo.AddAsync(reserve, false, token);
+                    }
+                    await repo.SaveChangesAsync();
+                                        
+                    var prepare = _mapper.Map<Contract.Model.Reserve>(reserve);
+                    prepare = await Enrich(prepare, token);
+                    return prepare;
+                }
+                return null;
                 
-                
-                var result = await repo.AddAsync(entity, false, token);
-                await ActionAfterAdd(repo, creator, result, token);
-                await repo.SaveChangesAsync();
-                var prepare = _mapper.Map<Contract.Model.Reserve>(result);
-                prepare = await Enrich(prepare, token);
-                return prepare;
             });
         }
 

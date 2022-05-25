@@ -1,42 +1,102 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Buhgaltery.Common
 {
+    /// <summary>
+    /// Service of Error notify logger
+    /// </summary>
     public class ErrorNotifyService : IDisposable, IErrorNotifyService
-    {        
-        private bool isConnected = false;
-        private bool isAuth = false;
-        private bool isDisposed = false;
+    {
+        #region ConstStrings
+
+        private const string _requiredFieldError = "ErrorNotifyService error: {0} not set"; 
+
+        #endregion
+
+        #region PrivateFields
+        /// <summary>
+        /// Flag: task collector service is connected
+        /// </summary>
+        private bool _isConnected = false;
+        /// <summary>
+        /// Flag: connect to task collector service is authed
+        /// </summary>
+        private bool _isAuth = false;
+        /// <summary>
+        /// Flag: service disposed
+        /// </summary>
+        private bool _isDisposed = false;
+        /// <summary>
+        /// Flag: can send message to task collector
+        /// </summary>
         private bool _sendMessage = false;
 
+        /// <summary>
+        /// Required data for connect and send messages to task collector:
+        /// - Server uri
+        /// </summary>        
         private string _server;
+        /// <summary>
+        /// - Login
+        /// </summary>
         private string _login;
+        /// <summary>
+        /// - Password
+        /// </summary>
         private string _password;
+        /// <summary>
+        /// - Email for send feedback
+        /// </summary>
         private string _feedback;
+        /// <summary>
+        /// - Title of message for default
+        /// </summary>
         private string _defaultTitle;
+        /// <summary>
+        /// - Token for connect
+        /// </summary>
+        private string _token;
 
-        private object _lockObject = new object();
-        private bool isLock = false;
-        private bool _init = false;
 
-        private string _token { get; set; }
+        /// <summary>
+        /// Object for sync calls
+        /// </summary>
+        private readonly object _lockObject = new object();
 
-        private ErrorNotifyLoggerConfiguration _config;
+        /// <summary>
+        /// Calls locked
+        /// </summary>
+        private bool _isLock = false;
 
+        /// <summary>
+        /// Service inited
+        /// </summary>
+        private bool _init = false;        
+
+        /// <summary>
+        /// Logger config
+        /// </summary>
+        private readonly ErrorNotifyLoggerConfiguration _config;
+
+        #endregion
+
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="config"></param>
         public ErrorNotifyService(ErrorNotifyLoggerConfiguration config)
         {
             _config = config;
             _init = Init();
         }
 
+        /// <summary>
+        /// Init error notify logger
+        /// </summary>
+        /// <returns></returns>
         private bool Init()
         {
             var options = _config.Options;
@@ -44,25 +104,35 @@ namespace Buhgaltery.Common
             {
                 if (options.SendError)
                 {
-                    if (!string.IsNullOrEmpty(options.Server))
-                    {
-                        _sendMessage = true;
-                        _server = options.Server;
-                        _login = options.Login;
-                        _password = options.Password;
-                        _feedback = options.FeedbackContact;
-                        _defaultTitle = options.DefaultTitle;
+                    CheckRequired(options.Server, nameof(options.Server));
+                    CheckRequired(options.Login, nameof(options.Login));
+                    CheckRequired(options.Password, nameof(options.Password));
 
-                        Task.Factory.StartNew(CheckConnect, TaskCreationOptions.LongRunning);
-                    }
-                    else
-                    {
-                        Console.WriteLine($"ErrorNotifyService error: Options.Server not set");
-                    }
+                    _sendMessage = true;
+                    _server = options.Server;
+                    _login = options.Login;
+                    _password = options.Password;
+                    _feedback = options.FeedbackContact;
+                    _defaultTitle = options.DefaultTitle;
+
+                    Task.Factory.StartNew(CheckConnect, TaskCreationOptions.LongRunning);
                 }
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Check required field
+        /// </summary>
+        /// <param name="field"></param>
+        /// <param name="name"></param>
+        private void CheckRequired(string field, string name)
+        {
+            if (string.IsNullOrEmpty(field))
+            {
+                throw new Exception(string.Format(_requiredFieldError, name));
+            }
         }
 
         private async Task<bool> Auth()
@@ -70,29 +140,29 @@ namespace Buhgaltery.Common
             bool _isLocked = false;
             lock (_lockObject)
             {
-                if (isLock)
+                if (_isLock)
                 {
                     _isLocked = true;
                 }
                 else
                 {
-                    isLock = true;
+                    _isLock = true;
                 }
             }
             if (_isLocked)
             {
                 for (int i = 0; i < 60; i++)
                 {
-                    if (!isLock)
+                    if (!_isLock)
                     {
                         break;
                     }
                     await Task.Delay(1000);
                 }
-                if (!isLock)
+                if (!_isLock)
                 {
-                    if (isAuth) return true;
-                    if (isConnected) return false;
+                    if (_isAuth) return true;
+                    if (_isConnected) return false;
                 }
                 else
                 {
@@ -109,7 +179,7 @@ namespace Buhgaltery.Common
                 }.SerializeRequest()), "Post", s => s.ParseResponse<ErrorNotifyClientIdentityResponse>(), false);
             if (result.ResponseCode == ResponseEnum.Error)
             {
-                if (isConnected)
+                if (_isConnected)
                 {
                     Console.WriteLine($"ErrorNotifyService: Error in Auth method: wrong login or password");
                     _sendMessage = false;
@@ -117,10 +187,10 @@ namespace Buhgaltery.Common
                 return false;
             }
             _token = result.ResponseBody.Token;
-            isAuth = true;
+            _isAuth = true;
             lock (_lockObject)
             {
-                isLock = false;
+                _isLock = false;
             }
             return true;
         }
@@ -168,7 +238,7 @@ namespace Buhgaltery.Common
             {
                 try
                 {
-                    if (isConnected)
+                    if (_isConnected)
                     {
                         var result = await action(client);
                         var resp =  await parseMethod(result);
@@ -208,9 +278,9 @@ namespace Buhgaltery.Common
 
         private async Task CheckConnect()
         {
-            while (!isDisposed)
+            while (!_isDisposed)
             {
-                isConnected = await CheckConnectOnce(_server);
+                _isConnected = await CheckConnectOnce(_server);
                 await Task.Delay(1000);
             }
         }
@@ -236,140 +306,7 @@ namespace Buhgaltery.Common
 
         public void Dispose()
         {
-            isDisposed = true;
-        }
-    }
-
-    public enum MessageLevelEnum
-    {
-        Issue = 0,
-        Warning = 1,
-        Error = 10
-    }
-
-    public class ErrorNotifyMessage
-    {
-        public string Message { get; set; }
-        public string Title { get; set; }
-        public MessageLevelEnum MessageLevel { get; set; }
-    }
-
-    public class ErrorNotifyClientIdentity
-    {
-        public string Login { get; set; }
-        public string Password { get; set; }
-    }
-
-    public class ErrorNotifyClientIdentityResponse
-    {
-        public string Token { get; set; }
-        public string UserName { get; set; }
-    }
-
-    public class MessageCreator
-    {
-        public int Level { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string FeedbackContact { get; set; }
-    }
-
-    public class ErrorNotifyLogger : ILogger
-    {
-        private readonly string _name;
-        private IErrorNotifyService _errorNotifyService;
-        private readonly Func<ErrorNotifyLoggerConfiguration> _getCurrentConfig;
-
-        public ErrorNotifyLogger(string name, IErrorNotifyService errorNotifyService,
-            Func<ErrorNotifyLoggerConfiguration> getCurrentConfig)
-        {
-            _errorNotifyService = errorNotifyService;
-            _getCurrentConfig = getCurrentConfig;
-            _name = name;
-        }
-
-        public IDisposable BeginScope<TState>(TState state) => default;
-
-        public bool IsEnabled(LogLevel logLevel)
-        {
-            return _getCurrentConfig().LogLevels.Contains(logLevel);
-        }
-
-        public void Log<TState>(
-            LogLevel logLevel,
-            EventId eventId,
-            TState state,
-            Exception exception,
-            Func<TState, Exception, string> formatter)
-        {
-            if (!IsEnabled(logLevel) || exception == null)
-            {
-                return;
-            }
-
-            ErrorNotifyLoggerConfiguration config = _getCurrentConfig();
-            if (config.EventId == 0 || config.EventId == eventId.Id)
-            {
-                try
-                {
-                    _errorNotifyService
-                        .Send($"Message: {exception.Message} StackTrace: {exception.StackTrace}")
-                        .ContinueWith(s=> {
-                            if (s.Exception != null)
-                            {
-                                Console.WriteLine($"ErrorNotify exception: {s.Exception.Message} {s.Exception.StackTrace}");
-                            }
-                        })
-                        .ConfigureAwait(false);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"ErrorNotify exception: {ex.Message} {ex.StackTrace}");
-                }
-            }
-        }
-    }
-
-    public class ErrorNotifyLoggerConfiguration
-    {
-        public int EventId { get; set; }
-
-        public ErrorNotifyOptions Options { get; set; }
-
-        public List<LogLevel> LogLevels { get; set; } = new List<LogLevel>()
-        {
-            LogLevel.Error,
-            LogLevel.Critical
-        };
-    }
-
-    public sealed class ErrorNotifyLoggerProvider : ILoggerProvider
-    {
-        private readonly IDisposable _onChangeToken;
-        private ErrorNotifyLoggerConfiguration _currentConfig;
-        private readonly ConcurrentDictionary<string, ErrorNotifyLogger> _loggers = new ConcurrentDictionary<string, ErrorNotifyLogger>();
-
-
-        public ErrorNotifyLoggerProvider(
-            IOptionsMonitor<ErrorNotifyLoggerConfiguration> config)
-        {
-            _currentConfig = config.CurrentValue;
-            _onChangeToken = config.OnChange(updatedConfig => _currentConfig = updatedConfig);
-        }
-
-        public ILogger CreateLogger(string categoryName)
-        {
-            var errorNotifyService = new ErrorNotifyService(_currentConfig);
-            var logger = _loggers.GetOrAdd(categoryName, name => new ErrorNotifyLogger(name, errorNotifyService, GetCurrentConfig));
-            return logger;
-        }
-
-        private ErrorNotifyLoggerConfiguration GetCurrentConfig() => _currentConfig;
-
-        public void Dispose()
-        {
-            _loggers.Clear();
-            _onChangeToken.Dispose();
+            _isDisposed = true;
         }
     }
 }

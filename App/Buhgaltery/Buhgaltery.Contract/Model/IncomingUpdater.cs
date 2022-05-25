@@ -10,4 +10,13 @@ namespace Buhgaltery.Contract.Model
         public DateTime IncomingDate { get; set; }
         public Guid Id { get; set; }
     }
+
+    public class CorrectionUpdater : IEntity
+    {
+        public Guid UserId { get; set; }
+        public string Description { get; set; }
+        public decimal Value { get; set; }
+        public DateTime CorrectionDate { get; set; }
+        public Guid Id { get; set; }
+    }
 }

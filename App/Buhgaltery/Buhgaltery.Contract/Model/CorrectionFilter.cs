@@ -3,9 +3,9 @@ using System;
 
 namespace Buhgaltery.Contract.Model
 {
-    public class IncomingFilter : Filter<Incoming>
+    public class CorrectionFilter : Filter<Correction>
     {
-        public IncomingFilter(int? size, int? page, string sort, Guid userId, string description, DateTimeOffset? dateFrom, DateTimeOffset? dateTo) : base(size, page, sort)
+        public CorrectionFilter(int? size, int? page, string sort, Guid userId, string description, DateTimeOffset? dateFrom, DateTimeOffset? dateTo) : base(size, page, sort)
         {
             UserId = userId;
             Description = description;

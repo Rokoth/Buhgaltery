@@ -1,4 +1,5 @@
 ﻿using Buhgaltery.Db.Attributes;
+using System;
 
 namespace Buhgaltery.Db.Model
 {
@@ -13,5 +14,7 @@ namespace Buhgaltery.Db.Model
         public string Login { get; set; }
         [ColumnName("password")]
         public byte[] Password { get; set; }
+        [ColumnName("formula_id")]
+        public Guid FormulaId { get; set; }
     }
 }
