@@ -53,10 +53,15 @@ namespace Buhgaltery.Services
                     var _incomingRepo = _serviceProvider.GetRequiredService<Db.Interface.IRepository<Db.Model.Incoming>>();
                     var _outgoingRepo = _serviceProvider.GetRequiredService<Db.Interface.IRepository<Db.Model.Outgoing>>();           
 
-                    var incomings = await _incomingRepo.GetAsync(new Db.Model.Filter<Db.Model.Incoming>() { }, token);
-                    var outgoings = await _outgoingRepo.GetAsync(new Db.Model.Filter<Db.Model.Outgoing>() { }, token);
-                 
-                    var corrections = await repo.GetAsync(new Db.Model.Filter<Db.Model.Correction>() { }, token);
+                    var incomings = await _incomingRepo.GetAsync(new Db.Model.Filter<Db.Model.Incoming>() {
+                      Selector = s=>s.UserId == creator.UserId
+                    }, token);
+                    var outgoings = await _outgoingRepo.GetAsync(new Db.Model.Filter<Db.Model.Outgoing>() {
+                        Selector = s => s.UserId == creator.UserId
+                    }, token);                 
+                    var corrections = await repo.GetAsync(new Db.Model.Filter<Db.Model.Correction>() {
+                        Selector = s => s.UserId == creator.UserId
+                    }, token);
                                         
                     var correctValue = creator.TotalValue.Value - 
                         (   incomings.Data.Sum(s=>s.Value) 

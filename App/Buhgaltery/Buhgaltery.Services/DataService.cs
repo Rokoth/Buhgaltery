@@ -150,9 +150,22 @@ namespace Buhgaltery.Services
                 Contract.Model.FormulaFilter, Contract.Model.FormulaCreator, Contract.Model.FormulaUpdater>();
             services.AddDataService<ProductDataService, Db.Model.Product, Contract.Model.Product,
                 Contract.Model.ProductFilter, Contract.Model.ProductCreator, Contract.Model.ProductUpdater>();
+            services.AddDataService<IncomingDataService, Db.Model.Incoming, Contract.Model.Incoming,
+                Contract.Model.IncomingFilter, Contract.Model.IncomingCreator, Contract.Model.IncomingUpdater>();
+            services.AddDataService<OutgoingDataService, Db.Model.Outgoing, Contract.Model.Outgoing,
+                Contract.Model.OutgoingFilter, Contract.Model.OutgoingCreator, Contract.Model.OutgoingUpdater>();
+            services.AddDataService<ReserveDataService, Db.Model.Reserve, Contract.Model.Reserve,
+               Contract.Model.ReserveFilter, Contract.Model.ReserveCreator, Contract.Model.ReserveUpdater>();
+            services.AddDataService<CorrectionDataService, Db.Model.Correction, Contract.Model.Correction,
+               Contract.Model.CorrectionFilter, Contract.Model.CorrectionCreator, Contract.Model.CorrectionUpdater>();
 
             services.AddScoped<IGetDataService<Contract.Model.UserHistory, Contract.Model.UserHistoryFilter>, UserHistoryDataService>();
             services.AddScoped<IGetDataService<Contract.Model.FormulaHistory, Contract.Model.FormulaHistoryFilter>, FormulaHistoryDataService>();
+            services.AddScoped<IGetDataService<Contract.Model.ProductHistory, Contract.Model.ProductHistoryFilter>, ProductHistoryDataService>();
+            services.AddScoped<IGetDataService<Contract.Model.IncomingHistory, Contract.Model.IncomingHistoryFilter>, IncomingHistoryDataService>();
+            services.AddScoped<IGetDataService<Contract.Model.OutgoingHistory, Contract.Model.OutgoingHistoryFilter>, OutgoingHistoryDataService>();
+            services.AddScoped<IGetDataService<Contract.Model.ReserveHistory, Contract.Model.ReserveHistoryFilter>, ReserveHistoryDataService>();
+            services.AddScoped<IGetDataService<Contract.Model.CorrectionHistory, Contract.Model.CorrectionHistoryFilter>, CorrectionHistoryDataService>();
             services.AddScoped<IAuthService, AuthService>();
 
             return services;

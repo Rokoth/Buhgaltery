@@ -25,7 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Buhgaltery.Desktop.UnitTest
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Buhgaltery.Desktop.Services", "Buhgaltery.Desktop.Services\Buhgaltery.Desktop.Services.csproj", "{69D40BBC-FE98-4828-AA64-95A7BDF57E34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Buhgaltery.App", "Buhgaltery.App\Buhgaltery.App.csproj", "{C8F6F7B6-DA63-4F92-ADC6-9A5B4ECB88F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Buhgaltery.App", "Buhgaltery.App\Buhgaltery.App.csproj", "{C8F6F7B6-DA63-4F92-ADC6-9A5B4ECB88F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Buhgaltery.UnitTests", "Buhgaltery.UnitTests\Buhgaltery.UnitTests.csproj", "{12768A6E-F867-4BAD-98A1-389AC22F2A34}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,10 @@ Global
 		{C8F6F7B6-DA63-4F92-ADC6-9A5B4ECB88F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8F6F7B6-DA63-4F92-ADC6-9A5B4ECB88F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8F6F7B6-DA63-4F92-ADC6-9A5B4ECB88F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12768A6E-F867-4BAD-98A1-389AC22F2A34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12768A6E-F867-4BAD-98A1-389AC22F2A34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12768A6E-F867-4BAD-98A1-389AC22F2A34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12768A6E-F867-4BAD-98A1-389AC22F2A34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,13 +4,13 @@
     <TargetFramework>net5.0</TargetFramework>
     <Authors>Dmitriy Rokoth</Authors>
     <Product>HomeBuhgaltery</Product>
-    <Copyright>Dmitriy Rokoth 2021</Copyright>
+    <Copyright>Dmitriy Rokoth 2021-2022</Copyright>
     <Description>Home buhgaltery services lib</Description>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/Rokoth/Buhgaltery</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Rokoth/Buhgaltery</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>0.0.8</Version>
+    <Version>0.0.9</Version>
   </PropertyGroup>
 
   <ItemGroup>

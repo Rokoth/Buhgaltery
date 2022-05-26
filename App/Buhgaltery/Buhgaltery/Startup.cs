@@ -4,6 +4,7 @@ using Buhgaltery.Common;
 using Buhgaltery.Db.Context;
 using Buhgaltery.Db.Interface;
 using Buhgaltery.Db.Repository;
+using Buhgaltery.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -99,8 +100,12 @@ namespace Buhgaltery
                 });
 
             services.AddScoped<IRepository<Db.Model.User>, Repository<Db.Model.User>>();         
-            services.AddScoped<IRepository<Db.Model.UserHistory>, Repository<Db.Model.UserHistory>>();        
-            
+            services.AddScoped<IRepository<Db.Model.UserHistory>, Repository<Db.Model.UserHistory>>();
+
+            services.AddScoped<IAllocateReservesService, AllocateReservesService>();
+            services.AddScoped<IReservesRevisorService, ReservesRevisorService>();
+            services.AddDataServices();
+
             services.AddScoped<IDeployService, DeployService>();           
             services.ConfigureAutoMapper();
             services.AddSwaggerGen(swagger =>
