@@ -101,9 +101,25 @@ namespace Buhgaltery
 
             services.AddScoped<IRepository<Db.Model.User>, Repository<Db.Model.User>>();         
             services.AddScoped<IRepository<Db.Model.UserHistory>, Repository<Db.Model.UserHistory>>();
+            services.AddScoped<IRepository<Db.Model.Formula>, Repository<Db.Model.Formula>>();
+            services.AddScoped<IRepository<Db.Model.FormulaHistory>, Repository<Db.Model.FormulaHistory>>();
+            services.AddScoped<IRepository<Db.Model.Product>, Repository<Db.Model.Product>>();
+            services.AddScoped<IRepository<Db.Model.ProductHistory>, Repository<Db.Model.ProductHistory>>();
+            services.AddScoped<IRepository<Db.Model.Incoming>, Repository<Db.Model.Incoming>>();
+            services.AddScoped<IRepository<Db.Model.IncomingHistory>, Repository<Db.Model.IncomingHistory>>();
+            services.AddScoped<IRepository<Db.Model.Outgoing>, Repository<Db.Model.Outgoing>>();
+            services.AddScoped<IRepository<Db.Model.OutgoingHistory>, Repository<Db.Model.OutgoingHistory>>();
+            services.AddScoped<IRepository<Db.Model.Reserve>, Repository<Db.Model.Reserve>>();
+            services.AddScoped<IRepository<Db.Model.ReserveHistory>, Repository<Db.Model.ReserveHistory>>();
+            services.AddScoped<IRepository<Db.Model.Correction>, Repository<Db.Model.Correction>>();
+            services.AddScoped<IRepository<Db.Model.CorrectionHistory>, Repository<Db.Model.CorrectionHistory>>();
 
             services.AddScoped<IAllocateReservesService, AllocateReservesService>();
             services.AddScoped<IReservesRevisorService, ReservesRevisorService>();
+
+            //services.AddHostedService<ReservesRevisorHostedService>();
+            //services.AddHostedService<AllocateReservesHostedService>();
+
             services.AddDataServices();
 
             services.AddScoped<IDeployService, DeployService>();           
@@ -173,7 +189,13 @@ namespace Buhgaltery
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
             });
-            
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+
             app.UseSpa(spa =>
             {
                 // To learn more about options for serving an Angular SPA from ASP.NET Core,
@@ -183,15 +205,10 @@ namespace Buhgaltery
 
                 if (env.IsDevelopment())
                 {
+                    spa.Options.SourcePath = "..\\..\\..\\ClientApp";
                     spa.UseAngularCliServer(npmScript: "start");
                 }
-            });
-
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            });
+            });            
         }
     }
 

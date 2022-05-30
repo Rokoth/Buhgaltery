@@ -17,6 +17,8 @@ using System.Threading.Tasks;
 
 namespace Buhgaltery.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class AccountsController : Controller
     {
         private readonly IAuthService _authService;
@@ -32,8 +34,7 @@ namespace Buhgaltery.Controllers
             _authOptions = _serviceProvider.GetRequiredService<IOptions<CommonOptions>>().Value.AuthOptions;
         }
 
-        [HttpPost("Login")]
-        [ValidateAntiForgeryToken]
+        [HttpPost("Login")]       
         public async Task<IActionResult> Login([FromBody] UserIdentity userIdentity)
         {           
             try

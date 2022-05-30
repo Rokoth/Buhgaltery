@@ -18,8 +18,6 @@ namespace Buhgaltery.Db.Model
 
         [Ignore]
         [ForeignKey("UserId")]
-        public User User { get; set; }
-
-        
+        public User User { get; set; }        
     }
 }

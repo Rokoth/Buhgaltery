@@ -13,6 +13,7 @@ namespace Buhgaltery.Contract.Model
         public string User { get; set; }
         [Display(Name = "ИД")]
         public Guid Id { get; set; }
+        public decimal DefaultReserveValue { get; set; }
     }
 
 }

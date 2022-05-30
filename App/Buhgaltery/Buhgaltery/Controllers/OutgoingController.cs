@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 namespace Buhgaltery.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class OutgoingController : Controller
     {        
         private readonly IServiceProvider _serviceProvider;

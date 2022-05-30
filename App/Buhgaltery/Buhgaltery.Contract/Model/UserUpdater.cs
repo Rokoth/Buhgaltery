@@ -31,5 +31,6 @@ namespace Buhgaltery.Contract.Model
         [Required(ErrorMessage = "Поле должно быть установлено")]
         public bool LeafOnly { get; set; }        
         public DateTimeOffset LastAddedDate { get; set; }
+        public decimal DefaultReserveValue { get; set; }
     }
 }

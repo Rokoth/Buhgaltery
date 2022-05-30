@@ -96,11 +96,8 @@ namespace Buhgaltery.Services
                Selector = s=>s.UserId == entity.Id
             }, token)).Data.Single();
 
-            userSettings.DefaultProjectTimespan = updater.DefaultProjectTimespan;
-            userSettings.LeafOnly = updater.LeafOnly;
-            userSettings.ScheduleCount = updater.ScheduleCount;
-            userSettings.ScheduleShift = updater.ScheduleShift;
-            userSettings.ScheduleTimeSpan = updater.ScheduleTimeSpan;
+            userSettings.DefaultReserveValue = updater.DefaultReserveValue;
+            userSettings.LeafOnly = updater.LeafOnly;           
 
             await userSettingsRepo.UpdateAsync(userSettings, false, token);
         }

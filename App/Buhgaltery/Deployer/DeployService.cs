@@ -48,7 +48,7 @@ namespace Buhgaltery.BuhgalteryDeployer
             try
             {
                 CheckDbForExists(_connectionString);
-
+              
                 DeploySettings deploySettings = new DeploySettings()
                 {
                     BeginNum = num,

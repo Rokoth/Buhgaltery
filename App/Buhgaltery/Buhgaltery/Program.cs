@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using System;
 using System.IO;
 
 namespace Buhgaltery
@@ -30,6 +31,8 @@ namespace Buhgaltery
         /// <param name="args"></param>
         public static void Main(string[] args)
         {
+            Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
+
             string _startUpLogPath = Path.Combine(_logDirectory, _logFileName);
             var loggerConfig = new LoggerConfiguration()
                .WriteTo.Console()

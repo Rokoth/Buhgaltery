@@ -17,10 +17,8 @@ namespace Buhgaltery.Services
         }        
         protected override Db.Model.UserSettings UpdateFillFields(Contract.Model.UserSettingsUpdater entity, Db.Model.UserSettings entry)
         {           
-            entry.DefaultProjectTimespan = entity.DefaultProjectTimespan;
-            entry.LeafOnly = entity.LeafOnly;            
-            entry.ScheduleShift = entity.ScheduleShift;
-            entry.ScheduleTimeSpan = entity.ScheduleTimeSpan;
+            entry.DefaultReserveValue = entity.DefaultReserveValue;
+            entry.LeafOnly = entity.LeafOnly;                       
             return entry;
         }
 
