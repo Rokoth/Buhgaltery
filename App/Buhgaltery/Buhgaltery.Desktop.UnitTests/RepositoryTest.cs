@@ -57,12 +57,12 @@ namespace Buhgaltery.Desktop.UnitTests
         /// </summary>
         /// <returns></returns>
         [Fact]
-        public void GetItemTest()
+        public async Task GetItemTest()
         {
             var context = _serviceProvider.GetRequiredService<DbSqLiteContext>();
             var settingsItem = CreateSettings();
             context.Settings.Add(settingsItem);
-            context.SaveChangesAsync();
+            await context.SaveChangesAsync();
 
             var repo = _serviceProvider.GetRequiredService<IRepository<Settings>>();
             var data = repo.Get(settingsItem.Id);
@@ -91,33 +91,32 @@ namespace Buhgaltery.Desktop.UnitTests
         //    Assert.Equal(user.Name, actual.Name);
         //}
 
-        ///// <summary>
-        ///// Тест добавления сущности
-        ///// </summary>
-        ///// <returns></returns>
-        //[Fact]
-        //public async Task UpdateTest()
-        //{
-        //    var context = _serviceProvider.GetRequiredService<DbPgContext>();
-        //    var repo = _serviceProvider.GetRequiredService<IRepository<User>>();
-        //    var user = CreateUser("user_{0}", "user_description_{0}", "user_login_{0}", "user_password_{0}");
-        //    var newName = user.Name + "changed";
-        //    context.Users.Add(user);
-        //    await context.SaveChangesAsync();
-        //    user.Name = newName;
-        //    var result = await repo.UpdateAsync(user, true, CancellationToken.None);
-        //    Assert.NotNull(result);
-        //    Assert.Equal(newName, result.Name);
+        /// <summary>
+        /// Тест добавления сущности
+        /// </summary>
+        /// <returns></returns>
+        [Fact]
+        public async Task UpdateTest()
+        {
+            var context = _serviceProvider.GetRequiredService<DbSqLiteContext>();
+            var settingsItem = CreateSettings();
+            context.Settings.Add(settingsItem);
+            await context.SaveChangesAsync();
 
-        //    using (var _serviceProviderscope = _serviceProvider.CreateScope())
-        //    {
-        //        var provider = _serviceProviderscope.ServiceProvider;
-        //        var contextTest = provider.GetRequiredService<DbPgContext>();
-        //        var actual = contextTest.Users.FirstOrDefault(s=>s.Id == user.Id);
-        //        Assert.NotNull(actual);
-        //        Assert.Equal(newName, actual.Name);
-        //    }
-        //}
+            var repo = _serviceProvider.GetRequiredService<IRepository<Settings>>();
+            var data = repo.Get(settingsItem.Id);
+
+            Assert.NotNull(data);
+            Assert.Equal(settingsItem.Id, data.Id);
+
+            settingsItem.ParamValue = "param_value_updated";
+            repo.Update(settingsItem, true);
+
+            var dataNew = repo.Get(settingsItem.Id);
+            Assert.NotNull(dataNew);
+            Assert.Equal(settingsItem.Id, dataNew.Id);
+            Assert.Equal("param_value_updated", dataNew.ParamValue);
+        }
 
         ///// <summary>
         ///// Тест удаления сущности
