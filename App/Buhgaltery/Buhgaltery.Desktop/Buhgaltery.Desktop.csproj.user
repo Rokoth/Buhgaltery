@@ -19,7 +19,13 @@
     <Compile Update="AddReserveWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="FormulaEditWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="FormulasWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="FormulaWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="IncomingsWindow.xaml.cs">
@@ -57,7 +63,13 @@
     <Page Update="AddReserveWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="FormulaEditWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="FormulasWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="FormulaWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="IncomingsWindow.xaml">
