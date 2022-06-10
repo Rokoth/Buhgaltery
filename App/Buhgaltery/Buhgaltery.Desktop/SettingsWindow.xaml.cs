@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,35 @@ namespace Buhgaltery.Desktop
     /// </summary>
     public partial class SettingsWindow : Window
     {
+        private Guid _id;
+        private Guid _formulaId;
+        
+        private IServiceProvider _serviceProvider;
+        private ILogger<SettingsWindow> _logger;
+
         public SettingsWindow()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SelectFormulaButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
