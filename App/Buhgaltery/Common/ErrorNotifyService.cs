@@ -93,6 +93,11 @@ namespace Buhgaltery.Common
             _init = Init();
         }
 
+        public ErrorNotifyService()
+        {
+           
+        }
+
         /// <summary>
         /// Init error notify logger
         /// </summary>

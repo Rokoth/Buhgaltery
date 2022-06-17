@@ -34,8 +34,7 @@ namespace Buhgaltery.Controllers
         }
 
         [Authorize]
-        [HttpPost("GetList")]
-        [ValidateAntiForgeryToken]
+        [HttpPost("GetList")]        
         public async Task<IActionResult> GetListAsync([FromBody] FormulaFilter FormulaFilter)
         {           
             try
@@ -52,8 +51,7 @@ namespace Buhgaltery.Controllers
         }
 
         [Authorize]
-        [HttpPost("GetHistory")]
-        [ValidateAntiForgeryToken]
+        [HttpPost("GetHistory")]      
         public async Task<IActionResult> GetHistoryAsync([FromBody] FormulaHistoryFilter filter)
         {
             try
@@ -70,8 +68,7 @@ namespace Buhgaltery.Controllers
         }
 
         [Authorize]
-        [HttpPost("GetItem")]
-        [ValidateAntiForgeryToken]
+        [HttpPost("GetItem")]        
         public async Task<IActionResult> GetItemAsync([FromBody] Guid id)
         {
             try
@@ -89,7 +86,7 @@ namespace Buhgaltery.Controllers
 
         [Authorize]
         [HttpPost("Add")]
-        [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> AddAsync([FromBody] FormulaCreator creator)
         {
             try
@@ -107,7 +104,7 @@ namespace Buhgaltery.Controllers
 
         [Authorize]
         [HttpPost("Update")]
-        [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> UpdateAsync([FromBody] FormulaUpdater updater)
         {
             try
@@ -125,7 +122,7 @@ namespace Buhgaltery.Controllers
 
         [Authorize]
         [HttpPost("Delete")]
-        [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> DeleteAsync([FromBody] Guid id)
         {
             try

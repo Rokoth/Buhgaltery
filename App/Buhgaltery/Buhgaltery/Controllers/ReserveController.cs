@@ -35,7 +35,7 @@ namespace Buhgaltery.Controllers
 
         [Authorize]
         [HttpPost("GetList")]
-        [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> GetListAsync([FromBody] ReserveFilter ReserveFilter)
         {           
             try
@@ -53,7 +53,7 @@ namespace Buhgaltery.Controllers
 
         [Authorize]
         [HttpPost("GetHistory")]
-        [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> GetHistoryAsync([FromBody] ReserveHistoryFilter filter)
         {
             try
@@ -71,7 +71,7 @@ namespace Buhgaltery.Controllers
 
         [Authorize]
         [HttpPost("GetItem")]
-        [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> GetItemAsync([FromBody] Guid id)
         {
             try
@@ -89,7 +89,7 @@ namespace Buhgaltery.Controllers
 
         [Authorize]
         [HttpPost("Add")]
-        [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> AddAsync([FromBody] ReserveCreator creator)
         {
             try
@@ -107,7 +107,7 @@ namespace Buhgaltery.Controllers
 
         [Authorize]
         [HttpPost("Update")]
-        [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> UpdateAsync([FromBody] ReserveUpdater updater)
         {
             try
@@ -125,7 +125,7 @@ namespace Buhgaltery.Controllers
 
         [Authorize]
         [HttpPost("Delete")]
-        [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> DeleteAsync([FromBody] Guid id)
         {
             try

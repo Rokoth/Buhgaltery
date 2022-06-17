@@ -78,25 +78,17 @@ namespace Buhgaltery
                     ValidateIssuerSigningKey = true,
 
                 };
-            }).AddCookie("Cookies", options =>
-            {
-                options.LoginPath = new PathString("/Account/Login");
-                options.LogoutPath = new PathString("/Account/Logout");
             });
 
             services
                 .AddAuthorization(options =>
                 {
-                    var cookiePolicy = new AuthorizationPolicyBuilder()
-                        .RequireAuthenticatedUser()
-                        .AddAuthenticationSchemes("Cookies")
-                        .Build();
-                    options.AddPolicy("Cookie", cookiePolicy);
-                    options.AddPolicy("Token", new AuthorizationPolicyBuilder()
+                    var defPolicy = new AuthorizationPolicyBuilder()
                         .RequireAuthenticatedUser()
                         .AddAuthenticationSchemes("Token")
-                        .Build());
-                    options.DefaultPolicy = cookiePolicy;
+                        .Build();                   
+                    options.AddPolicy("Token", defPolicy);
+                    options.DefaultPolicy = defPolicy;
                 });
 
             services.AddScoped<IRepository<Db.Model.User>, Repository<Db.Model.User>>();         
@@ -238,36 +230,42 @@ namespace Buhgaltery
     {
         public MappingProfile()
         {
-            //CreateMap<Db.Model.User, Contract.Model.User>();
+            CreateMap<Db.Model.User, Contract.Model.User>();
+            CreateMap<Contract.Model.UserCreator, Db.Model.User>()
+                .ForMember(s => s.Password, s => s.Ignore());
+            CreateMap<Db.Model.UserHistory, Contract.Model.UserHistory>();
+            CreateMap<Contract.Model.UserUpdater, Db.Model.User>()
+                .ForMember(s => s.Password, s => s.Ignore());
 
-            //CreateMap<Contract.Model.UserCreator, Db.Model.User>()
-            //    .ForMember(s => s.Password, s => s.Ignore());
+            CreateMap<Db.Model.Formula, Contract.Model.Formula>();
+            CreateMap<Contract.Model.FormulaCreator, Db.Model.Formula>();
+            CreateMap<Db.Model.FormulaHistory, Contract.Model.FormulaHistory>();
+            CreateMap<Contract.Model.FormulaUpdater, Db.Model.Formula>();
 
-            //CreateMap<Db.Model.UserHistory, Contract.Model.UserHistory>();
+            CreateMap<Db.Model.Product, Contract.Model.Product>();
+            CreateMap<Contract.Model.ProductCreator, Db.Model.Product>();
+            CreateMap<Db.Model.ProductHistory, Contract.Model.ProductHistory>();
+            CreateMap<Contract.Model.ProductUpdater, Db.Model.Product>();
 
-            //CreateMap<Contract.Model.UserUpdater, Db.Model.User>()
-            //    .ForMember(s => s.Password, s => s.Ignore());
+            CreateMap<Db.Model.Incoming, Contract.Model.Incoming>();
+            CreateMap<Contract.Model.IncomingCreator, Db.Model.Incoming>();
+            CreateMap<Db.Model.IncomingHistory, Contract.Model.IncomingHistory>();
+            CreateMap<Contract.Model.IncomingUpdater, Db.Model.Incoming>();
 
-            //CreateMap<Db.Model.Client, Contract.Model.Client>();
+            CreateMap<Db.Model.Outgoing, Contract.Model.Outgoing>();
+            CreateMap<Contract.Model.OutgoingCreator, Db.Model.Outgoing>();
+            CreateMap<Db.Model.OutgoingHistory, Contract.Model.OutgoingHistory>();
+            CreateMap<Contract.Model.OutgoingUpdater, Db.Model.Outgoing>();
 
-            //CreateMap<Contract.Model.ClientCreator, Db.Model.Client>()
-            //    .ForMember(s => s.Password, s => s.Ignore());
+            CreateMap<Db.Model.Reserve, Contract.Model.Reserve>();
+            CreateMap<Contract.Model.ReserveCreator, Db.Model.Reserve>();
+            CreateMap<Db.Model.ReserveHistory, Contract.Model.ReserveHistory>();
+            CreateMap<Contract.Model.ReserveUpdater, Db.Model.Reserve>();
 
-            //CreateMap<Db.Model.ClientHistory, Contract.Model.ClientHistory>();
-
-            //CreateMap<Contract.Model.ClientUpdater, Db.Model.Client>()
-            //    .ForMember(s => s.Password, s => s.Ignore());
-
-            //CreateMap<Db.Model.Release, Contract.Model.Release>();
-            //CreateMap<Contract.Model.ReleaseCreator, Db.Model.Release>();
-            //CreateMap<Contract.Model.ReleaseUpdater, Db.Model.Release>();
-
-            //CreateMap<Db.Model.ReleaseArchitect, Contract.Model.ReleaseArchitect>();
-            //CreateMap<Contract.Model.ReleaseArchitectCreator, Db.Model.ReleaseArchitect>();
-            //CreateMap<Contract.Model.ReleaseArchitectUpdater, Db.Model.ReleaseArchitect>();
-
-            //CreateMap<Db.Model.LoadHistory, Contract.Model.LoadHistory>();
-            //CreateMap<Contract.Model.LoadHistoryCreator, Db.Model.LoadHistory>();
+            CreateMap<Db.Model.Correction, Contract.Model.Correction>();
+            CreateMap<Contract.Model.CorrectionCreator, Db.Model.Correction>();
+            CreateMap<Db.Model.CorrectionHistory, Contract.Model.CorrectionHistory>();
+            CreateMap<Contract.Model.CorrectionUpdater, Db.Model.Correction>();
         }
     }
 
