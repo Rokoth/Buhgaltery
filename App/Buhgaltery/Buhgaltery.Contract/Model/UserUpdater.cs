@@ -32,5 +32,7 @@ namespace Buhgaltery.Contract.Model
         public bool LeafOnly { get; set; }        
         public DateTimeOffset LastAddedDate { get; set; }
         public decimal DefaultReserveValue { get; set; }
+        public int AddPeriod { get; set; }
+        public string Email { get; set; }
     }
 }

@@ -93,6 +93,8 @@ namespace Buhgaltery
 
             services.AddScoped<IRepository<Db.Model.User>, Repository<Db.Model.User>>();         
             services.AddScoped<IRepository<Db.Model.UserHistory>, Repository<Db.Model.UserHistory>>();
+            services.AddScoped<IRepository<Db.Model.UserSettings>, Repository<Db.Model.UserSettings>>();
+            services.AddScoped<IRepository<Db.Model.UserSettingsHistory>, Repository<Db.Model.UserSettingsHistory>>();
             services.AddScoped<IRepository<Db.Model.Formula>, Repository<Db.Model.Formula>>();
             services.AddScoped<IRepository<Db.Model.FormulaHistory>, Repository<Db.Model.FormulaHistory>>();
             services.AddScoped<IRepository<Db.Model.Product>, Repository<Db.Model.Product>>();

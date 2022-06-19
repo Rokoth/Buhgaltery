@@ -44,6 +44,6 @@ namespace Buhgaltery.Contract.Model
        
         [Display(Name = "Только листовые элементы")]
         [Required(ErrorMessage = "Поле должно быть установлено")]
-        public bool LeafOnly { get; set; }       
+        public bool LeafOnly { get; set; }
     }    
 }

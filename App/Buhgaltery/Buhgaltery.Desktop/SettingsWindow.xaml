@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Buhgaltery.Desktop"
         mc:Ignorable="d"
-        Title="Настройки пользователя" Height="345" Width="600">
+        Title="Настройки пользователя" Height="380" Width="600">
     <Grid>
         <Label Content="Наименование"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0" Height="25" Width="150"/>
         <TextBox x:Name="NameTextBox" Margin="155,5,5,5" Height="30" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
@@ -27,6 +27,8 @@
             </TextBlock>
         </Label>
         <TextBox x:Name="AddPeriodTextBox" Margin="155,255,5,5" Height="30" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
+        <Label Content="Сумма резерва"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,290,0,0" Height="25" Width="150"/>
+        <TextBox x:Name="DefaultReserveValueTextBox" Margin="155,290,5,5" Height="30" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
         <Button x:Name="CloseButton" Content="Отмена" HorizontalAlignment="Right" Margin="0,0,5,5" VerticalAlignment="Bottom" Width="75" Click="CloseButton_Click"/>
         <Button x:Name="SaveButton" Content="Сохранить" HorizontalAlignment="Right" Margin="0,0,85,5" VerticalAlignment="Bottom" Width="75" Click="SaveButton_Click"/>
     </Grid>

@@ -22,6 +22,9 @@
     <Compile Update="FormulaEditWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="FormulaSelectWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="FormulasWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -64,6 +67,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="FormulaEditWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="FormulaSelectWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="FormulasWindow.xaml">

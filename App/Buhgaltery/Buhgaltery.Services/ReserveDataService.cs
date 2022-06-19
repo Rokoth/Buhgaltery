@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +36,7 @@ namespace Buhgaltery.Services
                 Db.Interface.IRepository<Db.Model.UserSettings> _userSettingsRepository = _serviceProvider.GetRequiredService<Db.Interface.IRepository<Db.Model.UserSettings>>();
                 var settings = (await _userSettingsRepository.GetAsync(new Db.Model.Filter<Db.Model.UserSettings>()
                 { 
-                  Selector = s=>s.UserId == creator.UserId
+                  Selector = s=> s.UserId == creator.UserId
                 }, token)).Data.FirstOrDefault();
 
                 if (settings == null)
@@ -71,7 +72,7 @@ namespace Buhgaltery.Services
                     {               
                         if (settings.LeafOnly)
                         {
-                            products = products.Where(s=>s.IsLeaf);
+                            products = products.Where(s => s.IsLeaf);
                         }
                         List<CalcRequestItem> forSelect = new List<CalcRequestItem>();
                         foreach (var product in products)
@@ -81,20 +82,12 @@ namespace Buhgaltery.Services
                             {
                                 if (currReserve.Value < product.MaxValue)
                                 {
-                                    forSelect.Add(new CalcRequestItem() 
-                                    { 
-                                      Id = product.Id,
-                                      Fields = JsonConvert.SerializeObject(product)
-                                    });                                    
+                                    forSelect.Add(Serialize(product));
                                 }
                             }
-                            if (product.MaxValue > 0)
+                            else if (product.MaxValue > 0 && product.LastAddDate.AddHours(product.AddPeriod)<= DateTimeOffset.Now)
                             {
-                                forSelect.Add(new CalcRequestItem()
-                                {
-                                    Id = product.Id,
-                                    Fields = JsonConvert.SerializeObject(product)
-                                });
+                                forSelect.Add(Serialize(product));
                             }
                         }
 
@@ -159,12 +152,23 @@ namespace Buhgaltery.Services
                     await repo.SaveChangesAsync();
                                         
                     var prepare = _mapper.Map<Contract.Model.Reserve>(reserve);
-                    prepare = await Enrich(prepare, token);
+                    prepare = await base.Enrich(prepare, token);
                     return prepare;
                 }
                 return null;
                 
             });
+        }
+
+        private static CalcRequestItem Serialize(Db.Model.Product product)
+        {
+            var prepare = JObject.FromObject(product);
+            prepare.Add("AddHours", (product.LastAddDate - DateTimeOffset.Now).TotalHours);
+            return new CalcRequestItem()
+            {
+                Id = product.Id,
+                Fields = prepare.ToString()
+            };
         }
 
         public override async Task<Contract.Model.Reserve> UpdateAsync(Contract.Model.ReserveUpdater creator, CancellationToken token)

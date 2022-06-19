@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -93,9 +95,16 @@ namespace Buhgaltery.Common
             _init = Init();
         }
 
-        public ErrorNotifyService()
+        public ErrorNotifyService(IServiceProvider serviceProvider)
         {
-           
+            if (_config == null)
+            {
+                var options = serviceProvider.GetRequiredService<IOptions<CommonOptions>>();
+                _config = new ErrorNotifyLoggerConfiguration() { 
+                   EventId = 0,
+                   Options = options.Value.ErrorNotifyOptions
+                };
+            }
         }
 
         /// <summary>

@@ -3,6 +3,7 @@ using Buhgaltery.Desktop.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Buhgaltery.Desktop.Services
 {
@@ -12,18 +13,38 @@ namespace Buhgaltery.Desktop.Services
     }
 
 
-    //public class GetDataService<T> : IGetDataService<T> where T : Entity
-    //{
-    //    private IServiceProvider _serviceProvider;
+    public class SettingsDataService : IDataService<User, UserFilter, UserUpdater> 
+    {
+        private IServiceProvider _serviceProvider;
 
-    //    public GetDataService(IServiceProvider serviceProvider)
-    //    {
-    //        _serviceProvider = serviceProvider;
-    //    }
+        public SettingsDataService(IServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider;
+        }
 
-    //    public async Task<List<T>> GetListAsync(int size, int page, string sort, Guid userId)
-    //    { 
-        
-    //    }
-    //}
+        public Task<User> Add(User entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<User> Delete(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<User>> Get(UserFilter filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<User> GetItem(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<User> Update(UserUpdater entity)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
