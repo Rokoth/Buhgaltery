@@ -17,6 +17,6 @@ namespace Buhgaltery.Desktop.Services.Interfaces
         Task<T> GetItem(Guid id);
         Task<T> Add(T entity);
         Task<T> Update(U entity);
-        Task<T> Delete(Guid id);
+        Task<bool> Delete(Guid id);
     }
 }

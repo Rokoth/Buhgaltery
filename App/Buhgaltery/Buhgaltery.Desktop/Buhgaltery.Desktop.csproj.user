@@ -31,6 +31,12 @@
     <Compile Update="FormulaWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="IncomingAddWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="IncomingEditWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="IncomingsWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -76,6 +82,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="FormulaWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="IncomingAddWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="IncomingEditWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="IncomingsWindow.xaml">
