@@ -34,7 +34,10 @@ namespace Buhgaltery.Services
                 Selector = s => s.Id == entity.FormulaId
             }, token)).Data.Single();
             entity.Formula = formula.Name;           
-            entity.LeafOnly = userSettings.LeafOnly; 
+            entity.LeafOnly = userSettings.LeafOnly;
+            entity.DefaultReserveValue = userSettings.DefaultReserveValue;
+            entity.AddPeriod = userSettings.AddPeriod;
+
             return entity;
         }
 
@@ -62,20 +65,22 @@ namespace Buhgaltery.Services
                 var formula = formulas.Where(s=>s.Id == entity.FormulaId).Single();
                 var userSettings = userSettingss.Where(s => s.UserId == entity.Id).Single();
                 entity.Formula = formula.Name;                
-                entity.LeafOnly = userSettings.LeafOnly;  
+                entity.LeafOnly = userSettings.LeafOnly;
+                entity.DefaultReserveValue = userSettings.DefaultReserveValue;
+                entity.AddPeriod = userSettings.AddPeriod;
                 result.Add(entity);
             }
 
             return result;
         }
 
-        protected override Expression<Func<Db.Model.User, bool>> GetFilter(Contract.Model.UserFilter filter)
+        protected override Expression<Func<Db.Model.User, bool>> GetFilter(Contract.Model.UserFilter filter, Guid userId)
         {
             return s => filter.Name == null || s.Name.Contains(filter.Name);
         }
 
         protected override async Task ActionAfterAdd(Db.Interface.IRepository<Db.Model.User> repository,
-            Contract.Model.UserCreator creator, Db.Model.User entity, CancellationToken token)
+            Contract.Model.UserCreator creator, Db.Model.User entity, Guid userId, CancellationToken token)
         {
             var userSettingsRepo = _serviceProvider.GetRequiredService<Db.Interface.IRepository<Db.Model.UserSettings>>();
             await userSettingsRepo.AddAsync(new Db.Model.UserSettings() {               
@@ -88,7 +93,7 @@ namespace Buhgaltery.Services
         }
 
         protected override async Task ActionAfterUpdate(Db.Interface.IRepository<Db.Model.User> repository,
-            Contract.Model.UserUpdater updater, Db.Model.User entity, CancellationToken token)
+            Contract.Model.UserUpdater updater, Db.Model.User entity, Guid userId, CancellationToken token)
         {
             var userSettingsRepo = _serviceProvider.GetRequiredService<Db.Interface.IRepository<Db.Model.UserSettings>>();
             var userSettings = (await userSettingsRepo.GetAsync(new Db.Model.Filter<Db.Model.UserSettings>()
@@ -97,13 +102,14 @@ namespace Buhgaltery.Services
             }, token)).Data.Single();
 
             userSettings.DefaultReserveValue = updater.DefaultReserveValue;
+            userSettings.AddPeriod = updater.AddPeriod;
             userSettings.LeafOnly = updater.LeafOnly;           
 
             await userSettingsRepo.UpdateAsync(userSettings, false, token);
         }
 
         protected override async Task ActionAfterDelete(Db.Interface.IRepository<Db.Model.User> repository,
-            Db.Model.User entity, CancellationToken token)
+            Db.Model.User entity, Guid userId, CancellationToken token)
         {
             var userSettingsRepo = _serviceProvider.GetRequiredService<Db.Interface.IRepository<Db.Model.UserSettings>>();
             var userSettings = (await userSettingsRepo.GetAsync(new Db.Model.Filter<Db.Model.UserSettings>()
@@ -114,23 +120,30 @@ namespace Buhgaltery.Services
             await userSettingsRepo.DeleteAsync(userSettings, false, token);
         }
 
-        protected override Db.Model.User MapToEntityAdd(Contract.Model.UserCreator creator)
-        {
-            var entity = base.MapToEntityAdd(creator);
-            entity.Password = SHA512.Create().ComputeHash(Encoding.UTF8.GetBytes(creator.Password));
-            return entity;
-        }
-
         protected override Db.Model.User UpdateFillFields(Contract.Model.UserUpdater entity, Db.Model.User entry)
         {
             entry.Description = entity.Description;
             entry.Login = entity.Login;
             entry.Name = entity.Name;
+            entry.Email = entity.Email;
+            if (entity.LastAddedDate.HasValue) entry.LastAddedDate = entity.LastAddedDate.Value;
             if (entity.PasswordChanged)
             {
                 entry.Password = SHA512.Create().ComputeHash(Encoding.UTF8.GetBytes(entity.Password));
             }
             return entry;
+        }
+
+        protected override Db.Model.User AdditionalMapForAdd(Db.Model.User entity, Contract.Model.UserCreator creator, Guid userId)
+        {
+            entity.Password = SHA512.Create().ComputeHash(Encoding.UTF8.GetBytes(creator.Password));
+            return entity;
+        }
+
+        protected override async Task<bool> CheckUser(Db.Model.User entity, Guid userId)
+        {
+            await Task.CompletedTask;
+            return entity.Id == userId;
         }
 
         protected override string DefaultSort => "Name";

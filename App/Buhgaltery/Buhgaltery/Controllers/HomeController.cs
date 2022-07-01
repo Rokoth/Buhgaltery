@@ -53,10 +53,10 @@ namespace Buhgaltery.Controllers
                 var _outgoingDataService = _serviceProvider.GetRequiredService<IGetDataService<Outgoing, OutgoingFilter>>();
                 var _reserveDataService = _serviceProvider.GetRequiredService<IGetDataService<Reserve, ReserveFilter>>();
                 var _correctionDataService = _serviceProvider.GetRequiredService<IGetDataService<Correction, CorrectionFilter>>();
-                var incomings = await _incomingDataService.GetAsync(new IncomingFilter(null, null, null, userId, null, null, null), source.Token);
-                var outgoings = await _outgoingDataService.GetAsync(new OutgoingFilter(null, null, null, userId, null, null, null, null), source.Token);
-                var reserves = await _reserveDataService.GetAsync(new ReserveFilter(null, null, null, userId, null), source.Token);
-                var corrections = await _correctionDataService.GetAsync(new CorrectionFilter(null, null, null, userId, null, null, null), source.Token);
+                var incomings = await _incomingDataService.GetAsync(new IncomingFilter(null, null, null, null, null, null), userId, source.Token);
+                var outgoings = await _outgoingDataService.GetAsync(new OutgoingFilter(null, null, null, null, null, null, null), userId, source.Token);
+                var reserves = await _reserveDataService.GetAsync(new ReserveFilter(null, null, null, null), userId, source.Token);
+                var corrections = await _correctionDataService.GetAsync(new CorrectionFilter(null, null, null, null, null, null), userId, source.Token);
 
                 result.Incomings = incomings.Data.Sum(s=>s.Value);
                 result.Outgoings = outgoings.Data.Sum(s => s.Value);

@@ -13,6 +13,6 @@ namespace Buhgaltery.Db.Model
         [ColumnName("value")]
         public decimal Value { get; set; }
         [ColumnName("correction_date")]
-        public DateTimeOffset CorrectionDate { get; set; }
+        public DateTimeOffset CorrectionDate { get; set; } = DateTimeOffset.Now;
     }
 }

@@ -18,15 +18,15 @@ namespace Buhgaltery.Services
 
         }
 
-        protected override Expression<Func<Db.Model.Correction, bool>> GetFilter(Contract.Model.CorrectionFilter filter)
+        protected override Expression<Func<Db.Model.Correction, bool>> GetFilter(Contract.Model.CorrectionFilter filter, Guid userId)
         {
-            return s => filter.UserId == s.UserId
+            return s => userId == s.UserId
                && (string.IsNullOrEmpty(filter.Description) || s.Description.Contains(filter.Description))
                && (filter.DateFrom == null || s.CorrectionDate >= filter.DateFrom.Value)
                && (filter.DateTo == null || s.CorrectionDate <= filter.DateTo.Value);
         }
 
-        public override async Task<Contract.Model.Correction> AddAsync(Contract.Model.CorrectionCreator creator, CancellationToken token)
+        public override async Task<Contract.Model.Correction> AddAsync(Contract.Model.CorrectionCreator creator, Guid userId, CancellationToken token)
         {
             return await ExecuteAsync(async (repo) =>
             {               
@@ -37,7 +37,7 @@ namespace Buhgaltery.Services
                       Description = creator.Description,
                       Id = Guid.NewGuid(),
                       IsDeleted = false,
-                      UserId = creator.UserId,
+                      UserId = userId,
                       Value = creator.Value.Value,
                       VersionDate = DateTimeOffset.Now
                     };
@@ -54,13 +54,13 @@ namespace Buhgaltery.Services
                     var _outgoingRepo = _serviceProvider.GetRequiredService<Db.Interface.IRepository<Db.Model.Outgoing>>();           
 
                     var incomings = await _incomingRepo.GetAsync(new Db.Model.Filter<Db.Model.Incoming>() {
-                      Selector = s=>s.UserId == creator.UserId
+                      Selector = s=>s.UserId == userId
                     }, token);
                     var outgoings = await _outgoingRepo.GetAsync(new Db.Model.Filter<Db.Model.Outgoing>() {
-                        Selector = s => s.UserId == creator.UserId
+                        Selector = s => s.UserId == userId
                     }, token);                 
                     var corrections = await repo.GetAsync(new Db.Model.Filter<Db.Model.Correction>() {
-                        Selector = s => s.UserId == creator.UserId
+                        Selector = s => s.UserId == userId
                     }, token);
                                         
                     var correctValue = creator.TotalValue.Value - 
@@ -76,7 +76,7 @@ namespace Buhgaltery.Services
                             Description = creator.Description,
                             Id = Guid.NewGuid(),
                             IsDeleted = false,
-                            UserId = creator.UserId,
+                            UserId = userId,
                             Value = correctValue,
                             VersionDate = DateTimeOffset.Now
                         };
@@ -93,12 +93,12 @@ namespace Buhgaltery.Services
             });
         }
 
-        public override async Task<Contract.Model.Correction> UpdateAsync(Contract.Model.CorrectionUpdater creator, CancellationToken token)
+        public override async Task<Contract.Model.Correction> UpdateAsync(Contract.Model.CorrectionUpdater creator, Guid userId, CancellationToken token)
         {
             throw new DataServiceException("Операция Update для корректировок недопустима");
         }
 
-        public override async Task<Contract.Model.Correction> DeleteAsync(Guid id, CancellationToken token)
+        public override async Task<Contract.Model.Correction> DeleteAsync(Guid id, Guid userId, CancellationToken token)
         {
             throw new DataServiceException("Операция Delete для корректировок недопустима");
         }
@@ -106,6 +106,18 @@ namespace Buhgaltery.Services
         protected override Db.Model.Correction UpdateFillFields(Contract.Model.CorrectionUpdater entity, Db.Model.Correction entry)
         {
             return entry;
+        }
+
+        protected override Db.Model.Correction AdditionalMapForAdd(Db.Model.Correction entity, Contract.Model.CorrectionCreator creator, Guid userId)
+        {
+            entity.UserId = userId;
+            return entity;
+        }
+
+        protected override async Task<bool> CheckUser(Db.Model.Correction entity, Guid userId)
+        {
+            await Task.CompletedTask;
+            return entity.UserId == userId;
         }
 
         protected override string DefaultSort => "CorrectionDate";

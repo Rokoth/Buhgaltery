@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Buhgaltery.Db.Model;
+using System;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,9 +22,15 @@ namespace Buhgaltery.Services
             return repo.GetAsyncDeleted;
         }
 
-        protected override Expression<Func<Db.Model.ReserveHistory, bool>> GetFilter(Contract.Model.ReserveHistoryFilter filter)
+        protected override Expression<Func<Db.Model.ReserveHistory, bool>> GetFilter(Contract.Model.ReserveHistoryFilter filter, Guid userId)
         {
             return s => (filter.Id == null || s.Id == filter.Id);
+        }
+
+        protected override async Task<bool> CheckUser(ReserveHistory entity, Guid userId)
+        {
+            await Task.CompletedTask;
+            return entity.UserId == userId;
         }
     }
 }

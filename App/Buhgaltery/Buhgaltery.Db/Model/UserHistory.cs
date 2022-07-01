@@ -9,6 +9,8 @@ namespace Buhgaltery.Db.Model
         public string Name { get; set; }
         [ColumnName("description")]
         public string Description { get; set; }
+        [ColumnName("email")]
+        public string Email { get; set; }
         [ColumnName("login")]
         public string Login { get; set; }
         [ColumnName("password")]

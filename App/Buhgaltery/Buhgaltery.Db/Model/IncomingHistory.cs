@@ -12,20 +12,7 @@ namespace Buhgaltery.Db.Model
         public string Description { get; set; }
         [ColumnName("value")]
         public decimal Value { get; set; }
-        [ColumnName("incoming_date")]
-        public DateTime IncomingDate { get; set; }
-    }
-
-    [TableName("h_correction")]
-    public class CorrectionHistory : EntityHistory
-    {
-        [ColumnName("userid")]
-        public Guid UserId { get; set; }
-        [ColumnName("description")]
-        public string Description { get; set; }
-        [ColumnName("value")]
-        public decimal Value { get; set; }
-        [ColumnName("correction_date")]
-        public DateTime CorrectionDate { get; set; }
+        [ColumnName("income_date")]
+        public DateTimeOffset IncomingDate { get; set; }
     }
 }

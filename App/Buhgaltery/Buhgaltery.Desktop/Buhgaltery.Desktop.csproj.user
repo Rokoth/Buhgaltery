@@ -19,6 +19,9 @@
     <Compile Update="AddReserveWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="FormulaAddWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="FormulaEditWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -46,6 +49,12 @@
     <Compile Update="OutgoingsWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="ProductAddWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="ProductEditWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="ProductsWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -70,6 +79,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="AddReserveWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="FormulaAddWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="FormulaEditWindow.xaml">
@@ -100,6 +112,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="OutgoingsWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="ProductAddWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="ProductEditWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="ProductsWindow.xaml">

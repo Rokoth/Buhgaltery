@@ -25,7 +25,7 @@ namespace Buhgaltery.Services
         /// <summary>
         /// function for modify client filter to db filter
         /// </summary>
-        protected abstract Expression<Func<TEntity, bool>> GetFilter(TFilter filter);
+        protected abstract Expression<Func<TEntity, bool>> GetFilter(TFilter filter, Guid userId);
 
         protected virtual Func<Db.Model.Filter<TEntity>, CancellationToken, Task<Contract.Model.PagedResult<TEntity>>> 
             GetListFunc(Db.Interface.IRepository<TEntity> repo)
@@ -51,6 +51,9 @@ namespace Buhgaltery.Services
             return entities;
         }
 
+        protected abstract Task<bool> CheckUser(TEntity entity, Guid userId);
+        
+
         /// <summary>
         /// ctor
         /// </summary>
@@ -68,7 +71,7 @@ namespace Buhgaltery.Services
         /// <param name="filter"></param>
         /// <param name="token"></param>
         /// <returns></returns>
-        public async Task<Contract.Model.PagedResult<Tdto>> GetAsync(TFilter filter, CancellationToken token)
+        public async Task<Contract.Model.PagedResult<Tdto>> GetAsync(TFilter filter, Guid userId, CancellationToken token)
         {
             return await ExecuteAsync(async (repo) =>
             {
@@ -83,7 +86,7 @@ namespace Buhgaltery.Services
                     Size = filter.Size,
                     Page = filter.Page,
                     Sort = sort,
-                    Selector = GetFilter(filter)
+                    Selector = GetFilter(filter, userId)
                 }, token);
                 var prepare = result.Data.Select(s => _mapper.Map<Tdto>(s));
                 prepare = await Enrich(prepare, token);
@@ -97,16 +100,19 @@ namespace Buhgaltery.Services
         /// <param name="id"></param>
         /// <param name="token"></param>
         /// <returns></returns>
-        public async Task<Tdto> GetAsync(Guid id, CancellationToken token)
+        public async Task<Tdto> GetAsync(Guid id, Guid userId, CancellationToken token)
         {
             return await ExecuteAsync(async (repo) =>
             {
                 var result = await repo.GetAsync(id, token);
+                if (!(await CheckUser(result, userId))) throw new DataServiceException($"Entity with id = {id} not found in DB");
                 var prepare = _mapper.Map<Tdto>(result);
                 prepare = await Enrich(prepare, token);
                 return prepare;
             });
         }
+
+        
 
         /// <summary>
         /// execution wrapper

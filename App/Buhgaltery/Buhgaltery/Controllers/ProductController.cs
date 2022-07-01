@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -40,8 +42,9 @@ namespace Buhgaltery.Controllers
         {           
             try
             {
+                var userId = Guid.Parse(User.Identity.Name);
                 var source = new CancellationTokenSource(30000);
-                var response = await _getDataService.GetAsync(ProductFilter, source.Token);
+                var response = await _getDataService.GetAsync(ProductFilter, userId, source.Token);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -52,14 +55,52 @@ namespace Buhgaltery.Controllers
         }
 
         [Authorize]
+        [HttpPost("GetListHuman")]
+
+        public async Task<IActionResult> GetListHumanAsync()
+        {
+            try
+            {
+                var userId = Guid.Parse(User.Identity.Name);
+                var source = new CancellationTokenSource(30000);
+                var response = await _getDataService.GetAsync(new ProductFilter(null, null, null, null, null, false, null, null), userId, source.Token);
+                var tree = GetChilds(response.Data.ToList(), null);
+
+                return Ok(tree);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Ошибка при обработке запроса ProductController::GetListAsync: {ex.Message} {ex.StackTrace}");
+                return BadRequest($"Ошибка при обработке запроса: {ex.Message}");
+            }
+        }
+
+        private List<ProductHuman> GetChilds(List<Product> allProducts, Guid? id)
+        {
+            return allProducts.Where(s=>s.ParentId == id).Select(s=>new ProductHuman() { 
+               AddPeriod = s.AddPeriod,
+               Childs = GetChilds(allProducts, s.Id),
+               Description = s.Description,
+               FullName = s.FullName,
+               Id = s.Id,
+               LastAddDate = s.LastAddDate,
+               MaxValue = s.MaxValue,
+               MinValue = s.MinValue,
+               Name = s.Name,
+               Reserve = s.Reserve
+            }).ToList();
+        }
+
+        [Authorize]
         [HttpPost("GetHistory")]
         
         public async Task<IActionResult> GetHistoryAsync([FromBody] ProductHistoryFilter filter)
         {
             try
             {
+                var userId = Guid.Parse(User.Identity.Name);
                 var source = new CancellationTokenSource(30000);
-                var response = await _getHistoryDataService.GetAsync(filter, source.Token);
+                var response = await _getHistoryDataService.GetAsync(filter, userId, source.Token);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -76,8 +117,9 @@ namespace Buhgaltery.Controllers
         {
             try
             {
+                var userId = Guid.Parse(User.Identity.Name);
                 var source = new CancellationTokenSource(30000);
-                var response = await _getDataService.GetAsync(id, source.Token);
+                var response = await _getDataService.GetAsync(id, userId, source.Token);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -94,8 +136,9 @@ namespace Buhgaltery.Controllers
         {
             try
             {
+                var userId = Guid.Parse(User.Identity.Name);
                 var source = new CancellationTokenSource(30000);
-                var response = await _addDataService.AddAsync(creator, source.Token);
+                var response = await _addDataService.AddAsync(creator, userId, source.Token);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -112,8 +155,9 @@ namespace Buhgaltery.Controllers
         {
             try
             {
+                var userId = Guid.Parse(User.Identity.Name);
                 var source = new CancellationTokenSource(30000);
-                var response = await _updateDataService.UpdateAsync(updater, source.Token);
+                var response = await _updateDataService.UpdateAsync(updater, userId, source.Token);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -130,8 +174,9 @@ namespace Buhgaltery.Controllers
         {
             try
             {
+                var userId = Guid.Parse(User.Identity.Name);
                 var source = new CancellationTokenSource(30000);
-                var response = await _deleteDataService.DeleteAsync(id, source.Token);
+                var response = await _deleteDataService.DeleteAsync(id, userId, source.Token);
                 return Ok(response);
             }
             catch (Exception ex)

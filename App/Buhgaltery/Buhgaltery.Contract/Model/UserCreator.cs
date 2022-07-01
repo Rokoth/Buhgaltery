@@ -40,10 +40,14 @@ namespace Buhgaltery.Contract.Model
         [Display(Name = "Формула")]
         [Required(ErrorMessage = "Поле должно быть установлено")]
         public string Formula { get; set; }
-                
-       
+
+        [Display(Name = "Величина резерва по умолчанию")]
+        [Required(ErrorMessage = "Поле должно быть установлено")]
+        public decimal DefaultReserveValue { get; set; }
         [Display(Name = "Только листовые элементы")]
         [Required(ErrorMessage = "Поле должно быть установлено")]
         public bool LeafOnly { get; set; }
+        [Display(Name = "Период добавления элементов в резервы")]
+        public int AddPeriod { get; set; }
     }    
 }

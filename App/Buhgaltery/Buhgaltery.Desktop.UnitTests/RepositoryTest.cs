@@ -3,6 +3,7 @@ using Buhgaltery.DbClient.Interface;
 using Buhgaltery.DbClient.Model;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -25,32 +26,31 @@ namespace Buhgaltery.Desktop.UnitTests
             _serviceProvider = fixture.ServiceProvider;
         }
 
-        ///// <summary>
-        ///// Тест получения списка сущностей по фильтру
-        ///// </summary>
-        ///// <returns></returns>
-        //[Fact]
-        //public async Task GetTest()
-        //{
-        //    var context = _serviceProvider.GetRequiredService<DbPgContext>();
-        //    AddUsers(context, "user_select_{0}", "user_description_{0}", "user_login_{0}", "user_password_{0}", 10);
-        //    AddUsers(context, "user_not_select_{0}", "user_description_{0}", "user_login_{0}", "user_password_{0}", 10);            
-        //    await context.SaveChangesAsync();
+        /// <summary>
+        /// Тест получения списка сущностей по фильтру
+        /// </summary>
+        /// <returns></returns>
+        [Fact]
+        public async Task GetTest()
+        {
+            var context = _serviceProvider.GetRequiredService<DbSqLiteContext>();
+            List<Settings> items = new List<Settings>();
+            for (int i = 0; i < 10; i++)
+            {
+                var settingsItem = CreateSettings();
+                items.Add(settingsItem);
+                context.Settings.Add(settingsItem);
+            }
+            await context.SaveChangesAsync();
 
-        //    var repo = _serviceProvider.GetRequiredService<IRepository<User>>();
-        //    var data = await repo.GetAsync(new Filter<User>()
-        //    {
-        //        Page = 0,
-        //        Size = 10,
-        //        Selector = s => s.Name.Contains("user_select")
-        //    }, CancellationToken.None);
+            var repo = _serviceProvider.GetRequiredService<IRepository<Settings>>();
+            var data = repo.Get(new Filter<Settings>() { 
+             Selector = s=>true
+            });
 
-        //    Assert.Equal(10, data.Data.Count());
-        //    foreach (var item in data.Data)
-        //    {
-        //        Assert.Contains("user_select", item.Name);
-        //    }
-        //}
+            Assert.NotNull(data);
+            Assert.Equal(items.Count, data.Data.Count());
+        }
 
         /// <summary>
         /// Тест получения сущности по id

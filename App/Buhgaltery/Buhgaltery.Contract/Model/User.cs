@@ -30,7 +30,13 @@ namespace Buhgaltery.Contract.Model
         public string Formula { get; set; }
         [Display(Name = "Дата последнего добавления элемента в резервы")]
         public DateTimeOffset? LastAddedDate { get; set; }
+        [Display(Name = "Величина резерва по умолчанию")]
+        [Required(ErrorMessage = "Поле должно быть установлено")]
+        public decimal DefaultReserveValue { get; set; }
+
         [Display(Name = "Период добавления элементов в резервы")]
+        [Required(ErrorMessage = "Поле должно быть установлено")]
         public int AddPeriod { get; set; }
+        
     }    
 }

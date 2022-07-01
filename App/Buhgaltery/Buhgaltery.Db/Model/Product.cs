@@ -15,9 +15,9 @@ namespace Buhgaltery.Db.Model
         [ColumnName("add_period")]
         public int AddPeriod { get; set; }
         [ColumnName("min_value")]
-        public int MinValue { get; set; }
+        public decimal MinValue { get; set; }
         [ColumnName("max_value")]
-        public int MaxValue { get; set; }
+        public decimal MaxValue { get; set; }
         [ColumnName("is_leaf")]
         public bool IsLeaf { get; set; }
         [ColumnName("last_add_date")]

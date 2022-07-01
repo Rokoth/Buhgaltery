@@ -16,6 +16,9 @@ namespace Buhgaltery.Db.Model
         [ColumnName("default_reserve_value")]
         public decimal DefaultReserveValue { get; set; }
 
+        [ColumnName("add_period")]
+        public int AddPeriod { get; set; }
+
         [Ignore]
         [ForeignKey("UserId")]
         public User User { get; set; }        

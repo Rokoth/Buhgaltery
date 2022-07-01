@@ -3,8 +3,7 @@
 namespace Buhgaltery.Contract.Model
 {
     public class ProductCreator
-    {
-        public Guid UserId { get; set; }
+    {        
         public Guid? ParentId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }

@@ -68,7 +68,7 @@ namespace Buhgaltery.Desktop
                 var perPage = int.Parse(CountTextBox.Text);
                 DataGridMain.Items.Clear();
                 //TODO: filters (userId, from, to)
-                var result = await _dataService.Get(new IncomingFilter(perPage, page, null, Guid.NewGuid(), null, null, null));
+                var result = await _dataService.Get(new IncomingFilter(perPage, page, null, null, null, null));
                 allPages = (result.Count % perPage == 0) ? (result.Count / perPage) : ((result.Count / perPage) + 1);
                 foreach (var item in result)
                 {
@@ -242,6 +242,11 @@ namespace Buhgaltery.Desktop
             {
                 FillTable();
             }
+        }
+
+        private void CountTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+
         }
     }
 }

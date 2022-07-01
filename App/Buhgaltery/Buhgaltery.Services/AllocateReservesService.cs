@@ -10,32 +10,29 @@ namespace Buhgaltery.Services
     public class AllocateReservesService : IAllocateReservesService
     {
         private ILogger<AllocateReservesHostedService> _logger;
-        private IGetDataService<User, UserFilter> _userDataService;
-        private IUpdateDataService<User, UserUpdater> _userUpdateService;
-        private IAddDataService<Reserve, ReserveCreator> _reserveDataService;
+        private IServiceProvider _serviceProvider;
+
+
 
         public AllocateReservesService(IServiceProvider serviceProvider)
         {
-            _logger = serviceProvider.GetRequiredService<ILogger<AllocateReservesHostedService>>();
-            _userDataService = serviceProvider.GetRequiredService<IGetDataService<User, UserFilter>>();
-            _userUpdateService = serviceProvider.GetRequiredService<IUpdateDataService<User, UserUpdater>>();
-            _reserveDataService = serviceProvider.GetRequiredService<IAddDataService<Reserve, ReserveCreator>>();
+            _serviceProvider = serviceProvider;
+            _logger = serviceProvider.GetRequiredService<ILogger<AllocateReservesHostedService>>();            
         }
 
         public async Task Execute(CancellationToken token)
         {
             try
             {
-                var allUsers = await _userDataService.GetAsync(new UserFilter(null, null, null, null), token);
+                var _userDataService = _serviceProvider.GetRequiredService<IGetDataService<User, UserFilter>>();
+                var _userUpdateService = _serviceProvider.GetRequiredService<IUpdateDataService<User, UserUpdater>>();
+                var _reserveDataService = _serviceProvider.GetRequiredService<IAddDataService<Reserve, ReserveCreator>>();
+                var allUsers = await _userDataService.GetAsync(new UserFilter(null, null, null, null), Guid.NewGuid(), token);
                 foreach (var user in allUsers.Data)
                 {
                     if (!user.LastAddedDate.HasValue || (user.LastAddedDate.Value.AddMinutes(user.AddPeriod) < DateTimeOffset.Now))
                     {
-                        await _reserveDataService.AddAsync(new ReserveCreator()
-                        {
-                            UserId = user.Id
-                        }, token);
-                        user.LastAddedDate = DateTimeOffset.Now;
+                        await _reserveDataService.AddAsync(new ReserveCreator(){}, user.Id, token);                        
                         await _userUpdateService.UpdateAsync(new UserUpdater() { 
                              Description = user.Description,
                              FormulaId = user.FormulaId,
@@ -44,8 +41,11 @@ namespace Buhgaltery.Services
                              LeafOnly = user.LeafOnly,
                              Login = user.Login,
                              Name = user.Name,
-                             PasswordChanged = false
-                        }, token);
+                             PasswordChanged = false,
+                             AddPeriod = user.AddPeriod,
+                             DefaultReserveValue = user.DefaultReserveValue,
+                             Email = user.Email                             
+                        }, user.Id, token);
                     }
                 }
             }

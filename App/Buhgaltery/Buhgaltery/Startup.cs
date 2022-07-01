@@ -111,12 +111,13 @@ namespace Buhgaltery
             services.AddScoped<IAllocateReservesService, AllocateReservesService>();
             services.AddScoped<IReservesRevisorService, ReservesRevisorService>();
 
-            //services.AddHostedService<ReservesRevisorHostedService>();
-            //services.AddHostedService<AllocateReservesHostedService>();
+            services.AddHostedService<ReservesRevisorHostedService>();
+            services.AddHostedService<AllocateReservesHostedService>();
 
             services.AddDataServices();
 
-            services.AddScoped<IDeployService, DeployService>();           
+            services.AddScoped<IDeployService, DeployService>();
+            services.AddScoped<ICalculator, CalculatorNCalc>();
             services.ConfigureAutoMapper();
             services.AddSwaggerGen(swagger =>
             {

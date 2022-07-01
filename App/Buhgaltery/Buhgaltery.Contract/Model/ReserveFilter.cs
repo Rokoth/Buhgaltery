@@ -4,15 +4,13 @@ namespace Buhgaltery.Contract.Model
 {
     public class ReserveFilter : Filter<Reserve>
     {
-        public ReserveFilter(int? size, int? page, string sort, Guid userId, Guid? productId) : base(size, page, sort)
+        public ReserveFilter(int? size, int? page, string sort, Guid? productId) : base(size, page, sort)
         {
-            ProductId = productId;
-            UserId = userId;
+            ProductId = productId;            
         }
         /// <summary>
         /// User Name
         /// </summary>
-        public Guid? ProductId { get; }
-        public Guid UserId { get; }
+        public Guid? ProductId { get; }       
     }
 }

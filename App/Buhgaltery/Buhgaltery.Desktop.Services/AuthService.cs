@@ -27,7 +27,7 @@ namespace Buhgaltery.Desktop.Services
             throw new NotImplementedException();
         }
 
-        public Task<User> Delete(Guid id)
+        public Task<bool> Delete(Guid id)
         {
             throw new NotImplementedException();
         }

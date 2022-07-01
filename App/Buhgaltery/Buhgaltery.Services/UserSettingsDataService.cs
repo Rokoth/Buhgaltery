@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Buhgaltery.Contract.Model;
+using System;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Buhgaltery.Services
 {
@@ -11,15 +13,27 @@ namespace Buhgaltery.Services
 
         }
 
-        protected override Expression<Func<Db.Model.UserSettings, bool>> GetFilter(Contract.Model.UserSettingsFilter filter)
+        protected override Expression<Func<Db.Model.UserSettings, bool>> GetFilter(Contract.Model.UserSettingsFilter filter, Guid userId)
         {
-            return s => s.UserId == filter.UserId;
+            return s => s.UserId == userId;
         }        
         protected override Db.Model.UserSettings UpdateFillFields(Contract.Model.UserSettingsUpdater entity, Db.Model.UserSettings entry)
         {           
             entry.DefaultReserveValue = entity.DefaultReserveValue;
             entry.LeafOnly = entity.LeafOnly;                       
             return entry;
+        }
+
+        protected override Db.Model.UserSettings AdditionalMapForAdd(Db.Model.UserSettings entity, UserSettingsCreator creator, Guid userId)
+        {
+            entity.UserId = userId;
+            return entity;
+        }
+
+        protected override async Task<bool> CheckUser(Db.Model.UserSettings entity, Guid userId)
+        {
+            await Task.CompletedTask;
+            return entity.UserId == userId;
         }
 
         protected override string DefaultSort => "Name";

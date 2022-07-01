@@ -5,15 +5,13 @@ namespace Buhgaltery.Contract.Model
 {
     public class OutgoingFilter : Filter<Outgoing>
     {
-        public OutgoingFilter(int? size, int? page, string sort, Guid userId, string description, DateTimeOffset? dateFrom, DateTimeOffset? dateTo, Guid? productId) : base(size, page, sort)
-        {
-            UserId = userId;
+        public OutgoingFilter(int? size, int? page, string sort, string description, DateTimeOffset? dateFrom, DateTimeOffset? dateTo, Guid? productId) : base(size, page, sort)
+        {            
             Description = description;
             DateFrom = dateFrom;
             DateTo = dateTo;
             ProductId = productId;
-        }
-        public Guid UserId { get; }
+        }        
 
         public string Description { get; set; }
         public DateTimeOffset? DateFrom { get; set; }

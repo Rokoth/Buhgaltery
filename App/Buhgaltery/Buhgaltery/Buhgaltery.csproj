@@ -5,7 +5,7 @@
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
-    <SpaRoot>F:\Projects\Buhgaltery\App\Buhgaltery\Buhgaltery\ClientApp\</SpaRoot>
+    <SpaRoot>ClientApp\</SpaRoot>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
 
     <!-- Set this to true if you enable server-side prerendering -->
@@ -17,10 +17,11 @@
     <RepositoryType>git</RepositoryType>
     <Copyright>Dmitriy Rokoth 2021</Copyright>
     <Description>Home buhgaltery</Description>
-    <Version>0.0.19</Version>
+    <Version>0.0.20</Version>
     <Authors>Dmitriy Rokoth</Authors>
     <Company>Dmitriy Rokoth</Company>
     <Product>HomeBuhgaltery</Product>
+    <UserSecretsId>3f63f86b-6c81-490e-99f5-11127eace647</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -51,7 +52,7 @@
     <None Include="..\..\..\LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
-    </None>
+    </None>    
   </ItemGroup>
 
   <ItemGroup>

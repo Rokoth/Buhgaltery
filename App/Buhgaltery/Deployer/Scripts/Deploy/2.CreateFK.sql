@@ -36,7 +36,7 @@ add constraint fk_outgoing_user_id
 
 alter table outgoing 
 add constraint fk_outgoing_product_id 
-	foreign key(userid) 
+	foreign key(product_id) 
 		references product(id) 
 		on delete no action on update no action;
 
@@ -50,6 +50,6 @@ add constraint fk_reserve_user_id
 
 alter table reserve 
 add constraint fk_reserve_product_id 
-	foreign key(userid) 
+	foreign key(product_id) 
 		references product(id) 
 		on delete no action on update no action;

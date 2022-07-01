@@ -41,8 +41,8 @@ namespace Buhgaltery.Desktop
             try
             {               
                 _id = id;
-                var dataService = _serviceProvider.GetRequiredService<IDataService<Formula>>();
-                var formula = await dataService.Get(id);
+                var dataService = _serviceProvider.GetRequiredService<IDataService<Formula, Filter<Formula>, FormulaUpdater>>();
+                var formula = await dataService.GetItem(id);
                 if (formula != null)
                 {
                     NameTextBox.Text = formula.Name;

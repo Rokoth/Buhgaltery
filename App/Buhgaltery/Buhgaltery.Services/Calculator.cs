@@ -46,7 +46,7 @@ namespace Buhgaltery.Services
                 if (functionArgs.Parameters.Count() != 1)
                     throw new CalculateException("Неверное количество параметров в вызове MaxFrom");
                 
-                long? maxValue = null;               
+                double? maxValue = null;               
                 foreach (var item in requestItems)
                 {                    
                     if (!string.IsNullOrEmpty(item.Fields))
@@ -56,7 +56,7 @@ namespace Buhgaltery.Services
                         foreach (var field in fields)
                             functionArgs.Parameters[0].Parameters[field.Key] = field.Value;
                     }
-                    var res = (long)functionArgs.Parameters[0].Evaluate();
+                    var res = (double)functionArgs.Parameters[0].Evaluate();
                     if (!maxValue.HasValue || res > maxValue)
                     {
                         maxValue = res;
@@ -68,7 +68,7 @@ namespace Buhgaltery.Services
             {
                 if (functionArgs.Parameters.Count() != 1)
                     throw new CalculateException("Неверное количество параметров в вызове MinFrom");
-                long? minValue = null;
+                double? minValue = null;
                 foreach (var item in requestItems)
                 {                   
                     if (!string.IsNullOrEmpty(item.Fields))
@@ -78,7 +78,7 @@ namespace Buhgaltery.Services
                         foreach (var field in fields)
                             functionArgs.Parameters[0].Parameters[field.Key] = field.Value;
                     }
-                    var res = (long)functionArgs.Parameters[0].Evaluate();
+                    var res = (double)functionArgs.Parameters[0].Evaluate();
                     if (!minValue.HasValue || res < minValue)
                     {
                         minValue = res;
@@ -90,8 +90,8 @@ namespace Buhgaltery.Services
             {
                 if (functionArgs.Parameters.Count() != 1)
                     throw new CalculateException("Неверное количество параметров в вызове AvgFrom");
-                long? sum = 0;
-                Dictionary<Guid, long> values = new Dictionary<Guid, long>();
+                double? sum = 0;
+                Dictionary<Guid, double> values = new Dictionary<Guid, double>();
                 foreach (var item in requestItems)
                 {                   
                     if (!string.IsNullOrEmpty(item.Fields))
@@ -101,7 +101,7 @@ namespace Buhgaltery.Services
                         foreach (var field in fields)
                             functionArgs.Parameters[0].Parameters[field.Key] = field.Value;
                     }
-                    var res = (long)functionArgs.Parameters[0].Evaluate();
+                    var res = (double)functionArgs.Parameters[0].Evaluate();
                     values[item.Id] = res;
                     sum += res;
                 }
@@ -113,7 +113,7 @@ namespace Buhgaltery.Services
             {
                 if (functionArgs.Parameters.Count() != 1)
                     throw new CalculateException("Неверное количество параметров в вызове MaxIdFrom");
-                long? maxValue = null;
+                double? maxValue = null;
                 Guid? id = null;
                 foreach (var item in requestItems)
                 {                    
@@ -124,7 +124,7 @@ namespace Buhgaltery.Services
                         foreach (var field in fields)
                             functionArgs.Parameters[0].Parameters[field.Key] = field.Value;
                     }
-                    var res = (long)functionArgs.Parameters[0].Evaluate();
+                    var res = (double)functionArgs.Parameters[0].Evaluate();
                     if (!maxValue.HasValue || res > maxValue)
                     {
                         id = item.Id;
@@ -137,7 +137,7 @@ namespace Buhgaltery.Services
             {
                 if (functionArgs.Parameters.Count() != 1)
                     throw new CalculateException("Неверное количество параметров в вызове MinIdFrom");
-                long? minValue = null;
+                double? minValue = null;
                 Guid? id = null;
                 foreach (var item in requestItems)
                 {                   
@@ -148,7 +148,7 @@ namespace Buhgaltery.Services
                         foreach (var field in fields)
                             functionArgs.Parameters[0].Parameters[field.Key] = field.Value;
                     }
-                    var res = (long)functionArgs.Parameters[0].Evaluate();
+                    var res = (double)functionArgs.Parameters[0].Evaluate();
                     if (!minValue.HasValue || res < minValue)
                     {
                         minValue = res;
@@ -161,8 +161,8 @@ namespace Buhgaltery.Services
             {
                 if (functionArgs.Parameters.Count() != 1)
                     throw new CalculateException("Неверное количество параметров в вызове AvgIdFrom");
-                long? sum = 0;
-                Dictionary<Guid, long> values = new Dictionary<Guid, long>();
+                double? sum = 0;
+                Dictionary<Guid, double> values = new Dictionary<Guid, double>();
                 foreach (var item in requestItems)
                 {                   
                     if (!string.IsNullOrEmpty(item.Fields))
@@ -172,12 +172,12 @@ namespace Buhgaltery.Services
                         foreach (var field in fields)
                             functionArgs.Parameters[0].Parameters[field.Key] = field.Value;
                     }
-                    var res = (long)functionArgs.Parameters[0].Evaluate();
+                    var res = (double)functionArgs.Parameters[0].Evaluate();
                     values[item.Id] = res;
                     sum += res;
                 }
                 var avg = sum / requestItems.Count();
-                long? minDelta = null;
+                double? minDelta = null;
                 Guid? result = null;
                 foreach (var item in values)
                 {

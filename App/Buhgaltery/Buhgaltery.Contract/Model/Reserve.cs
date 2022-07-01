@@ -7,5 +7,6 @@ namespace Buhgaltery.Contract.Model
         public Guid ProductId { get; set; }
         public decimal Value { get; set; }
         public Guid UserId { get; set; }
+        public string Product { get; set; }
     }
 }

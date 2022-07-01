@@ -15,14 +15,14 @@ namespace Buhgaltery.Services
 
         }
 
-        protected override Expression<Func<Db.Model.Formula, bool>> GetFilter(Contract.Model.FormulaFilter filter)
+        protected override Expression<Func<Db.Model.Formula, bool>> GetFilter(Contract.Model.FormulaFilter filter, Guid userId)
         {
             return s => (filter.Name == null || s.Name.Contains(filter.Name)) 
                      && (filter.IsDefault == null || s.IsDefault == filter.IsDefault);
         }
 
         protected override async Task PrepareBeforeAdd(Db.Interface.IRepository<Db.Model.Formula> repository, 
-            Contract.Model.FormulaCreator creator, CancellationToken token)
+            Contract.Model.FormulaCreator creator, Guid userId, CancellationToken token)
         {
             if (creator.IsDefault)
             {
@@ -41,7 +41,7 @@ namespace Buhgaltery.Services
         }
 
         protected override async Task PrepareBeforeUpdate(Db.Interface.IRepository<Db.Model.Formula> repository, 
-            Contract.Model.FormulaUpdater entity, CancellationToken token)
+            Contract.Model.FormulaUpdater entity, Guid userId, CancellationToken token)
         {
             if (entity.IsDefault)
             {
@@ -60,7 +60,7 @@ namespace Buhgaltery.Services
         }
 
         protected override async Task PrepareBeforeDelete(Db.Interface.IRepository<Db.Model.Formula> repository,
-            Db.Model.Formula entity, CancellationToken token)
+            Db.Model.Formula entity, Guid userId, CancellationToken token)
         {
             if (entity.IsDefault)
             {
@@ -81,6 +81,17 @@ namespace Buhgaltery.Services
             entry.Name = entity.Name;
             entry.IsDefault = entity.IsDefault;
             return entry;
+        }
+
+        protected override Db.Model.Formula AdditionalMapForAdd(Db.Model.Formula entity, Contract.Model.FormulaCreator creator, Guid userId)
+        {
+            return entity;
+        }
+
+        protected override async Task<bool> CheckUser(Db.Model.Formula entity, Guid userId)
+        {
+            await Task.CompletedTask;
+            return true;
         }
 
         protected override string DefaultSort => "Name";

@@ -12,7 +12,7 @@ namespace Buhgaltery.Db.Model
         public string Description { get; set; }
         [ColumnName("value")]
         public decimal Value { get; set; }
-        [ColumnName("incoming_date")]
-        public DateTime IncomingDate { get; set; }
+        [ColumnName("income_date")]
+        public DateTimeOffset IncomingDate { get; set; }
     }
 }

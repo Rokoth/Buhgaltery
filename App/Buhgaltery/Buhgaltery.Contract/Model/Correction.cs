@@ -7,6 +7,6 @@ namespace Buhgaltery.Contract.Model
         public Guid UserId { get; set; }      
         public string Description { get; set; }       
         public decimal Value { get; set; }        
-        public DateTime CorrectionDate { get; set; }
+        public DateTimeOffset CorrectionDate { get; set; }
     }
 }

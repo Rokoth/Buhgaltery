@@ -22,41 +22,44 @@ namespace Buhgaltery.Services
 
         }
 
-        protected virtual TEntity MapToEntityAdd(TCreator creator)
+        protected virtual TEntity MapToEntityAdd(TCreator creator, Guid userId)
         {
             var result = _mapper.Map<TEntity>(creator);
             result.Id = Guid.NewGuid();
             result.IsDeleted = false;
             result.VersionDate = DateTimeOffset.Now;
+            result = AdditionalMapForAdd(result, creator, userId);
             return result;
         }
 
-        protected virtual async Task PrepareBeforeAdd(Db.Interface.IRepository<TEntity> repository, TCreator creator, CancellationToken token)
+        protected abstract TEntity AdditionalMapForAdd(TEntity entity, TCreator creator, Guid userId);
+
+        protected virtual async Task PrepareBeforeAdd(Db.Interface.IRepository<TEntity> repository, TCreator creator, Guid userId, CancellationToken token)
         {
             await Task.CompletedTask;
         }
 
-        protected virtual async Task PrepareBeforeUpdate(Db.Interface.IRepository<TEntity> repository, TUpdater entity, CancellationToken token)
+        protected virtual async Task PrepareBeforeUpdate(Db.Interface.IRepository<TEntity> repository, TUpdater entity, Guid userId, CancellationToken token)
         {
             await Task.CompletedTask;
         }
 
-        protected virtual async Task PrepareBeforeDelete(Db.Interface.IRepository<TEntity> repository, TEntity entity, CancellationToken token)
+        protected virtual async Task PrepareBeforeDelete(Db.Interface.IRepository<TEntity> repository, TEntity entity, Guid userId, CancellationToken token)
         {
             await Task.CompletedTask;
         }
 
-        protected virtual async Task ActionAfterAdd(Db.Interface.IRepository<TEntity> repository, TCreator creator, TEntity entity, CancellationToken token)
+        protected virtual async Task ActionAfterAdd(Db.Interface.IRepository<TEntity> repository, TCreator creator, TEntity entity, Guid userId, CancellationToken token)
         {
             await Task.CompletedTask;
         }
 
-        protected virtual async Task ActionAfterUpdate(Db.Interface.IRepository<TEntity> repository, TUpdater updater, TEntity entity, CancellationToken token)
+        protected virtual async Task ActionAfterUpdate(Db.Interface.IRepository<TEntity> repository, TUpdater updater, TEntity entity, Guid userId, CancellationToken token)
         {
             await Task.CompletedTask;
         }
 
-        protected virtual async Task ActionAfterDelete(Db.Interface.IRepository<TEntity> repository, TEntity entity, CancellationToken token)
+        protected virtual async Task ActionAfterDelete(Db.Interface.IRepository<TEntity> repository, TEntity entity, Guid userId, CancellationToken token)
         {
             await Task.CompletedTask;
         }
@@ -67,14 +70,14 @@ namespace Buhgaltery.Services
         /// <param name="entity"></param>
         /// <param name="token"></param>
         /// <returns></returns>
-        public virtual async Task<Tdto> AddAsync(TCreator creator, CancellationToken token)
+        public virtual async Task<Tdto> AddAsync(TCreator creator, Guid userId, CancellationToken token)
         {
             return await ExecuteAsync(async (repo) =>
             {
-                var entity = MapToEntityAdd(creator);
-                await PrepareBeforeAdd(repo, creator, token);
+                var entity = MapToEntityAdd(creator, userId);
+                await PrepareBeforeAdd(repo, creator, userId, token);
                 var result = await repo.AddAsync(entity, false, token);
-                await ActionAfterAdd(repo, creator, result, token);
+                await ActionAfterAdd(repo, creator, result, userId, token);
                 await repo.SaveChangesAsync();
                 var prepare = _mapper.Map<Tdto>(result);
                 prepare = await Enrich(prepare, token);
@@ -84,15 +87,17 @@ namespace Buhgaltery.Services
 
         protected abstract TEntity UpdateFillFields(TUpdater entity, TEntity entry);
 
-        public virtual async Task<Tdto> UpdateAsync(TUpdater entity, CancellationToken token)
+        public virtual async Task<Tdto> UpdateAsync(TUpdater entity, Guid userId, CancellationToken token)
         {
             return await ExecuteAsync(async (repo) =>
             {
                 var entry = await repo.GetAsync(entity.Id, token);
+                if (entity == null) throw new DataServiceException($"Entity with id = {entity.Id} not found in DB");
+                if (!(await CheckUser(entry, userId))) throw new DataServiceException($"Entity with id = {entity.Id} not found in DB");
                 entry = UpdateFillFields(entity, entry);
-                await PrepareBeforeUpdate(repo, entity, token);
+                await PrepareBeforeUpdate(repo, entity, userId, token);
                 TEntity result = await repo.UpdateAsync(entry, false, token);
-                await ActionAfterUpdate(repo, entity, result, token);
+                await ActionAfterUpdate(repo, entity, result, userId, token);
                 await repo.SaveChangesAsync();
                 var prepare = _mapper.Map<Tdto>(result);
                 prepare = await Enrich(prepare, token);
@@ -100,15 +105,16 @@ namespace Buhgaltery.Services
             });
         }
 
-        public virtual async Task<Tdto> DeleteAsync(Guid id, CancellationToken token)
+        public virtual async Task<Tdto> DeleteAsync(Guid id, Guid userId, CancellationToken token)
         {
             return await ExecuteAsync(async (repo) =>
             {
                 var entity = await repo.GetAsync(id, token);
                 if (entity == null) throw new DataServiceException($"Entity with id = {id} not found in DB");
-                await PrepareBeforeDelete(repo, entity, token);
+                if (!(await CheckUser(entity, userId))) throw new DataServiceException($"Entity with id = {id} not found in DB");
+                await PrepareBeforeDelete(repo, entity, userId, token);
                 entity = await repo.DeleteAsync(entity, false, token);
-                await ActionAfterDelete(repo, entity, token);
+                await ActionAfterDelete(repo, entity, userId, token);
                 await repo.SaveChangesAsync();
                 var prepare = _mapper.Map<Tdto>(entity);
                 prepare = await Enrich(prepare, token);
@@ -121,23 +127,23 @@ namespace Buhgaltery.Services
         where Tdto : Contract.Model.Entity
         where TFilter : Contract.Model.Filter<Tdto>
     {
-        Task<Tdto> GetAsync(Guid id, CancellationToken token);
-        Task<Contract.Model.PagedResult<Tdto>> GetAsync(TFilter filter, CancellationToken token);
+        Task<Tdto> GetAsync(Guid id, Guid userId, CancellationToken token);
+        Task<Contract.Model.PagedResult<Tdto>> GetAsync(TFilter filter, Guid userId, CancellationToken token);
     }
 
     public interface IAddDataService<Tdto, TCreator> where Tdto : Contract.Model.Entity
     {
-        Task<Tdto> AddAsync(TCreator entity, CancellationToken token);
+        Task<Tdto> AddAsync(TCreator entity, Guid userId, CancellationToken token);
     }
 
     public interface IUpdateDataService<Tdto, TUpdater> where Tdto : Contract.Model.Entity
     {
-        Task<Tdto> UpdateAsync(TUpdater entity, CancellationToken token);
+        Task<Tdto> UpdateAsync(TUpdater entity, Guid userId, CancellationToken token);
     }
 
     public interface IDeleteDataService<Tdto> where Tdto : Contract.Model.Entity
     {
-        Task<Tdto> DeleteAsync(Guid id, CancellationToken token);
+        Task<Tdto> DeleteAsync(Guid id, Guid userId, CancellationToken token);
     }
 
     public static class DataServiceExtension

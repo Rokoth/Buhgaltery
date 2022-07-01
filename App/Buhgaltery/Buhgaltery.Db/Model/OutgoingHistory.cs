@@ -14,7 +14,7 @@ namespace Buhgaltery.Db.Model
         public string Description { get; set; }
         [ColumnName("value")]
         public decimal Value { get; set; }
-        [ColumnName("outgoing_date")]
-        public DateTime OutgoingDate { get; set; }
+        [ColumnName("out_date")]
+        public DateTimeOffset OutgoingDate { get; set; }
     }
 }

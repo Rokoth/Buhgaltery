@@ -4,10 +4,10 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'auth',
-  templateUrl: './auth.component.html'
+  selector: 'account',
+  templateUrl: './account.component.html'
 })
-export class AuthComponent {
+export class AccountComponent {
   public response: AuthResponse;
   public loginForm: FormGroup;
   public errorMessage: string = '';
