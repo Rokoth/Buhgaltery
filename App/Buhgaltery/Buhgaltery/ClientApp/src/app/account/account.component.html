@@ -4,7 +4,7 @@
     <div *ngIf="showError" class="alert alert-danger" role="alert">
       {{errorMessage}}
     </div>
-    <!--<form formGroup="loginForm" autocomplete="off" novalidate (ngSubmit)="loginUser(loginForm.value)">
+    <form class="container" [formGroup]="loginForm" autocomplete="off" novalidate (ngSubmit)="loginUser(loginForm.value)">
       <div class="form-group row">
         <label for="username" class="col-form-label col-sm-2">Username:</label>
         <div class="col-md-5">
@@ -29,6 +29,6 @@
           <button type="submit" class="btn btn-info" [disabled]="!loginForm.valid">Login</button>
         </div>
       </div>
-    </form>-->
+    </form>
   </div>
 </div>

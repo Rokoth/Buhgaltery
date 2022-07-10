@@ -1,0 +1,10 @@
+<h1>Домашняя бухгалтерия</h1>
+<p *ngIf="!data"><em>Loading...</em></p>
+<p>Текущие суммы:</p>
+<ul *ngIf="data">
+  <li>Приход: {{data.incomings}} <a class="nav-link text-dark" [routerLink]="['/incoming/add']">Добавить приход</a></li>
+  <li>Расход: {{data.outgoings}} <a class="nav-link text-dark" [routerLink]="['/outgoing/add']">Добавить расход</a></li>
+  <li>Зарезервировано: {{data.reserves}} <a class="nav-link text-dark" [routerLink]="['/reserve/add']">Добавить резерв</a></li>
+  <li>Свободно: {{data.free}} </li>
+</ul>
+<p>Итого</p>

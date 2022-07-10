@@ -38,7 +38,7 @@ export class AccountComponent {
       password: login.password
     }
 
-    this.http.post<AuthResponse>(this.baseUrl + 'api/accounts/login', body).subscribe(result => {
+    this.http.post<AuthResponse>(this.baseUrl + 'accounts/login', body).subscribe(result => {
       localStorage.setItem("token", result.token);
       this._router.navigate([this._returnUrl]);
     }, error => {

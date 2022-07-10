@@ -35,13 +35,15 @@ namespace Buhgaltery.Services
         }
 
         private async Task Run()
-        {
-            using var scope = _serviceProvider.CreateScope();
-            var serviceProvider = scope.ServiceProvider;
-            IAllocateReservesService service = serviceProvider.GetRequiredService<IAllocateReservesService>();
+        {            
             while (!_token.IsCancellationRequested)
             {
-                await service.Execute(_token);
+                using (var scope = _serviceProvider.CreateScope())
+                {
+                    var serviceProvider = scope.ServiceProvider;
+                    IAllocateReservesService service = serviceProvider.GetRequiredService<IAllocateReservesService>();
+                    await service.Execute(_token);                    
+                }
                 await Task.Delay(60 * 1000, _token);
             }
         }

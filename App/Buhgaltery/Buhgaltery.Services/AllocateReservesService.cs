@@ -37,7 +37,7 @@ namespace Buhgaltery.Services
                              Description = user.Description,
                              FormulaId = user.FormulaId,
                              Id = user.Id,
-                             LastAddedDate = DateTimeOffset.Now,
+                             LastAddedDate = user.LastAddedDate.Value.AddMinutes(user.AddPeriod),
                              LeafOnly = user.LeafOnly,
                              Login = user.Login,
                              Name = user.Name,

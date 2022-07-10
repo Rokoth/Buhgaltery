@@ -32,14 +32,16 @@ namespace Buhgaltery.Services
         }
 
         private async Task Run()
-        {
-            using var scope = _serviceProvider.CreateScope();
-            var serviceProvider = scope.ServiceProvider;
-            var service = serviceProvider.GetRequiredService<IReservesRevisorService>();           
+        {                   
             while (!_token.IsCancellationRequested)
             {
-                await service.CheckReserveValues(_token);
-                await service.CheckSum(_token);
+                using (var scope = _serviceProvider.CreateScope())
+                {
+                    var serviceProvider = scope.ServiceProvider;
+                    var service = serviceProvider.GetRequiredService<IReservesRevisorService>();
+                    await service.CheckReserveValues(_token);
+                    await service.CheckSum(_token);
+                }
                 await Task.Delay(5*60*1000, _token);
             }
         }

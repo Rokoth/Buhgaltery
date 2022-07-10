@@ -190,22 +190,31 @@ namespace Buhgaltery.Services
 
         private static async Task UpdateProduct(Guid? creatorProductId, decimal defaultReserveValue, decimal? creatorValue, IRepository<Db.Model.Product> _productRepository, 
             Db.Model.Product selected, Db.Model.Reserve reserve, CancellationToken token)
-        {            
-            if (reserve.Value < 0)
+        {
+            if (creatorProductId.HasValue)
             {
-                var count = (int)Math.Ceiling(-reserve.Value / defaultReserveValue);
-                selected.LastAddDate = selected.LastAddDate.AddHours(selected.AddPeriod * count);
-                selected.AddPeriod = Math.Max(selected.AddPeriod - count, 1);
-                reserve.Value += (defaultReserveValue * count);
-                selected.VersionDate = DateTimeOffset.Now;
-                await _productRepository.UpdateAsync(selected, false, token);
+                if (reserve.Value < 0)
+                {
+                    var count = (int)Math.Ceiling(-reserve.Value / defaultReserveValue);
+                    selected.LastAddDate = selected.LastAddDate.AddHours(selected.AddPeriod * count);
+                    selected.AddPeriod = Math.Max(selected.AddPeriod - count, 1);
+                    reserve.Value += (defaultReserveValue * count);
+                    selected.VersionDate = DateTimeOffset.Now;
+                    await _productRepository.UpdateAsync(selected, false, token);
+                }
+                else if (!creatorValue.HasValue || creatorValue.Value > 0)
+                {
+                    var count = 1;
+                    if (creatorValue.HasValue) count = (int)Math.Ceiling(creatorValue.Value / defaultReserveValue);
+                    selected.LastAddDate = selected.LastAddDate.AddHours(selected.AddPeriod * count);
+                    selected.AddPeriod = Math.Max(selected.AddPeriod - count, 1);
+                    selected.VersionDate = DateTimeOffset.Now;
+                    await _productRepository.UpdateAsync(selected, false, token);
+                }
             }
-            else if (!creatorValue.HasValue || creatorValue.Value > 0)
+            else
             {
-                var count = 1;
-                if(creatorValue.HasValue) count = (int)Math.Ceiling(creatorValue.Value / defaultReserveValue);
-                selected.LastAddDate = selected.LastAddDate.AddHours(selected.AddPeriod * count);
-                selected.AddPeriod = Math.Max(selected.AddPeriod - count, 1);
+                selected.LastAddDate = selected.LastAddDate.AddHours(selected.AddPeriod);               
                 selected.VersionDate = DateTimeOffset.Now;
                 await _productRepository.UpdateAsync(selected, false, token);
             }
