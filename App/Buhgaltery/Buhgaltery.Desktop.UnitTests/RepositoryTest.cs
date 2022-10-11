@@ -118,6 +118,30 @@ namespace Buhgaltery.Desktop.UnitTests
             Assert.Equal("param_value_updated", dataNew.ParamValue);
         }
 
+        /// <summary>
+        /// Тест удаления сущности
+        /// </summary>
+        /// <returns></returns>
+        [Fact]
+        public async Task DeleteTest()
+        {
+            var context = _serviceProvider.GetRequiredService<DbSqLiteContext>();
+            var settingsItem = CreateSettings();
+            context.Settings.Add(settingsItem);
+            await context.SaveChangesAsync();
+
+            var repo = _serviceProvider.GetRequiredService<IRepository<Settings>>();
+            var data = repo.Get(settingsItem.Id);
+
+            Assert.NotNull(data);
+            Assert.Equal(settingsItem.Id, data.Id);
+                        
+            repo.Delete(settingsItem, true);
+
+            var dataNew = repo.Get(settingsItem.Id);
+            Assert.Null(dataNew);          
+        }
+
         ///// <summary>
         ///// Тест удаления сущности
         ///// </summary>
