@@ -1,4 +1,8 @@
-using AutoMapper;
+//Copyright 2021-2022 Dmitriy Rokoth
+//Licensed under the Apache License, Version 2.0
+//
+//ref1
+
 using Buhgaltery.BuhgalteryDeployer;
 using Buhgaltery.Common;
 using Buhgaltery.Db.Context;
@@ -8,23 +12,14 @@ using Buhgaltery.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Configuration;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
-using System.Collections.Generic;
 
 namespace Buhgaltery
 {
@@ -36,8 +31,7 @@ namespace Buhgaltery
         }
 
         public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+        
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<CommonOptions>(Configuration);
@@ -52,44 +46,41 @@ namespace Buhgaltery
             });
 
             services.AddCors();
-            services.AddAuthentication()
-            .AddJwtBearer("Token", (options) =>
-            {
-                AuthOptions settings = Configuration.GetSection("AuthOptions").Get<AuthOptions>();
-                options.RequireHttpsMetadata = false;
-                options.SaveToken = true;
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    //// укзывает, будет ли валидироваться издатель при валидации токена
-                    ValidateIssuer = true,
-                    //// строка, представляющая издателя
-                    ValidIssuer = settings.Issuer,
-
-                    //// будет ли валидироваться потребитель токена
-                    ValidateAudience = true,
-                    //// установка потребителя токена
-                    ValidAudience = settings.Audience,
-                    //// будет ли валидироваться время существования
-                    ValidateLifetime = true,
-
-                    // установка ключа безопасности
-                    IssuerSigningKey = settings.GetSymmetricSecurityKey(),
-                    // валидация ключа безопасности
-                    ValidateIssuerSigningKey = true,
-
-                };
-            });
-
             services
-                .AddAuthorization(options =>
+                .AddAuthentication()
+                .AddJwtBearer("Token", (options) =>
                 {
-                    var defPolicy = new AuthorizationPolicyBuilder()
-                        .RequireAuthenticatedUser()
-                        .AddAuthenticationSchemes("Token")
-                        .Build();                   
-                    options.AddPolicy("Token", defPolicy);
-                    options.DefaultPolicy = defPolicy;
+                    AuthOptions settings = Configuration.GetSection("AuthOptions").Get<AuthOptions>();
+                    options.RequireHttpsMetadata = false;
+                    options.SaveToken = true;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        //// укзывает, будет ли валидироваться издатель при валидации токена
+                        ValidateIssuer = true,
+                        //// строка, представляющая издателя
+                        ValidIssuer = settings.Issuer,
+                        //// будет ли валидироваться потребитель токена
+                        ValidateAudience = true,
+                        //// установка потребителя токена
+                        ValidAudience = settings.Audience,
+                        //// будет ли валидироваться время существования
+                        ValidateLifetime = true,
+                        // установка ключа безопасности
+                        IssuerSigningKey = settings.GetSymmetricSecurityKey(),
+                        // валидация ключа безопасности
+                        ValidateIssuerSigningKey = true,
+                    };
                 });
+
+            services.AddAuthorization(options =>
+            {
+                var defPolicy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .AddAuthenticationSchemes("Token")
+                    .Build();                   
+                options.AddPolicy("Token", defPolicy);
+                options.DefaultPolicy = defPolicy;
+            });
 
             services.AddScoped<IRepository<Db.Model.User>, Repository<Db.Model.User>>();         
             services.AddScoped<IRepository<Db.Model.UserHistory>, Repository<Db.Model.UserHistory>>();
@@ -120,9 +111,7 @@ namespace Buhgaltery
             services.AddScoped<ICalculator, CalculatorNCalc>();
             services.ConfigureAutoMapper();
             services.AddSwaggerGen(swagger =>
-            {
-                //s.OperationFilter<AddRequiredHeaderParameter>();
-
+            {                
                 swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
                     Name = "Authorization",
@@ -136,14 +125,14 @@ namespace Buhgaltery
                 {
                     {
                           new OpenApiSecurityScheme
-                            {
-                                Reference = new OpenApiReference
-                                {
-                                    Type = ReferenceType.SecurityScheme,
-                                    Id = "Bearer"
-                                }
-                            },
-                            Array.Empty<string>()
+                          {
+                              Reference = new OpenApiReference
+                              {
+                                  Type = ReferenceType.SecurityScheme,
+                                  Id = "Bearer"
+                              }
+                          },
+                          Array.Empty<string>()
                     }
                 });
             });
@@ -154,7 +143,6 @@ namespace Buhgaltery
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -204,122 +192,6 @@ namespace Buhgaltery
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });            
-        }
-    }
-
-    public class AddRequiredHeaderParameter : IOperationFilter
-    {
-        public void Apply(OpenApiOperation operation, OperationFilterContext context)
-        {
-            if (operation.Parameters == null)
-                operation.Parameters = new List<OpenApiParameter>();
-
-            operation.Parameters.Add(new OpenApiParameter
-            {
-                Name = "Authorization",
-                In = ParameterLocation.Header,
-                Description = "access token",
-                Required = true,
-                Schema = new OpenApiSchema
-                {
-                    Type = "string",
-                    Default = new OpenApiString("Bearer ")
-                }
-            });
-        }
-    }
-
-    public class MappingProfile : Profile
-    {
-        public MappingProfile()
-        {
-            CreateMap<Db.Model.User, Contract.Model.User>();
-            CreateMap<Contract.Model.UserCreator, Db.Model.User>()
-                .ForMember(s => s.Password, s => s.Ignore());
-            CreateMap<Db.Model.UserHistory, Contract.Model.UserHistory>();
-            CreateMap<Contract.Model.UserUpdater, Db.Model.User>()
-                .ForMember(s => s.Password, s => s.Ignore());
-
-            CreateMap<Db.Model.Formula, Contract.Model.Formula>();
-            CreateMap<Contract.Model.FormulaCreator, Db.Model.Formula>();
-            CreateMap<Db.Model.FormulaHistory, Contract.Model.FormulaHistory>();
-            CreateMap<Contract.Model.FormulaUpdater, Db.Model.Formula>();
-
-            CreateMap<Db.Model.Product, Contract.Model.Product>();
-            CreateMap<Contract.Model.ProductCreator, Db.Model.Product>();
-            CreateMap<Db.Model.ProductHistory, Contract.Model.ProductHistory>();
-            CreateMap<Contract.Model.ProductUpdater, Db.Model.Product>();
-
-            CreateMap<Db.Model.Incoming, Contract.Model.Incoming>();
-            CreateMap<Contract.Model.IncomingCreator, Db.Model.Incoming>();
-            CreateMap<Db.Model.IncomingHistory, Contract.Model.IncomingHistory>();
-            CreateMap<Contract.Model.IncomingUpdater, Db.Model.Incoming>();
-
-            CreateMap<Db.Model.Outgoing, Contract.Model.Outgoing>();
-            CreateMap<Contract.Model.OutgoingCreator, Db.Model.Outgoing>();
-            CreateMap<Db.Model.OutgoingHistory, Contract.Model.OutgoingHistory>();
-            CreateMap<Contract.Model.OutgoingUpdater, Db.Model.Outgoing>();
-
-            CreateMap<Db.Model.Reserve, Contract.Model.Reserve>();
-            CreateMap<Contract.Model.ReserveCreator, Db.Model.Reserve>();
-            CreateMap<Db.Model.ReserveHistory, Contract.Model.ReserveHistory>();
-            CreateMap<Contract.Model.ReserveUpdater, Db.Model.Reserve>();
-
-            CreateMap<Db.Model.Correction, Contract.Model.Correction>();
-            CreateMap<Contract.Model.CorrectionCreator, Db.Model.Correction>();
-            CreateMap<Db.Model.CorrectionHistory, Contract.Model.CorrectionHistory>();
-            CreateMap<Contract.Model.CorrectionUpdater, Db.Model.Correction>();
-        }
-    }
-
-    public static class CustomExtensionMethods
-    {
-        public static IConfigurationBuilder AddDbConfiguration(this IConfigurationBuilder builder)
-        {
-            var configuration = builder.Build();
-            var connectionString = configuration.GetConnectionString("MainConnection");
-            builder.AddConfigDbProvider(options => options.UseNpgsql(connectionString), connectionString);
-            return builder;
-        }
-
-        public static IConfigurationBuilder AddConfigDbProvider(
-            this IConfigurationBuilder configuration, Action<DbContextOptionsBuilder> setup, string connectionString)
-        {
-            configuration.Add(new ConfigDbSource(setup, connectionString));
-            return configuration;
-        }
-
-        public static IServiceCollection ConfigureAutoMapper(this IServiceCollection services)
-        {
-            var mappingConfig = new AutoMapper.MapperConfiguration(mc => mc.AddProfile(new MappingProfile()));
-
-            var mapper = mappingConfig.CreateMapper();
-            services.AddSingleton(mapper);
-            return services;
-        }
-
-        public static ILoggingBuilder AddErrorNotifyLogger(
-        this ILoggingBuilder builder)
-        {
-            builder.AddConfiguration();
-
-            builder.Services.TryAddEnumerable(
-                ServiceDescriptor.Singleton<ILoggerProvider, ErrorNotifyLoggerProvider>());
-
-            LoggerProviderOptions.RegisterProviderOptions
-                <ErrorNotifyLoggerConfiguration, ErrorNotifyLoggerProvider>(builder.Services);
-
-            return builder;
-        }
-
-        public static ILoggingBuilder AddErrorNotifyLogger(
-            this ILoggingBuilder builder,
-            Action<ErrorNotifyLoggerConfiguration> configure)
-        {
-            builder.Services.Configure(configure);
-            builder.AddErrorNotifyLogger();            
-
-            return builder;
         }
     }
 }

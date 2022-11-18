@@ -124,7 +124,7 @@ namespace Buhgaltery.Desktop
 
         private void RequireAuth()
         {
-            if (!_authService.IsAuth)
+            if (!_authService.IsAuth && !_authService.TryAuth())
             {
                 var connectWindow = _serviceProvider.GetRequiredService<ServerConnectWindow>();
                 connectWindow.ShowDialog();

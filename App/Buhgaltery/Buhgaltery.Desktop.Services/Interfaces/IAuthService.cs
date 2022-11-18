@@ -9,6 +9,8 @@ namespace Buhgaltery.Desktop.Services.Interfaces
     public interface IAuthService
     {
         bool IsAuth { get; }
+
+        bool TryAuth();
     }
 
     public interface IDataService<T, F, U> where T : Entity where F : Filter<T>

@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Copyright>Dmitriy Rokoth 2021</Copyright>
     <Authors>Dmitriy Rokoth</Authors>
-    <Version>0.0.1</Version>
+    <Version>0.0.2</Version>
     <Product>HomeBuhgaltery</Product>
     <Description>Home buhgaltery HttpClient wrapper</Description>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>

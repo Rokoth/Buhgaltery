@@ -1,50 +1,34 @@
-﻿using Buhgaltery.Contract.Model;
-using Buhgaltery.Desktop.Services.Interfaces;
+﻿using Buhgaltery.Desktop.Services.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Buhgaltery.Desktop.Services
 {
     public class AuthService : IAuthService
     {
-        public bool IsAuth { get; }
-    }
-
-
-    public class SettingsDataService : IDataService<User, UserFilter, UserUpdater> 
-    {
-        private IServiceProvider _serviceProvider;
-
-        public SettingsDataService(IServiceProvider serviceProvider)
+        private readonly IServiceProvider _serviceProvider;
+        public AuthService(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
         }
+                
+        public bool IsAuth { get; private set; }
 
-        public Task<User> Add(User entity)
+        public bool TryAuth()
         {
-            throw new NotImplementedException();
-        }
+            try
+            {
+                IsAuth = true;
+                return true;
 
-        public Task<bool> Delete(Guid id)
-        {
-            throw new NotImplementedException();
-        }
+            }
+            catch (Exception)
+            {
 
-        public Task<List<User>> Get(UserFilter filter)
-        {
-            throw new NotImplementedException();
-        }
+                IsAuth = false;
+                return false;
+            }
 
-        public Task<User> GetItem(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<User> Update(UserUpdater entity)
-        {
-            throw new NotImplementedException();
         }
     }
 }
