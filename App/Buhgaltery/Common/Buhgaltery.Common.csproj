@@ -4,15 +4,18 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Buhgaltery.Common</AssemblyName>
     <RootNamespace>Buhgaltery.Common</RootNamespace>
-    <Version>0.0.10</Version>
+    <Version>0.0.11</Version>
     <Authors>Dmitriy Rokoth</Authors>
     <Product>HomeBuhgaltery</Product>
-    <Description>Home buhgaltery</Description>
-    <Copyright>Dmitriy Rokoth 2021</Copyright>
+    <Description>Home buhgaltery common library</Description>
+    <Copyright>Dmitriy Rokoth 2021-2023</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/Rokoth/Buhgaltery</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Rokoth/Buhgaltery</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <PackageId>Buhgaltery.Common</PackageId>
+    <Title>Buhgaltery.Common</Title>
+    <Company>BIR</Company>
   </PropertyGroup>
 
   <ItemGroup>

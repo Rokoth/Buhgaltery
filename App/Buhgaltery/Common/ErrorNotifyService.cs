@@ -1,4 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿//Copyright 2021-2022 Dmitriy Rokoth
+//Licensed under the Apache License, Version 2.0
+//
+//ref1
+
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System;
 using System.Net;
@@ -95,12 +100,16 @@ namespace Buhgaltery.Common
             _init = Init();
         }
 
+        /// <summary>
+        /// ctor
+        /// </summary>
         public ErrorNotifyService(IServiceProvider serviceProvider)
         {
             if (_config == null)
             {
                 var options = serviceProvider.GetRequiredService<IOptions<CommonOptions>>();
-                _config = new ErrorNotifyLoggerConfiguration() { 
+                _config = new ErrorNotifyLoggerConfiguration()
+                { 
                    EventId = 0,
                    Options = options.Value.ErrorNotifyOptions
                 };
@@ -149,6 +158,10 @@ namespace Buhgaltery.Common
             }
         }
 
+        /// <summary>
+        /// Авторизация
+        /// </summary>
+        /// <returns></returns>
         private async Task<bool> Auth()
         {
             bool _isLocked = false;
@@ -209,6 +222,13 @@ namespace Buhgaltery.Common
             return true;
         }
 
+        /// <summary>
+        /// Отправка сообщения
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="level"></param>
+        /// <param name="title"></param>
+        /// <returns></returns>
         public async Task Send(string message, MessageLevelEnum level = MessageLevelEnum.Error, string title = null)
         {
             if (!_init) _init = Init();
@@ -243,6 +263,15 @@ namespace Buhgaltery.Common
             }
         }
 
+        /// <summary>
+        /// обертка для вызова http
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="action"></param>
+        /// <param name="method"></param>
+        /// <param name="parseMethod"></param>
+        /// <param name="needAuth"></param>
+        /// <returns></returns>
         private async Task<Response<T>> Execute<T>(
             Func<HttpClient, Task<HttpResponseMessage>> action,
             string method,
@@ -290,6 +319,10 @@ namespace Buhgaltery.Common
             }
         }
 
+        /// <summary>
+        /// джоб проверки подключения к серверу
+        /// </summary>
+        /// <returns></returns>
         private async Task CheckConnect()
         {
             while (!_isDisposed)
@@ -299,6 +332,11 @@ namespace Buhgaltery.Common
             }
         }
 
+        /// <summary>
+        /// проверка подключения к серверу
+        /// </summary>
+        /// <param name="server"></param>
+        /// <returns></returns>
         private async Task<bool> CheckConnectOnce(string server)
         {
             using (HttpClient client = new HttpClient())
@@ -318,6 +356,9 @@ namespace Buhgaltery.Common
             }
         }
 
+        /// <summary>
+        /// IDisposable
+        /// </summary>
         public void Dispose()
         {
             _isDisposed = true;
