@@ -17,13 +17,14 @@
     <RepositoryType>git</RepositoryType>
     <Copyright>Dmitriy Rokoth 2021</Copyright>
     <Description>Home buhgaltery</Description>
-    <Version>0.0.23</Version>
+    <Version>0.0.24</Version>
     <Authors>Dmitriy Rokoth</Authors>
     <Company>Dmitriy Rokoth</Company>
     <Product>HomeBuhgaltery</Product>
     <UserSecretsId>3f63f86b-6c81-490e-99f5-11127eace647</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <PackageId>Buhgaltery.Host</PackageId>
+    <Title>Домашняя бухгалтерия</Title>
   </PropertyGroup>
 
   <ItemGroup>

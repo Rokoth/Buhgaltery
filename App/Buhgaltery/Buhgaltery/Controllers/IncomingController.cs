@@ -1,150 +1,56 @@
-﻿using Buhgaltery.Contract.Model;
-using Buhgaltery.Services;
+﻿//Licensed under the Apache License, Version 2.0
+//
+//ref1
+using Buhgaltery.Contract.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Buhgaltery.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
-    public class IncomingController : Controller
-    {        
-        private readonly IServiceProvider _serviceProvider;
-        private readonly ILogger<AccountsController> _logger;
-        private readonly IGetDataService<Incoming, IncomingFilter> _getDataService;
-        private readonly IAddDataService<Incoming, IncomingCreator> _addDataService;
-        private readonly IUpdateDataService<Incoming, IncomingUpdater> _updateDataService;
-        private readonly IDeleteDataService<Incoming> _deleteDataService;
-        private readonly IGetDataService<IncomingHistory, IncomingHistoryFilter> _getHistoryDataService;
-
-        public IncomingController(IServiceProvider serviceProvider)
+    [Produces("application/json")]
+    public class IncomingController : BaseController<Incoming, IncomingFilter, IncomingCreator, IncomingUpdater, IncomingHistory, IncomingHistoryFilter>
+    {
+        public IncomingController(IServiceProvider serviceProvider): base(serviceProvider) { }
+                
+        [HttpPost("GetList")]        
+        public async Task<IActionResult> GetListAsync([FromBody] IncomingFilter incomingFilter)
         {
-            _serviceProvider = serviceProvider;           
-            _logger = _serviceProvider.GetRequiredService<ILogger<AccountsController>>();
-            _getDataService = _serviceProvider.GetRequiredService<IGetDataService<Incoming, IncomingFilter>>();
-            _addDataService = _serviceProvider.GetRequiredService<IAddDataService<Incoming, IncomingCreator>>();
-            _updateDataService = _serviceProvider.GetRequiredService<IUpdateDataService<Incoming, IncomingUpdater>>();
-            _deleteDataService = _serviceProvider.GetRequiredService<IDeleteDataService<Incoming>>();
-            _getHistoryDataService = _serviceProvider.GetRequiredService<IGetDataService<IncomingHistory, IncomingHistoryFilter>>();
+            return await GetListInternalAsync(incomingFilter);
         }
 
-        [Authorize]
-        [HttpPost("GetList")]
-        
-        public async Task<IActionResult> GetListAsync([FromBody] IncomingFilter IncomingFilter)
-        {           
-            try
-            {
-                var userId = Guid.Parse(User.Identity.Name);
-                var source = new CancellationTokenSource(30000);
-                var response = await _getDataService.GetAsync(IncomingFilter, userId, source.Token);
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Ошибка при обработке запроса IncomingController::GetListAsync: {ex.Message} {ex.StackTrace}");
-                return BadRequest($"Ошибка при обработке запроса: {ex.Message}");
-            }
-        }
-
-        [Authorize]
-        [HttpPost("GetHistory")]
-        
+        [HttpPost("GetHistory")]        
         public async Task<IActionResult> GetHistoryAsync([FromBody] IncomingHistoryFilter filter)
         {
-            try
-            {
-                var userId = Guid.Parse(User.Identity.Name);
-                var source = new CancellationTokenSource(30000);
-                var response = await _getHistoryDataService.GetAsync(filter, userId, source.Token);
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Ошибка при обработке запроса IncomingController::GetHistoryAsync: {ex.Message} {ex.StackTrace}");
-                return BadRequest($"Ошибка при обработке запроса: {ex.Message}");
-            }
+            return await GetHistoryInternalAsync(filter);
         }
 
-        [Authorize]
-        [HttpPost("GetItem")]
-        
+        [HttpPost("GetItem")]        
         public async Task<IActionResult> GetItemAsync([FromBody] Guid id)
         {
-            try
-            {
-                var userId = Guid.Parse(User.Identity.Name);
-                var source = new CancellationTokenSource(30000);
-                var response = await _getDataService.GetAsync(id, userId, source.Token);
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Ошибка при обработке запроса IncomingController::GetItemAsync: {ex.Message} {ex.StackTrace}");
-                return BadRequest($"Ошибка при обработке запроса: {ex.Message}");
-            }
+            return await GetItemInternalAsync(id);
         }
 
-        [Authorize]
-        [HttpPost("Add")]
-        
+        [HttpPost("Add")]        
         public async Task<IActionResult> AddAsync([FromBody] IncomingCreator creator)
         {
-            try
-            {
-                var userId = Guid.Parse(User.Identity.Name);
-                var source = new CancellationTokenSource(30000);
-                var response = await _addDataService.AddAsync(creator, userId, source.Token);
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Ошибка при обработке запроса IncomingController::AddAsync: {ex.Message} {ex.StackTrace}");
-                return BadRequest($"Ошибка при обработке запроса: {ex.Message}");
-            }
+            return await AddInternalAsync(creator);
         }
 
-        [Authorize]
-        [HttpPost("Update")]
-        
+        [HttpPost("Update")]        
         public async Task<IActionResult> UpdateAsync([FromBody] IncomingUpdater updater)
         {
-            try
-            {
-                var userId = Guid.Parse(User.Identity.Name);
-                var source = new CancellationTokenSource(30000);
-                var response = await _updateDataService.UpdateAsync(updater, userId, source.Token);
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Ошибка при обработке запроса IncomingController::UpdateAsync: {ex.Message} {ex.StackTrace}");
-                return BadRequest($"Ошибка при обработке запроса: {ex.Message}");
-            }
+            return await UpdateInternalAsync(updater);
         }
 
-        [Authorize]
         [HttpPost("Delete")]
-        
         public async Task<IActionResult> DeleteAsync([FromBody] Guid id)
         {
-            try
-            {
-                var userId = Guid.Parse(User.Identity.Name);
-                var source = new CancellationTokenSource(30000);
-                var response = await _deleteDataService.DeleteAsync(id, userId, source.Token);
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Ошибка при обработке запроса IncomingController::DeleteAsync: {ex.Message} {ex.StackTrace}");
-                return BadRequest($"Ошибка при обработке запроса: {ex.Message}");
-            }
+            return await DeleteInternalAsync(id);
         }
     }
 }
