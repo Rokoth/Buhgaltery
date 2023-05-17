@@ -4,6 +4,8 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace Buhgaltery.ClientHttpClient
@@ -98,6 +100,12 @@ namespace Buhgaltery.ClientHttpClient
         {
             return await Execute(client =>
                 client.GetAsync($"{GetApi<T>()}/{id}"), "Get", s => s.ParseResponse<T>());
+        }
+
+        public async Task<T> PostAsync<T>(T request) where T : class
+        {
+            return await Execute(client =>
+                client.PostAsync($"{GetApi<T>()}", JsonContent.Create(request)), "PostAsync", s => s.ParseResponse<T>());
         }
 
         private async Task<T> Execute<T>(

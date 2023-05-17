@@ -15,6 +15,8 @@ namespace Buhgaltery.ClientHttpClient
         Task<(int, IEnumerable<T>)> Get<T>(string param, Type apiType = null) where T : class;
         Task<T> Get<T>(Guid id) where T : class;
 
+        Task<T> PostAsync<T>(T request) where T : class;
+
         void ConnectToServer(string server, Action<bool, bool, string> onResult);
         void Dispose();
        
