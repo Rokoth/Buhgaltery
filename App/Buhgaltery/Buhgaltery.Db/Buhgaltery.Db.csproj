@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <Version>0.0.16</Version>
+    <Version>0.0.17</Version>
     <Authors>Dmitriy Rokoth</Authors>
     <Product>HomeBuhgaltery</Product>
     <Description>Home buhgaltery db wrapper</Description>
@@ -11,6 +11,7 @@
     <PackageProjectUrl>https://github.com/Rokoth/Buhgaltery</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Rokoth/Buhgaltery</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <Title>Библиотека работы с БД</Title>
   </PropertyGroup>
 
   <ItemGroup>

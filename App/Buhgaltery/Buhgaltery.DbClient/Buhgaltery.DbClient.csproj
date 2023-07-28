@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <Version>0.0.2</Version>
+    <Version>0.0.3</Version>
     <Authors>Dmitriy Rokoth</Authors>
     <Product>Buhgaltery</Product>
     <Description>Buhgaltery db wrapper</Description>
@@ -11,6 +11,7 @@
     <PackageProjectUrl>https://github.com/Rokoth/Buhgaltery</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Rokoth/Buhgaltery</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <PackageId>Buhgaltery.DbClient</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
