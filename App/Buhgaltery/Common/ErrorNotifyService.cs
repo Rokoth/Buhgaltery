@@ -204,6 +204,7 @@ namespace Buhgaltery.Common
                     Login = _login,
                     Password = _password
                 }.SerializeRequest()), "Post", s => s.ParseResponse<ErrorNotifyClientIdentityResponse>(), false);
+
             if (result.ResponseCode == ResponseEnum.Error)
             {
                 if (_isConnected)
