@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <Authors>Dmitriy Rokoth</Authors>
     <Product>HomeBuhgaltery</Product>
     <Copyright>Dmitriy Rokoth 2021-2022</Copyright>
@@ -10,7 +10,8 @@
     <PackageProjectUrl>https://github.com/Rokoth/Buhgaltery</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Rokoth/Buhgaltery</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>0.0.13</Version>
+    <Version>0.0.14</Version>
+    <PackageId>Buhgaltery.Services</PackageId>
   </PropertyGroup>
 
   <ItemGroup>

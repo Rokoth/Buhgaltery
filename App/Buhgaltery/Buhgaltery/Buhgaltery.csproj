@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
@@ -15,9 +15,9 @@
     <PackageProjectUrl>https://github.com/Rokoth/Buhgaltery</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Rokoth/Buhgaltery</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Copyright>Dmitriy Rokoth 2021</Copyright>
+    <Copyright>Dmitriy Rokoth 2021-2023</Copyright>
     <Description>Home buhgaltery</Description>
-    <Version>0.0.25</Version>
+    <Version>0.0.26</Version>
     <Authors>Dmitriy Rokoth</Authors>
     <Company>Dmitriy Rokoth</Company>
     <Product>HomeBuhgaltery</Product>

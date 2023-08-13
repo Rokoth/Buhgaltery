@@ -4,6 +4,8 @@ using Buhgaltery.Db.Context;
 using Buhgaltery.Db.Interface;
 using Buhgaltery.Db.Model;
 using Buhgaltery.Db.Repository;
+using Buhgaltery.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -33,7 +35,7 @@ namespace Buhgaltery.UnitTests
              .CreateLogger();
 
             var serviceCollection = new ServiceCollection();
-            ConfigurationBuilder builder = new ConfigurationBuilder();
+            ConfigurationBuilder builder = new();
             builder.AddJsonFile("appsettings.json");
             var config = builder.Build();
 

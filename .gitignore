@@ -38,3 +38,7 @@
 /App/Buhgaltery/Buhgaltery.UnitTests/bin/Debug/netcoreapp3.1
 /App/Buhgaltery/Buhgaltery.Services/bin/Release/net5.0
 /App/Buhgaltery/.vs/ProjectEvaluation
+/App/Buhgaltery/Buhgaltery.Desktop.Services/bin/Release/netstandard2.1
+/App/Buhgaltery/Buhgaltery.Desktop.UnitTests/bin/Release/net5.0-windows
+/App/Buhgaltery/Buhgaltery.Services/bin
+/App/Buhgaltery/Buhgaltery.UnitTests/bin
