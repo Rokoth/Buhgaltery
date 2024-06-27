@@ -24,6 +24,8 @@ namespace Buhgaltery.Db.Context
         /// </summary>
         public DbSet<User> Users { get; set; }
 
+        public DbSet<Formula> Formulas { get; set; }
+
         /// <summary>
         /// ctor
         /// </summary>

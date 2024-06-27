@@ -97,7 +97,7 @@ namespace Buhgaltery.Common
         public ErrorNotifyService(ErrorNotifyLoggerConfiguration config)
         {
             _config = config;
-            _init = Init();
+            _init = Init().Result;
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace Buhgaltery.Common
         /// Init error notify logger
         /// </summary>
         /// <returns></returns>
-        private bool Init()
+        private async Task<bool> Init()
         {
             var options = _config.Options;
             if(options != null)
@@ -137,8 +137,9 @@ namespace Buhgaltery.Common
                     _password = options.Password;
                     _feedback = options.FeedbackContact;
                     _defaultTitle = options.DefaultTitle;
+                    _isConnected = await CheckConnectOnce(_server);
 
-                    Task.Factory.StartNew(CheckConnect, TaskCreationOptions.LongRunning);
+                    await Task.Factory.StartNew(CheckConnect, TaskCreationOptions.LongRunning);
                 }
                 return true;
             }
@@ -232,8 +233,8 @@ namespace Buhgaltery.Common
         /// <returns></returns>
         public async Task Send(string message, MessageLevelEnum level = MessageLevelEnum.Error, string title = null)
         {
-            if (!_init) _init = Init();
-            if (_sendMessage)
+            if (!_init) _init = await Init();
+            if (_init && _sendMessage)
             {
                 var result = await Execute(client =>
                 {
@@ -346,7 +347,7 @@ namespace Buhgaltery.Common
                 {
                     var check = await client.GetAsync($"{server}/api/v1/common/ping");
                     var result = check != null && check.IsSuccessStatusCode;
-                    Console.WriteLine($"Ping result: server {server} {(result ? "connected" : "disconnected")}");
+                    //Console.WriteLine($"Ping result: server {server} {(result ? "connected" : "disconnected")}");
                     return result;
                 }
                 catch (Exception ex)

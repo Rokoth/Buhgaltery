@@ -82,8 +82,9 @@ namespace Buhgaltery.BuhgalteryDeployer
                     throw new DeployException($"DB was not deploy, log: {deployLog}");
                 }
             }
-            catch (DeployException)
-            {               
+            catch (DeployException ex)
+            {
+                var exc = ex.Message;
                 throw;
             }
             catch (Exception ex)

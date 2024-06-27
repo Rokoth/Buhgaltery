@@ -11,6 +11,7 @@ import { FormulaComponent } from './formula/formula.component';
 import { AccountComponent } from './account/account.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
+import { NotifyComponent } from './notify/notify.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
     CounterComponent,
     FetchDataComponent,
     AccountComponent,
-    FormulaComponent
+    FormulaComponent,
+    NotifyComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -33,6 +35,7 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
       { path: 'formula', component: FormulaComponent },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
+      { path: 'notify', component: NotifyComponent },
     ])
   ],
   providers: [],

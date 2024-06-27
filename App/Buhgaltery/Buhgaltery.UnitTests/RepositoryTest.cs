@@ -32,8 +32,9 @@ namespace Buhgaltery.UnitTests
         public async Task GetTest()
         {
             var context = _serviceProvider.GetRequiredService<DbPgContext>();
-            AddUsers(context, "user_select_{0}", "user_description_{0}", "user_login_{0}", "user_password_{0}", 10);
-            AddUsers(context, "user_not_select_{0}", "user_description_{0}", "user_login_{0}", "user_password_{0}", 10);            
+            var formula = await AddFormula(context);
+            AddUsers(context, "user_select_{0}", "user_description_{0}", "user_login_{0}", "user_password_{0}", 10, formula.Id);
+            AddUsers(context, "user_not_select_{0}", "user_description_{0}", "user_login_{0}", "user_password_{0}", 10, formula.Id);            
             await context.SaveChangesAsync();
 
             var repo = _serviceProvider.GetRequiredService<IRepository<User>>();
@@ -59,7 +60,8 @@ namespace Buhgaltery.UnitTests
         public async Task GetItemTest()
         {
             var context = _serviceProvider.GetRequiredService<DbPgContext>();
-            var user = CreateUser("user_{0}", "user_description_{0}", "user_login_{0}", "user_password_{0}");
+            var formula = await AddFormula(context);
+            var user = CreateUser("user_{0}", "user_description_{0}", "user_login_{0}", "user_password_{0}", formula.Id);
             context.Users.Add(user);
             await context.SaveChangesAsync();
 
@@ -70,6 +72,8 @@ namespace Buhgaltery.UnitTests
             Assert.Equal(user.Id, data.Id);
         }
 
+        
+
         /// <summary>
         /// Тест добавления сущности
         /// </summary>
@@ -79,7 +83,8 @@ namespace Buhgaltery.UnitTests
         {
             var context = _serviceProvider.GetRequiredService<DbPgContext>();            
             var repo = _serviceProvider.GetRequiredService<IRepository<User>>();
-            var user = CreateUser("user_{0}", "user_description_{0}", "user_login_{0}", "user_password_{0}");
+            var formula = await AddFormula(context);
+            var user = CreateUser("user_{0}", "user_description_{0}", "user_login_{0}", "user_password_{0}", formula.Id);
 
             var result = await repo.AddAsync(user, true, CancellationToken.None);
             Assert.NotNull(result);
@@ -99,7 +104,8 @@ namespace Buhgaltery.UnitTests
         {
             var context = _serviceProvider.GetRequiredService<DbPgContext>();
             var repo = _serviceProvider.GetRequiredService<IRepository<User>>();
-            var user = CreateUser("user_{0}", "user_description_{0}", "user_login_{0}", "user_password_{0}");
+            var formula = await AddFormula(context);
+            var user = CreateUser("user_{0}", "user_description_{0}", "user_login_{0}", "user_password_{0}", formula.Id);
 
             context.Users.Add(user);
             await context.SaveChangesAsync();
@@ -116,16 +122,28 @@ namespace Buhgaltery.UnitTests
             Assert.True(test.IsDeleted);
         }
 
-        private void AddUsers(DbPgContext context, string nameMask, string descriptionMask, string loginMask, string passwordMask, int count)
+        private void AddUsers(DbPgContext context, string nameMask, string descriptionMask, string loginMask, string passwordMask, int count, Guid formulaId)
         {
             for (int i = 0; i < count; i++)
             {
-                var user = CreateUser(nameMask, descriptionMask, loginMask, passwordMask);
+                var user = CreateUser(nameMask, descriptionMask, loginMask, passwordMask, formulaId);
                 context.Users.Add(user);
             }
         }
 
-        private User CreateUser(string nameMask, string descriptionMask, string loginMask, string passwordMask)
+        private Formula CreateFormula()
+        {
+            return new Formula()
+            {
+                IsDefault = true,
+                IsDeleted = false,
+                Name = "Name",
+                Text = "Text",
+                Id = Guid.NewGuid(),
+            };
+        }
+
+        private User CreateUser(string nameMask, string descriptionMask, string loginMask, string passwordMask, Guid formulaId)
         {
             var id = Guid.NewGuid();
             var user = new Db.Model.User()
@@ -136,9 +154,18 @@ namespace Buhgaltery.UnitTests
                 IsDeleted = false,
                 Login = string.Format(loginMask, id),
                 Password = SHA512.Create().ComputeHash(Encoding.UTF8.GetBytes(string.Format(passwordMask, id))),
-                VersionDate = DateTimeOffset.Now
+                VersionDate = DateTimeOffset.Now,
+                FormulaId = formulaId
             };
             return user;
+        }
+
+        private async Task<Formula> AddFormula(DbPgContext context)
+        {
+            var formula = CreateFormula();
+            context.Formulas.Add(formula);
+            await context.SaveChangesAsync();
+            return formula;
         }
     }
 }

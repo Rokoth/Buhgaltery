@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Buhgaltery.Common;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +17,15 @@ namespace Buhgaltery.Services
         private readonly IServiceProvider _serviceProvider;
         private CancellationToken _token;
         CancellationTokenSource _cancellationTokenSource;
+        private bool _toRun = false;
 
         public AllocateReservesHostedService(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
             _cancellationTokenSource = new CancellationTokenSource();
             _token = _cancellationTokenSource.Token;
+            var options = serviceProvider.GetRequiredService<IOptions<CommonOptions>>();
+            _toRun = options.Value.RunOptions.AllocateReserves;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
@@ -35,16 +40,19 @@ namespace Buhgaltery.Services
         }
 
         private async Task Run()
-        {            
-            while (!_token.IsCancellationRequested)
+        {
+            if (_toRun)
             {
-                using (var scope = _serviceProvider.CreateScope())
+                while (!_token.IsCancellationRequested)
                 {
-                    var serviceProvider = scope.ServiceProvider;
-                    IAllocateReservesService service = serviceProvider.GetRequiredService<IAllocateReservesService>();
-                    await service.Execute(_token);                    
+                    using (var scope = _serviceProvider.CreateScope())
+                    {
+                        var serviceProvider = scope.ServiceProvider;
+                        IAllocateReservesService service = serviceProvider.GetRequiredService<IAllocateReservesService>();
+                        await service.Execute(_token);
+                    }
+                    await Task.Delay(60 * 1000, _token);
                 }
-                await Task.Delay(60 * 1000, _token);
             }
         }
     }

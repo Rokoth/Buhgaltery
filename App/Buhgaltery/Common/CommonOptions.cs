@@ -23,5 +23,14 @@ namespace Buhgaltery.Common
         /// Настройки авторизации
         /// </summary>
         public AuthOptions AuthOptions { get; set; }
+
+        public RunOptions RunOptions { get; set; }
+    }
+
+    public class RunOptions
+    {
+        public bool AllocateReserves { get; set; }
+
+        public bool ReservesRevisor { get; set; }
     }
 }
