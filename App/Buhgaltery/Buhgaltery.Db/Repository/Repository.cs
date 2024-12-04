@@ -100,13 +100,15 @@ namespace Buhgaltery.Db.Repository
                 }
                 var count = await all.CountAsync();
                 List<T> result;
+                
                 if (filter.Size.HasValue)
                 {
+                    var size = Math.Max(filter.Size.Value, 1);
                     result = await all
-                        .Skip(filter.Size.Value * filter.Page ?? 0)
-                        .Take(filter.Size.Value)
+                        .Skip(size * filter.Page ?? 0)
+                        .Take(size)
                         .ToListAsync();
-                    pageCount = Math.Max(((count % filter.Size.Value) == 0) ? (count / filter.Size.Value) : ((count / filter.Size.Value) + 1), 1);
+                    pageCount = Math.Max(((count % size) == 0) ? (count / size) : ((count / size) + 1), 1);
                 }
                 else
                 {
